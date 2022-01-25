@@ -7,13 +7,11 @@ import ui_modules.InfoScreen;
 public class StartBtnController {
     private boolean started;
     private InfoScreen infoScreen;
-   // private GridPaneController gameController;
 
     public StartBtnController(InfoScreen infoScr)
     {
         infoScreen =infoScr;
         //infoScr.startBtnAction(startNewGame());
-        //gameController=new GridPaneController();
 
     }
 
@@ -22,8 +20,7 @@ public class StartBtnController {
             @Override
             public void handle(ActionEvent event) {
                 infoScreen.hidBtn();
-               // gameController.startGame();
-                infoScreen.changeMsg("palyer's turn");
+                infoScreen.changeMsg("palyer X turn");
             }
         };
     }

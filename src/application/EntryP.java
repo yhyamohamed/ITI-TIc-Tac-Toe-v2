@@ -18,7 +18,6 @@ public class EntryP extends Application {
 	public static final int TILE_HIGHT=300;
 	
 	private InfoScreen infoScreen;
-	//private GameBboard gameBoard;
 	private BoardGridPane boardGridPane;
 	private WinningLine winningLine;
 	
@@ -41,6 +40,7 @@ public class EntryP extends Application {
 	
 	private void UiInit(BorderPane root)
 	{
+
 		infoScreen = new InfoScreen();
 		root.getChildren().add(infoScreen.getPane());
 
@@ -48,7 +48,7 @@ public class EntryP extends Application {
 //		root.getChildren().add(gameBoard.getPane());
 		//BoardGradePane
 
-		boardGridPane = new BoardGridPane(infoScreen,root);
+		boardGridPane = new BoardGridPane(infoScreen);
 		root.getChildren().add(boardGridPane.getPane());
 		winningLine = new WinningLine(root , boardGridPane);
 

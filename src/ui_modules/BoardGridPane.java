@@ -17,7 +17,7 @@ public class BoardGridPane {
         private SinglTile[][] tiles= new SinglTile[3][3];
 
 
-        public BoardGridPane(InfoScreen infoscr,BorderPane root)
+        public BoardGridPane(InfoScreen infoscr)
         {
             infoScreen= infoscr;
             gridPane = new GridPane();
@@ -25,7 +25,7 @@ public class BoardGridPane {
             gridPane.setAlignment(Pos.CENTER);
            gridPane.setTranslateX(EntryP.WIDTH/2);
            gridPane.setTranslateY(EntryP.INFO_SCREEN+(EntryP.TILE_HIGHT/2));
-            gridPaneController = new GridPaneController(this,infoscr,root);
+            gridPaneController = new GridPaneController(this,infoscr);
 
             for (int row =0 ; row<3 ; row++){
 
@@ -98,7 +98,7 @@ public class BoardGridPane {
         }
       public void resetGame(){
           player = "X";
-        //  gridPaneController.resetGameBoard();
+          gridPaneController.resetGameBoard();
           for (int row =0 ; row<3 ; row++){
               for (int col = 0; col < 3; col++) {
 
