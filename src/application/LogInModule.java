@@ -4,17 +4,18 @@ package application;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import ui_modules.LogInPage;
+
+import ui_modules.logIn;
 
 public class LogInModule extends Application {
     
     @Override
     public void start(Stage primaryStage) {
     
-        LogInPage root = new LogInPage(primaryStage);
-        
-        
+        logIn root = new logIn(primaryStage);
+            
         Scene scene = new Scene(root);
+        scene.getStylesheets().add("/ui_modules/../application/application.css");
         primaryStage.setTitle("log in screen");
         primaryStage.setScene(scene);
         primaryStage.show();

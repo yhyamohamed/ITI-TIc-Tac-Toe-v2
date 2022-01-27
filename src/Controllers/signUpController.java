@@ -1,14 +1,15 @@
 package Controllers;
 
-import ui_modules.SignUpPage;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import ui_modules.SignUp;
 
 public class signUpController {
-    private SignUpPage signUpPage;
-    public signUpController(SignUpPage signUpPagee, Stage primaryStage) {
+    private SignUp signUpPage;
+    public signUpController(SignUp signUpPagee, Stage primaryStage) {
         signUpPage = signUpPagee;
 
         signUpPagee.setSignUpBtnAction(signUp(primaryStage));
