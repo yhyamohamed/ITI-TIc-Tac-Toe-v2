@@ -108,14 +108,14 @@ public  class GameBoard extends AnchorPane {
         scoreUser2.getStyleClass().add("text");
         scoreUser2.setText("score: 1213");
 
-        send.setId("button");
-        send.setLayoutX(600.0);
-        send.setLayoutY(524.0);
-        send.setMnemonicParsing(false);
-        send.setPrefHeight(32.0);
-        send.setPrefWidth(62.0);
-        send.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
-        send.setText("send");
+//        send.setId("button");
+//        send.setLayoutX(600.0);
+//        send.setLayoutY(524.0);
+//        send.setMnemonicParsing(false);
+//        send.setPrefHeight(32.0);
+//        send.setPrefWidth(62.0);
+//        send.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+//        send.setText("send");
 
         record.setId("button");
         record.setLayoutX(97.0);
@@ -133,16 +133,16 @@ public  class GameBoard extends AnchorPane {
         home.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
         home.setText("home");
 
-        AnchorPane.setBottomAnchor(textField, 12.0);
-        AnchorPane.setLeftAnchor(textField, 313.0);
-        AnchorPane.setRightAnchor(textField, 97.0);
-        textField.setLayoutX(313.0);
-        textField.setLayoutY(531.0);
-        textField.setPrefHeight(25.0);
-        textField.setPrefWidth(179.0);
-        textField.getStyleClass().add("text_field");
-        textField.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
-        textField.setText("enter your msg here ");
+//        AnchorPane.setBottomAnchor(textField, 12.0);
+//        AnchorPane.setLeftAnchor(textField, 313.0);
+//        AnchorPane.setRightAnchor(textField, 97.0);
+//        textField.setLayoutX(313.0);
+//        textField.setLayoutY(531.0);
+//        textField.setPrefHeight(25.0);
+//        textField.setPrefWidth(179.0);
+//        textField.getStyleClass().add("text_field");
+//        textField.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+//        textField.setText("enter your msg here ");
 
         gridPane.setGridLinesVisible(true);
         gridPane.setHgap(10.0);
@@ -273,10 +273,10 @@ public  class GameBoard extends AnchorPane {
         getChildren().add(scoreUser1);
         getChildren().add(user2);
         getChildren().add(scoreUser2);
-        getChildren().add(send);
+//        getChildren().add(send);
         getChildren().add(record);
         getChildren().add(home);
-        getChildren().add(textField);
+        //getChildren().add(textField);
         gridPane.getColumnConstraints().add(columnConstraints);
         gridPane.getColumnConstraints().add(columnConstraints0);
         gridPane.getColumnConstraints().add(columnConstraints1);
