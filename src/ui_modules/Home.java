@@ -1,11 +1,13 @@
 package ui_modules;
 
+import Controllers.HomePageController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 
 public  class Home extends AnchorPane {
 
@@ -17,7 +19,7 @@ public  class Home extends AnchorPane {
     protected final Label score;
     protected final AnchorPane anchorPane;
 
-    public Home() {
+    public Home(Stage primaryStage) {
 
         pcbtn = new Button();
         friendsbtn = new Button();
@@ -102,12 +104,14 @@ public  class Home extends AnchorPane {
         getChildren().add(score);
         getChildren().add(anchorPane);
 
+        new HomePageController(this, primaryStage);
+
     }
-    public void onlineBtnAction(EventHandler< ActionEvent > Action){
+    public void playOnline(EventHandler< ActionEvent > Action){
         onlinebtn.setOnAction(Action);
         
         }
-    public void friendsBtnAction(EventHandler< ActionEvent > Action){
+    public void InviteAfriendToPlay(EventHandler< ActionEvent > Action){
         friendsbtn.setOnAction(Action);
     }
      public void pcbtnBtnAction(EventHandler< ActionEvent > Action){

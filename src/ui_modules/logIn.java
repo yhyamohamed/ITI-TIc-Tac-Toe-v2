@@ -1,6 +1,8 @@
 package ui_modules;
 
 import Controllers.loginController;
+import javafx.animation.Animation;
+import javafx.animation.FadeTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -10,6 +12,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 
 public  class logIn extends AnchorPane {
 
@@ -20,6 +23,7 @@ public  class logIn extends AnchorPane {
     protected final PasswordField passwordTxt;
     protected final Button loginBtn;
     protected final Button signUpBtn;
+    protected final Button playOffLineBtn;
     protected final Label title;
     protected final Label logInMsg;
 
@@ -32,6 +36,7 @@ public  class logIn extends AnchorPane {
         passwordTxt = new PasswordField();
         loginBtn = new Button();
         signUpBtn = new Button();
+        playOffLineBtn= new Button();
         title = new Label();
         logInMsg = new Label();
 
@@ -109,6 +114,26 @@ public  class logIn extends AnchorPane {
         signUpBtn.setText("Sign Up");
         signUpBtn.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
+
+        playOffLineBtn.setAccessibleText("signUpBtn");
+        playOffLineBtn.setId("btn");
+        playOffLineBtn.setLayoutX(35.0);
+        playOffLineBtn.setLayoutY(392.0);
+        playOffLineBtn.setMaxHeight(58.0);
+        playOffLineBtn.setMnemonicParsing(false);
+        playOffLineBtn.setPrefHeight(38.0);
+        playOffLineBtn.setPrefWidth(172.0);
+        playOffLineBtn.setStyle("-fx-font-weight: bold;");
+        playOffLineBtn.getStylesheets().add("/ui_modules/../application/application.css");
+        playOffLineBtn.setText("play Offline");
+        playOffLineBtn.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
+
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(1.5), playOffLineBtn);
+        fadeTransition.setFromValue(1.0);
+        fadeTransition.setToValue(0.0);
+        fadeTransition.setCycleCount(Animation.INDEFINITE);
+        fadeTransition.play();
+
         title.setId("logo");
         title.setLayoutX(10.0);
         title.setLayoutY(50.0);
@@ -118,12 +143,11 @@ public  class logIn extends AnchorPane {
         title.setFont(new Font("System Bold Italic", 38.0));
         
         logInMsg.setAlignment(javafx.geometry.Pos.CENTER);
-        logInMsg.setLayoutX(14.0);
-        logInMsg.setLayoutY(241.0);
-        logInMsg.setPrefHeight(18.0);
-        logInMsg.setPrefWidth(249.0);
-        logInMsg.setStyle("-fx-text-fill: red;");
-        logInMsg.setText("*invalid log in info");
+        logInMsg.setLayoutX(70.0);
+        logInMsg.setLayoutY(300.0);
+
+        logInMsg.setStyle("-fx-text-fill: white;");
+        logInMsg.setText("* invalid log in info");
         logInMsg.setVisible(false);
 
         getChildren().add(anchorpane2);
@@ -134,6 +158,8 @@ public  class logIn extends AnchorPane {
         getChildren().add(loginBtn);
         getChildren().add(signUpBtn);
         getChildren().add(title);
+        getChildren().add(logInMsg);
+        getChildren().add(playOffLineBtn);
         
          new loginController(this,primaryStage);
 
@@ -157,6 +183,10 @@ public  class logIn extends AnchorPane {
     public void signUPBtnAction(EventHandler< ActionEvent > Action){
         signUpBtn.setOnAction(Action);
     }
+    public void playOffLineFromEntryScreen(EventHandler< ActionEvent > Action){
+        playOffLineBtn.setOnAction(Action);
+    }
+
 
     }
 

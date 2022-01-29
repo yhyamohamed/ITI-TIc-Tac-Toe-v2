@@ -7,7 +7,7 @@ import javafx.stage.Stage;
 
 import ui_modules.logIn;
 
-public class LogInModule extends Application {
+public class EntryScreen extends Application {
     
     @Override
     public void start(Stage primaryStage) {

@@ -1,0 +1,7 @@
+make winning line && winner screen
+
+change start button place to buttom of game board 
+
+delete chat from game board
+
+integrate database queryes(prepared statments)
