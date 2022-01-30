@@ -1,10 +1,12 @@
 package Controllers;
 
 
+import Models.Player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import services.PlayerServices;
 import ui_modules.SignUp;
 
 public class signUpController {
@@ -20,10 +22,14 @@ public class signUpController {
         return new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println(signUpPage.getUsrTxt().getText());
+                PlayerServices playerServices = new PlayerServices();
+               boolean result = playerServices.create(signUpPage.getUsrTxt().getText(),signUpPage.getPassTxt().getText());
+//                if(result){
+//                    // go to login page  >>>> UI
+//                } else{
+//                    // display message *failed to sign up* >>> UI
+//                }
 
-                signUpPage.getErrMsg().setText("tring to log you in ");
-                signUpPage.getErrMsg().setVisible(true);
 
             }
         };

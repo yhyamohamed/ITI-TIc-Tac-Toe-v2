@@ -5,6 +5,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import services.PlayerServices;
 import ui_modules.Home;
 import ui_modules.SignUp;
 import ui_modules.logIn;
@@ -28,7 +29,7 @@ public class loginController {
             @Override
             public void handle(ActionEvent event) {
                 homePageController = new HomePageController(primaryStage);
-                homePageController.loadGameBoard(primaryStage,true);
+                homePageController.loadGameBoard(primaryStage, true);
             }
         };
     }
@@ -48,29 +49,30 @@ public class loginController {
     }
 
     private EventHandler<ActionEvent> logIn(Stage primaryStage) {
-    return new EventHandler<ActionEvent>() {
-        @Override
-        public void handle(ActionEvent event) {
+        return new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                PlayerServices playerServices = new PlayerServices();
+                if (loginPage.getUserNameTxt() != null && loginPage.getPasswordTxt() != null) {
+                    boolean validUser = playerServices.checkLogin(loginPage.getUserNameTxt(), loginPage.getPasswordTxt());
+                    if (validUser) {
+                        Home root = new Home(primaryStage);
+                        Scene scene = new Scene(root);
+                        primaryStage.setTitle("home screen");
+                        primaryStage.setScene(scene);
+                        primaryStage.show();
+                        System.out.println(loginPage.getUserNameTxt());
+                        System.out.println(loginPage.getPasswordTxt());
 
-            if(loggedIn()){
-                Home root = new Home(primaryStage) ;
-                Scene scene = new Scene(root);
-                primaryStage.setTitle("home screen");
-                primaryStage.setScene(scene);
-                primaryStage.show();
-                System.out.println(loginPage.getUserNameTxt());
-                System.out.println(loginPage.getPasswordTxt());
-
-            }else{
-                loginPage.getLogInMsg().setVisible(true);
+                    } else {
+                        loginPage.getLogInMsg().setVisible(true);
+                    }
+                }
             }
-
-            
-        }
-    };
+        };
     }
-    public boolean loggedIn()
-    {
+
+    public boolean loggedIn() {
         return true;
     }
 
