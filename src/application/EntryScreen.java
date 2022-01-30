@@ -11,6 +11,7 @@ public class EntryScreen extends Application {
     
     @Override
     public void start(Stage primaryStage) {
+        primaryStage.setResizable(false);
     
         logIn root = new logIn(primaryStage);
             
