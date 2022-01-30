@@ -33,7 +33,7 @@ public  class Home extends AnchorPane {
         setPrefHeight(512.0);
         setPrefWidth(664.0);
         setStyle("-fx-border-style: solid;");
-        getStylesheets().add("/ui_modules/../application/application.css");
+        getStylesheets().add("ui_modules/Resources/application.css");
 
         pcbtn.setAccessibleText("loginBtn");
         pcbtn.setId("btn");
@@ -43,7 +43,7 @@ public  class Home extends AnchorPane {
         pcbtn.setMnemonicParsing(false);
         pcbtn.setPrefHeight(44.0);
         pcbtn.setPrefWidth(187.0);
-        pcbtn.getStylesheets().add("/ui_modules/../application/application.css");
+        pcbtn.getStylesheets().add("ui_modules/Resources/application.css");
         pcbtn.setText("Player VS computer");
         pcbtn.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
@@ -55,7 +55,7 @@ public  class Home extends AnchorPane {
         friendsbtn.setMnemonicParsing(false);
         friendsbtn.setPrefHeight(44.0);
         friendsbtn.setPrefWidth(187.0);
-        friendsbtn.getStylesheets().add("/ui_modules/../application/application.css");
+        friendsbtn.getStylesheets().add("ui_modules/Resources/application.css");
         friendsbtn.setText("Invite Friend");
         friendsbtn.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
@@ -67,7 +67,7 @@ public  class Home extends AnchorPane {
         onlinebtn.setMnemonicParsing(false);
         onlinebtn.setPrefHeight(44.0);
         onlinebtn.setPrefWidth(187.0);
-        onlinebtn.getStylesheets().add("/ui_modules/../application/application.css");
+        onlinebtn.getStylesheets().add("ui_modules/Resources/application.css");
         onlinebtn.setText("Play online");
         onlinebtn.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
@@ -94,7 +94,7 @@ public  class Home extends AnchorPane {
         anchorPane.setLayoutY(8.0);
         anchorPane.setPrefHeight(110.0);
         anchorPane.setPrefWidth(114.0);
-        anchorPane.getStylesheets().add("/ui_modules/../application/application.css");
+        anchorPane.getStylesheets().add("ui_modules/Resources/application.css");
 
         getChildren().add(pcbtn);
         getChildren().add(friendsbtn);
