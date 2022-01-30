@@ -1,7 +1,6 @@
-make winning line && winner screen
-
-change start button place to buttom of game board 
-
-delete chat from game board
-
-integrate database queryes(prepared statments) // done
+make winning line                                        // done
+delete chat from game board                              // done
+integrate database queries(prepared statements)          // done
+resize problem                                           // done
+winner screen                                            loading ....
+change start button place to button of game board        loading ....
