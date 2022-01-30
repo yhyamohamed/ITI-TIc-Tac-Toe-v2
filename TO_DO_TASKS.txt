@@ -1,7 +1,9 @@
-make winning line && winner screen
+make winning line   ismail 
 
-change start button place to buttom of game board 
+winner screen.  Sarah
 
-delete chat from game board
+change start button place to buttom of game board --> (sarah)   
 
-integrate database queryes(prepared statments)
+
+
+integrate database queryes(prepared statments) abdulla
