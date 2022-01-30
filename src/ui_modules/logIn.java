@@ -43,14 +43,14 @@ public  class logIn extends AnchorPane {
         setId("anchorpane1");
         setPrefHeight(512.0);
         setPrefWidth(594.0);
-        getStylesheets().add("/ui_modules/../application/application.css");
+        getStylesheets().add("ui_modules/Resources/application.css");
 
         anchorpane2.setId("anchorpane2");
         anchorpane2.setLayoutX(237.0);
         anchorpane2.setMaxWidth(Double.MAX_VALUE);
         anchorpane2.setPrefHeight(512.0);
         anchorpane2.setPrefWidth(500.0);
-        anchorpane2.getStylesheets().add("/ui_modules/../application/application.css");
+        anchorpane2.getStylesheets().add("ui_modules/Resources/application.css");
 
         userNameTxt.setAccessibleText("userNameTxt");
         userNameTxt.setId("txtf");
@@ -59,7 +59,7 @@ public  class logIn extends AnchorPane {
         userNameTxt.setPrefHeight(25.0);
         userNameTxt.setPrefWidth(172.0);
          userNameTxt.setPromptText("Username");
-        userNameTxt.getStylesheets().add("/ui_modules/../application/application.css");
+        userNameTxt.getStylesheets().add("ui_modules/Resources/application.css");
 
         userName.setAccessibleRoleDescription("userName");
         userName.setAccessibleText("userName");
@@ -67,7 +67,7 @@ public  class logIn extends AnchorPane {
         userName.setLayoutX(42.0);
         userName.setLayoutY(157.0);
         userName.getStyleClass().add("userName");
-        userName.getStylesheets().add("/ui_modules/../application/application.css");
+        userName.getStylesheets().add("ui_modules/Resources/application.css");
         userName.setText("Username:");
         userName.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
@@ -75,7 +75,7 @@ public  class logIn extends AnchorPane {
         paswod.setId("label");
         paswod.setLayoutX(42.0);
         paswod.setLayoutY(238.0);
-        paswod.getStylesheets().add("/ui_modules/../application/application.css");
+        paswod.getStylesheets().add("ui_modules/Resources/application.css");
         paswod.setText("Password:");
         paswod.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
@@ -86,7 +86,7 @@ public  class logIn extends AnchorPane {
         passwordTxt.setPrefHeight(25.0);
         passwordTxt.setPrefWidth(172.0);
         passwordTxt.setPromptText("Password");
-        passwordTxt.getStylesheets().add("/ui_modules/../application/application.css");
+        passwordTxt.getStylesheets().add("ui_modules/Resources/application.css");
 
         loginBtn.setAccessibleText("loginBtn");
         loginBtn.setId("btn");
@@ -96,7 +96,7 @@ public  class logIn extends AnchorPane {
         loginBtn.setMnemonicParsing(false);
         loginBtn.setPrefHeight(38.0);
         loginBtn.setPrefWidth(92.0);
-        loginBtn.getStylesheets().add("/ui_modules/../application/application.css");
+        loginBtn.getStylesheets().add("ui_modules/Resources/application.css");
         loginBtn.setText("Log In");
         loginBtn.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
         
@@ -110,7 +110,7 @@ public  class logIn extends AnchorPane {
         signUpBtn.setPrefHeight(38.0);
         signUpBtn.setPrefWidth(92.0);
         signUpBtn.setStyle("-fx-font-weight: bold;");
-        signUpBtn.getStylesheets().add("/ui_modules/../application/application.css");
+        signUpBtn.getStylesheets().add("ui_modules/Resources/application.css");
         signUpBtn.setText("Sign Up");
         signUpBtn.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
@@ -124,7 +124,7 @@ public  class logIn extends AnchorPane {
         playOffLineBtn.setPrefHeight(38.0);
         playOffLineBtn.setPrefWidth(172.0);
         playOffLineBtn.setStyle("-fx-font-weight: bold;");
-        playOffLineBtn.getStylesheets().add("/ui_modules/../application/application.css");
+        playOffLineBtn.getStylesheets().add("ui_modules/Resources/application.css");
         playOffLineBtn.setText("play Offline");
         playOffLineBtn.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
@@ -137,7 +137,7 @@ public  class logIn extends AnchorPane {
         title.setId("logo");
         title.setLayoutX(10.0);
         title.setLayoutY(50.0);
-        title.getStylesheets().add("/ui_modules/../application/application.css");
+        title.getStylesheets().add("ui_modules/Resources/application.css");
         title.setText("Tic-Tac-Toe");
         title.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
         title.setFont(new Font("System Bold Italic", 38.0));

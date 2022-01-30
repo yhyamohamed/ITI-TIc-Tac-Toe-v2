@@ -1,14 +1,14 @@
 #label1{
  -fx-text-fill:#dbe2e5;
-   -fx-background-color: #362a68;
-   //-fx-font-size: 200pt;
-    -fx-font-weight: bold;
+  -fx-background-color: #362a68;
+   
+   -fx-font-weight: bold;
 }
 #winninglabel
 {
     -fx-text-fill:#dbe2e5;
-       -fx-background-color: #ff0000;
-       //-fx-font-size: 200pt;
+       -fx-background-color: #ff4d6d;
+       
         -fx-font-weight: bold;
 }
 

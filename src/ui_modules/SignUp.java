@@ -53,14 +53,14 @@ public class SignUp extends AnchorPane {
         anchorpane1.setLayoutY(-1.0);
         anchorpane1.setPrefHeight(512.0);
         anchorpane1.setPrefWidth(594.0);
-        anchorpane1.getStylesheets().add("/ui_modules/../application/application.css");
+        anchorpane1.getStylesheets().add("ui_modules/Resources/application.css");
 
         anchorpane2.setId("anchorpane2");
         anchorpane2.setLayoutX(240.0);
         anchorpane2.setMaxWidth(Double.MAX_VALUE);
         anchorpane2.setPrefHeight(512.0);
         anchorpane2.setPrefWidth(499.0);
-        anchorpane2.getStylesheets().add("/ui_modules/../application/application.css");
+        anchorpane2.getStylesheets().add("ui_modules/Resources/application.css");
 
         usrTxt.setAccessibleText("userNameTxt");
         usrTxt.setId("txtf");
@@ -68,7 +68,7 @@ public class SignUp extends AnchorPane {
         usrTxt.setLayoutY(169.0);
         usrTxt.setPrefHeight(25.0);
         usrTxt.setPrefWidth(172.0);
-        usrTxt.getStylesheets().add("/ui_modules/../application/application.css");
+        usrTxt.getStylesheets().add("ui_modules/Resources/application.css");
 
         usrLabel.setAccessibleRoleDescription("userName");
         usrLabel.setAccessibleText("userName");
@@ -76,7 +76,7 @@ public class SignUp extends AnchorPane {
         usrLabel.setLayoutX(42.0);
         usrLabel.setLayoutY(139.0);
         usrLabel.getStyleClass().add("userName");
-        usrLabel.getStylesheets().add("/ui_modules/../application/application.css");
+        usrLabel.getStylesheets().add("ui_modules/Resources/application.css");
         usrLabel.setText("Username:");
         usrLabel.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
@@ -84,7 +84,7 @@ public class SignUp extends AnchorPane {
         passLabel.setId("label");
         passLabel.setLayoutX(42.0);
         passLabel.setLayoutY(207.0);
-        passLabel.getStylesheets().add("/ui_modules/../application/application.css");
+        passLabel.getStylesheets().add("ui_modules/Resources/application.css");
         passLabel.setText("Password:");
         passLabel.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
@@ -94,7 +94,7 @@ public class SignUp extends AnchorPane {
         passTxt.setLayoutY(233.0);
         passTxt.setPrefHeight(25.0);
         passTxt.setPrefWidth(172.0);
-        passTxt.getStylesheets().add("/ui_modules/../application/application.css");
+        passTxt.getStylesheets().add("ui_modules/Resources/application.css");
 
         signUpBtn.setAccessibleText("loginBtn");
         signUpBtn.setId("btn");
@@ -104,7 +104,7 @@ public class SignUp extends AnchorPane {
         signUpBtn.setMnemonicParsing(false);
         signUpBtn.setPrefHeight(38.0);
         signUpBtn.setPrefWidth(92.0);
-        signUpBtn.getStylesheets().add("/ui_modules/../application/application.css");
+        signUpBtn.getStylesheets().add("ui_modules/Resources/application.css");
         signUpBtn.setText("Sign Up");
         signUpBtn.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
@@ -117,14 +117,14 @@ public class SignUp extends AnchorPane {
         cancelBtn.setPrefHeight(38.0);
         cancelBtn.setPrefWidth(92.0);
         cancelBtn.setStyle("-fx-font-weight: bold;");
-        cancelBtn.getStylesheets().add("/ui_modules/../application/application.css");
+        cancelBtn.getStylesheets().add("ui_modules/Resources/application.css");
         cancelBtn.setText("Cancel");
         cancelBtn.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
         title.setId("logo");
         title.setLayoutX(10.0);
         title.setLayoutY(50.0);
-        title.getStylesheets().add("/ui_modules/../application/application.css");
+        title.getStylesheets().add("ui_modules/Resources/application.css");
         title.setText("Tic-Tac-Toe");
         title.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
         title.setFont(new Font("System Bold Italic", 38.0));
@@ -133,7 +133,7 @@ public class SignUp extends AnchorPane {
         passConfirmLabel.setId("label");
         passConfirmLabel.setLayoutX(42.0);
         passConfirmLabel.setLayoutY(275.0);
-        passConfirmLabel.getStylesheets().add("/ui_modules/../application/application.css");
+        passConfirmLabel.getStylesheets().add("ui_modules/Resources/application.css");
         passConfirmLabel.setText("Re-Enter password:");
         passConfirmLabel.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
@@ -143,7 +143,7 @@ public class SignUp extends AnchorPane {
         passConfirmTxt.setLayoutY(305.0);
         passConfirmTxt.setPrefHeight(25.0);
         passConfirmTxt.setPrefWidth(172.0);
-        passConfirmTxt.getStylesheets().add("/ui_modules/../application/application.css");
+        passConfirmTxt.getStylesheets().add("ui_modules/Resources/application.css");
 
         anchorpane1.getChildren().add(anchorpane2);
         anchorpane1.getChildren().add(usrTxt);

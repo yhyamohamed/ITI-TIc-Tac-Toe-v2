@@ -1,0 +1,48 @@
+#label1{
+ -fx-text-fill:#dbe2e5;
+  -fx-background-color: #362a68;
+
+   -fx-font-weight: bold;
+}
+#winninglabel
+{
+    -fx-text-fill:#dbe2e5;
+       -fx-background-color: #ff4d6d;
+
+        -fx-font-weight: bold;
+}
+
+.GridPane{
+    -fx-background-color : #2a2249;
+    -fx-font-size: 80;
+    -fx-font-weight: bold;
+    -fx-text-fill:#bb6579;
+    -fx-cursor: pointer;
+
+}
+#button{
+    -fx-background-color:#bb6579;
+    -fx-background-radius:50;
+    -fx-font-size:17;
+    -fx-font-weight:bold;
+    -fx-text-fill:#dbe2e5;
+}
+
+.background{
+    -fx-background-image: url("img1.jpg");
+    -fx-background-repeat: no-repeat;
+    -fx-background-size: 100% 100%;
+
+}
+.text{
+ -fx-text-fill:#dbe2e5;
+    -fx-font-weight: bold;
+     -fx-font-size:17; 
+     -fx-background-color: transparent;
+
+}
+
+.text_field{
+      -fx-text-fill: #555;  
+
+}

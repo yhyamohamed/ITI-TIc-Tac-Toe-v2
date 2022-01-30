@@ -83,7 +83,7 @@ public  class GameBoard extends AnchorPane {
         user1.setPrefHeight(26.0);
         user1.setPrefWidth(86.0);
         user1.getStyleClass().add("text");
-        user1.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+        user1.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
         user1.setText("user 1");
 
         scoreUser1.setLayoutX(25.0);
@@ -91,7 +91,7 @@ public  class GameBoard extends AnchorPane {
         scoreUser1.setPrefHeight(26.0);
         scoreUser1.setPrefWidth(101.0);
         scoreUser1.getStyleClass().add("text");
-        scoreUser1.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+        scoreUser1.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
         scoreUser1.setText("score: 1213");
 
         user2.setLayoutX(587.0);
@@ -99,7 +99,7 @@ public  class GameBoard extends AnchorPane {
         user2.setPrefHeight(17.0);
         user2.setPrefWidth(56.0);
         user2.getStyleClass().add("text");
-        user2.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+        user2.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
         user2.setText("user 2");
 
         scoreUser2.setLayoutX(561.0);
@@ -115,7 +115,7 @@ public  class GameBoard extends AnchorPane {
 //        send.setMnemonicParsing(false);
 //        send.setPrefHeight(32.0);
 //        send.setPrefWidth(62.0);
-//        send.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+//        send.getStylesheets().add("..\\Resources\\gameBoardStyles.css");
 //        send.setText("send");
 
         record.setId("button");
@@ -124,14 +124,14 @@ public  class GameBoard extends AnchorPane {
         record.setMnemonicParsing(false);
         record.setPrefHeight(38.0);
         record.setPrefWidth(86.0);
-        record.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+        record.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
         record.setText("record");
 
         home.setId("button");
         home.setLayoutX(14.0);
         home.setLayoutY(524.0);
         home.setMnemonicParsing(false);
-        home.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+        home.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
         home.setText("home");
 
 //        AnchorPane.setBottomAnchor(textField, 12.0);
@@ -142,7 +142,7 @@ public  class GameBoard extends AnchorPane {
 //        textField.setPrefHeight(25.0);
 //        textField.setPrefWidth(179.0);
 //        textField.getStyleClass().add("text_field");
-//        textField.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+//        textField.getStylesheets().add("..\\Resources\\gameBoardStyles.css");
 //        textField.setText("enter your msg here ");
 
         gridPane.setGridLinesVisible(true);
@@ -154,7 +154,7 @@ public  class GameBoard extends AnchorPane {
         gridPane.setPrefHeight(419.0);
         gridPane.setPrefWidth(380.0);
         gridPane.getStyleClass().add("GridPane");
-        gridPane.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+        gridPane.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
         gridPane.setVgap(10.0);
 
         columnConstraints.setHgrow(javafx.scene.layout.Priority.SOMETIMES);
@@ -193,7 +193,7 @@ public  class GameBoard extends AnchorPane {
         button1.setMnemonicParsing(false);
         button1.setPrefHeight(141.0);
         button1.setPrefWidth(158.0);
-        button1.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+        button1.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
 
         GridPane.setRowIndex( button2, 0);
         GridPane.setColumnIndex(button2, 1);
@@ -202,7 +202,7 @@ public  class GameBoard extends AnchorPane {
         button2.setMnemonicParsing(false);
         button2.setPrefHeight(141.0);
         button2.setPrefWidth(138.0);
-        button2.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+        button2.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
 
         GridPane.setRowIndex( button6, 1);
         GridPane.setColumnIndex(button6, 2);
@@ -211,7 +211,7 @@ public  class GameBoard extends AnchorPane {
         button6.setPrefHeight(141.0);
         button6.setPrefWidth(157.0);
         button6.getStyleClass().add("label1");
-       button6.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+       button6.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
 
         GridPane.setColumnIndex( button3, 2);
         GridPane.setRowIndex( button3, 0);
@@ -219,7 +219,7 @@ public  class GameBoard extends AnchorPane {
         button3.setMnemonicParsing(false);
         button3.setPrefHeight(130.0);
         button3.setPrefWidth(172.0);
-        button3.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+        button3.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
 
         GridPane.setColumnIndex(button5, 1);
         GridPane.setRowIndex(button5, 1);
@@ -234,7 +234,7 @@ public  class GameBoard extends AnchorPane {
         button4.setMnemonicParsing(false);
         button4.setPrefHeight(130.0);
         button4.setPrefWidth(190.0);
-        button4.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+        button4.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
 
         GridPane.setRowIndex(button7, 2);
         GridPane.setColumnIndex(button7, 0);
@@ -249,7 +249,7 @@ public  class GameBoard extends AnchorPane {
         button8.setMnemonicParsing(false);
         button8.setPrefHeight(128.0);
         button8.setPrefWidth(254.0);
-        button8.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+        button8.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
 
         GridPane.setColumnIndex(button9, 2);
         GridPane.setRowIndex(button9, 2);
@@ -257,7 +257,7 @@ public  class GameBoard extends AnchorPane {
         button9.setMnemonicParsing(false);
         button9.setPrefHeight(128.0);
         button9.setPrefWidth(193.0);
-        button9.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+        button9.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
 
         start.setId("button");
         start.setLayoutX(280.0);
@@ -265,10 +265,10 @@ public  class GameBoard extends AnchorPane {
         start.setMnemonicParsing(false);
         start.setPrefHeight(48.0);
         start.setPrefWidth(101.0);
-        start.getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+        start.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
         start.setText("start");
-        getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
-        getStylesheets().add("ui_modules/cs/gameBoardStyles.css");
+        getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
+        getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
 
         getChildren().add(user1);
         getChildren().add(scoreUser1);
