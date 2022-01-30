@@ -25,9 +25,15 @@ public class signUpController {
             public void handle(ActionEvent event) {
                 PlayerServices playerServices = new PlayerServices();
                boolean result = playerServices.create(signUpPage.getUsrTxt().getText(),signUpPage.getPassTxt().getText());
-//                if(result){
-//                    // go to login page  >>>> UI
-//                } else{
+                if(result){
+                    logIn root = new logIn(primaryStage);
+                    Scene scene = new Scene(root);
+                    scene.getStylesheets().add("ui_modules/Resources/application.css");
+                    primaryStage.setTitle("log in screen");
+                    primaryStage.setScene(scene);
+                    primaryStage.show();
+                }
+//                else{
 //                    // display message *failed to sign up* >>> UI
 //                }
 

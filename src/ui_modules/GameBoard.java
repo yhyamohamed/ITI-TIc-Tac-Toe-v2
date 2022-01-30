@@ -15,7 +15,7 @@ import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
 import javafx.scene.shape.Line;
 
-public  class GameBoard extends AnchorPane {
+public class GameBoard extends AnchorPane {
 
     protected final Label user1;
     protected final Label scoreUser1;
@@ -108,16 +108,16 @@ public  class GameBoard extends AnchorPane {
         scoreUser2.setPrefWidth(101.0);
         scoreUser2.getStyleClass().add("text");
         scoreUser2.setText("score: 1213");
-
-//        send.setId("button");
-//        send.setLayoutX(600.0);
-//        send.setLayoutY(524.0);
-//        send.setMnemonicParsing(false);
-//        send.setPrefHeight(32.0);
-//        send.setPrefWidth(62.0);
-//        send.getStylesheets().add("..\\Resources\\gameBoardStyles.css");
-//        send.setText("send");
-
+        if (!playAgainstPC) {
+            send.setId("button");
+            send.setLayoutX(600.0);
+            send.setLayoutY(524.0);
+            send.setMnemonicParsing(false);
+            send.setPrefHeight(32.0);
+            send.setPrefWidth(62.0);
+            send.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
+            send.setText("send");
+        }
         record.setId("button");
         record.setLayoutX(97.0);
         record.setLayoutY(524.0);
@@ -133,18 +133,18 @@ public  class GameBoard extends AnchorPane {
         home.setMnemonicParsing(false);
         home.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
         home.setText("home");
-
-//        AnchorPane.setBottomAnchor(textField, 12.0);
-//        AnchorPane.setLeftAnchor(textField, 313.0);
-//        AnchorPane.setRightAnchor(textField, 97.0);
-//        textField.setLayoutX(313.0);
-//        textField.setLayoutY(531.0);
-//        textField.setPrefHeight(25.0);
-//        textField.setPrefWidth(179.0);
-//        textField.getStyleClass().add("text_field");
-//        textField.getStylesheets().add("..\\Resources\\gameBoardStyles.css");
-//        textField.setText("enter your msg here ");
-
+        if (!playAgainstPC) {
+            AnchorPane.setBottomAnchor(textField, 12.0);
+            AnchorPane.setLeftAnchor(textField, 313.0);
+            AnchorPane.setRightAnchor(textField, 97.0);
+            textField.setLayoutX(313.0);
+            textField.setLayoutY(531.0);
+            textField.setPrefHeight(25.0);
+            textField.setPrefWidth(179.0);
+            textField.getStyleClass().add("text_field");
+            textField.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
+            textField.setText("enter your msg here ");
+        }
         gridPane.setGridLinesVisible(true);
         gridPane.setHgap(10.0);
         gridPane.setLayoutX(152.0);
@@ -187,15 +187,15 @@ public  class GameBoard extends AnchorPane {
         rowConstraints1.setPrefHeight(124.0);
         rowConstraints1.setVgrow(javafx.scene.layout.Priority.SOMETIMES);
 
-        GridPane.setColumnIndex( button1, 0);
-        GridPane.setRowIndex( button1, 0);
+        GridPane.setColumnIndex(button1, 0);
+        GridPane.setRowIndex(button1, 0);
         button1.setId("label1");
         button1.setMnemonicParsing(false);
         button1.setPrefHeight(141.0);
         button1.setPrefWidth(158.0);
         button1.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
 
-        GridPane.setRowIndex( button2, 0);
+        GridPane.setRowIndex(button2, 0);
         GridPane.setColumnIndex(button2, 1);
 
         button2.setId("label1");
@@ -204,17 +204,17 @@ public  class GameBoard extends AnchorPane {
         button2.setPrefWidth(138.0);
         button2.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
 
-        GridPane.setRowIndex( button6, 1);
+        GridPane.setRowIndex(button6, 1);
         GridPane.setColumnIndex(button6, 2);
         button6.setId("label1");
         button6.setMnemonicParsing(false);
         button6.setPrefHeight(141.0);
         button6.setPrefWidth(157.0);
         button6.getStyleClass().add("label1");
-       button6.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
+        button6.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
 
-        GridPane.setColumnIndex( button3, 2);
-        GridPane.setRowIndex( button3, 0);
+        GridPane.setColumnIndex(button3, 2);
+        GridPane.setRowIndex(button3, 0);
         button3.setId("label1");
         button3.setMnemonicParsing(false);
         button3.setPrefHeight(130.0);
@@ -274,10 +274,14 @@ public  class GameBoard extends AnchorPane {
         getChildren().add(scoreUser1);
         getChildren().add(user2);
         getChildren().add(scoreUser2);
-//        getChildren().add(send);
+        if (!playAgainstPC) {
+            getChildren().add(send);
+        }
         getChildren().add(record);
         getChildren().add(home);
-        //getChildren().add(textField);
+        if (!playAgainstPC) {
+            getChildren().add(textField);
+        }
         gridPane.getColumnConstraints().add(columnConstraints);
         gridPane.getColumnConstraints().add(columnConstraints0);
         gridPane.getColumnConstraints().add(columnConstraints1);
@@ -305,34 +309,33 @@ public  class GameBoard extends AnchorPane {
         btns.add(button8);
         btns.add(button9);
 
-        new GameBoardController(this,primaryStage,btns,playAgainstPC);
+        new GameBoardController(this, primaryStage, btns, playAgainstPC);
 
     }
 
 
-    public void boardBtnsAction(Button b ,EventHandler<ActionEvent> Action){
-                 b.setOnAction(Action);
+    public void boardBtnsAction(Button b, EventHandler<ActionEvent> Action) {
+        b.setOnAction(Action);
 
     }
 
-    public void restButton(EventHandler<ActionEvent> Action){
+    public void restButton(EventHandler<ActionEvent> Action) {
         start.setOnAction(Action);
     }
- public void homeButton(EventHandler<ActionEvent> Action){
-     home.setOnAction(Action);
- }
- public  void showWinningTiles(Button[] winningTiles)
- {
-    for(Button tile :winningTiles)
-    {
-      tile.setId("winninglabel");
+
+    public void homeButton(EventHandler<ActionEvent> Action) {
+        home.setOnAction(Action);
     }
- }
- public void resetAllTiles()
- {
-     for(Button tile : btns)
-     {
-         tile.setId("label1");
-     }
- }
+
+    public void showWinningTiles(Button[] winningTiles) {
+        for (Button tile : winningTiles) {
+            tile.setId("winninglabel");
+        }
+    }
+
+    public void resetAllTiles() {
+        for (Button tile : btns) {
+            tile.setId("label1");
+        }
+    }
 }
