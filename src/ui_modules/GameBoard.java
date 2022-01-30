@@ -13,6 +13,7 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
+import javafx.scene.shape.Line;
 
 public  class GameBoard extends AnchorPane {
 
@@ -319,5 +320,19 @@ public  class GameBoard extends AnchorPane {
     }
  public void homeButton(EventHandler<ActionEvent> Action){
      home.setOnAction(Action);
+ }
+ public  void showWinningTiles(Button[] winningTiles)
+ {
+    for(Button tile :winningTiles)
+    {
+      tile.setId("winninglabel");
+    }
+ }
+ public void resetAllTiles()
+ {
+     for(Button tile : btns)
+     {
+         tile.setId("label1");
+     }
  }
 }

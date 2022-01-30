@@ -4,6 +4,13 @@
    //-fx-font-size: 200pt;
     -fx-font-weight: bold;
 }
+#winninglabel
+{
+    -fx-text-fill:#dbe2e5;
+       -fx-background-color: #ff4d6d;
+       //-fx-font-size: 200pt;
+        -fx-font-weight: bold;
+}
 
 .GridPane{
     -fx-background-color : #2a2249;

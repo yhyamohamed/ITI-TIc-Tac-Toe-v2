@@ -47,8 +47,10 @@ public class GameBoardController {
                     marks[index] =sign;
                     moves++;
                     if(computerTurn && palyagainstcomputer){
+
                         computerTurn();
                         CheckWinning();
+
                     }else if(!computerTurn && palyagainstcomputer){
                         computerTurn = true;
                     }
@@ -109,6 +111,8 @@ public class GameBoardController {
                     String wins = (marks[tile] == 9) ? "X" : "O";
                     gameEnding(wins);
                     founded = true;
+                    Button [] winningTiles={btns.get(tile),btns.get(tile+1),btns.get(tile+2)};
+                    Gameboard.showWinningTiles(winningTiles);
                 }
             }
         }
@@ -123,6 +127,8 @@ public class GameBoardController {
                         String wins = (marks[tile] == 9) ? "X" : "O";
                         gameEnding(wins);
                         founded = true;
+                        Button [] winningTiles={btns.get(tile),btns.get(tile+3),btns.get(tile+6)};
+                        Gameboard.showWinningTiles(winningTiles);
                 }
             }
         }
@@ -139,6 +145,8 @@ public class GameBoardController {
                     System.out.println("top right");
                     gameEnding(wins);
                     founded=true;
+                    Button [] winningTiles={btns.get(tile),btns.get(tile+4),btns.get(tile+8)};
+                    Gameboard.showWinningTiles(winningTiles);
                 }
             }
         }
@@ -154,6 +162,8 @@ public class GameBoardController {
                     System.out.println("top right");
                     gameEnding(wins);
                     founded=true;
+                    Button [] winningTiles={btns.get(tile),btns.get(tile+2),btns.get(tile+4)};
+                    Gameboard.showWinningTiles(winningTiles);
                 }
             }
         }
@@ -181,9 +191,11 @@ public class GameBoardController {
         moves = 0;
         playerMark = "X";
         marks = new int[marks.length];
+        Gameboard.resetAllTiles();
         btns.forEach(bt->{
             bt.setDisable(false);
             bt.setText("");
+
         });
     };
     }
