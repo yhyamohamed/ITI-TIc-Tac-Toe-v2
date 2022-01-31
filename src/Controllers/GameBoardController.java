@@ -57,18 +57,19 @@ public class GameBoardController {
                     bt.setText(getPlayer());
                     bt.setDisable(true);
 
-                    toggleTurns();
+
                     int sign = (bt.getText().equals("X")) ? 8 : 1;
+                    toggleTurns();
                     marks[index] = sign;
                     moves++;
-
-                    if (computerTurn && palyagainstcomputer) {
+                    CheckWinning();
+                    if (!gameEnded && computerTurn && palyagainstcomputer) {
 
                         computerTurn();
-                        CheckWinning();
 
 
-                    } else if (!computerTurn && palyagainstcomputer) {
+
+                    } else if (!gameEnded && !computerTurn && palyagainstcomputer) {
                         computerTurn = true;
                     }
                     CheckWinning();
@@ -144,7 +145,7 @@ public class GameBoardController {
 //            3   4   5
 //            6   7   8
             for (int tile = 0; tile < marks.length - 2; tile += 3) {
-                if (marks[tile] == 0) continue;
+                if (marks[tile] == 0 || marks[tile+1]==0 || marks[tile+2]==0) continue;
                 if ((marks[tile] == marks[tile + 1]) && (marks[tile] == marks[tile + 2])) {
                     String wins = (marks[tile] == 9) ? "X" : "O";
                     gameEnding(wins);
@@ -154,7 +155,7 @@ public class GameBoardController {
                     ShowWinDialog();
                 }
             }
-            for (int tile = marks.length - 1; tile >= 0; tile -= 3) {
+            /*for (int tile = marks.length - 1; tile >= 0; tile -= 3) {
                 if (marks[tile] == 0) continue;
                 if ((marks[tile] == marks[tile - 1]) && (marks[tile] == marks[tile - 2])) {
                     String wins = (marks[tile] == 9) ? "X" : "O";
@@ -164,7 +165,7 @@ public class GameBoardController {
                     Gameboard.showWinningTiles(winningTiles);
                     ShowWinDialog();
                 }
-            }
+            }*/
         }
         return founded;
     }
@@ -174,7 +175,7 @@ public class GameBoardController {
         boolean founded = false;
         if (!gameEnded) {
             for (int tile = 0; tile < 3; tile++) {
-                if (marks[tile] == 0) break;
+                if (marks[tile] == 0 || marks[tile+3] == 0 || marks[tile+6] == 0) continue;
                 if ((marks[tile] == marks[tile + 3]) && (marks[tile] == marks[tile + 6])) {
                     String wins = (marks[tile] == 9) ? "X" : "O";
                     gameEnding(wins);
