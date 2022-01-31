@@ -13,6 +13,7 @@ import ui_modules.logIn;
 public class loginController {
     private logIn loginPage;
     private HomePageController homePageController;
+    static boolean validUser= false;
 
     public loginController(logIn logInPage, Stage primaryStage) {
         loginPage = logInPage;
@@ -54,7 +55,7 @@ public class loginController {
             public void handle(ActionEvent event) {
                 PlayerServices playerServices = new PlayerServices();
                 if (loginPage.getUserNameTxt() != null && loginPage.getPasswordTxt() != null) {
-                    boolean validUser = playerServices.checkLogin(loginPage.getUserNameTxt(), loginPage.getPasswordTxt());
+                    validUser = playerServices.checkLogin(loginPage.getUserNameTxt(), loginPage.getPasswordTxt());
                     if (validUser) {
                         Home root = new Home(primaryStage);
                         Scene scene = new Scene(root);
@@ -71,9 +72,11 @@ public class loginController {
             }
         };
     }
-
-    public boolean loggedIn() {
-        return true;
-    }
+/*
+* made it static
+* */
+//    public static boolean loggedIn() {
+//        return  validUser; // x > boolean
+//    }
 
 }

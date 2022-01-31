@@ -23,6 +23,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
+import ui_modules.logIn;
 
 public class GameBoardController {
 
@@ -79,12 +80,21 @@ public class GameBoardController {
         return new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                if( loginController.validUser){
                     Home root = new Home(primaryStage) ;
                     Scene scene = new Scene(root);
                     primaryStage.setTitle("home screen");
                     primaryStage.setScene(scene);
                     primaryStage.show();
+                } else {
+                    logIn root = new logIn(primaryStage);
+                    Scene scene = new Scene(root);
+                    scene.getStylesheets().add("ui_modules/Resources/application.css");
+                    primaryStage.setTitle("log in screen");
+                    primaryStage.setScene(scene);
+                    primaryStage.show();
                 }
+            }
 
             };
         }
