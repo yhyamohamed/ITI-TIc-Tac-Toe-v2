@@ -123,23 +123,36 @@ public class GameBoardController {
         return playerMark;
     }
     
-    private boolean winningRowFounded() {
+       private boolean winningRowFounded() {
         boolean founded = false;
         if(!gameEnded) {
-            for (int tile =0 ; tile < 3 ; tile+=3) {
-                if(marks[tile]==0)break;
+//            0   1   2
+//            3   4   5
+//            6   7   8
+            for (int tile =0 ; tile <marks.length-2 ; tile+=3) {
+                if(marks[tile]==0)continue;
                 if((marks[tile] == marks[tile+1] )&&(marks[tile] == marks[tile+2])) {
                     String wins = (marks[tile] == 9) ? "X" : "O";
                     gameEnding(wins);
                     founded = true;
                     Button [] winningTiles={btns.get(tile),btns.get(tile+1),btns.get(tile+2)};
                     Gameboard.showWinningTiles(winningTiles);
-                    ShowWinDialog();
+                }
+            }
+            for (int tile =marks.length-1 ; tile >=0 ; tile-=3) {
+                if(marks[tile]==0)continue;
+                if ((marks[tile] == marks[tile - 1]) && (marks[tile ] == marks[tile-2])) {
+                    String wins = (marks[tile] == 9) ? "X" : "O";
+                    gameEnding(wins);
+                    founded = true;
+                    Button[] winningTiles = {btns.get(tile), btns.get(tile - 1), btns.get(tile - 2)};
+                    Gameboard.showWinningTiles(winningTiles);
                 }
             }
         }
         return founded;
     }
+
     
     private boolean winningColFounded() {
         boolean founded = false;
