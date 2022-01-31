@@ -6,7 +6,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import services.PlayerServices;
 import ui_modules.SignUp;
 import ui_modules.logIn;
 
@@ -23,8 +22,8 @@ public class signUpController {
         return new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                PlayerServices playerServices = new PlayerServices();
-               boolean result = playerServices.create(signUpPage.getUsrTxt().getText(),signUpPage.getPassTxt().getText());
+                Player player = new Player();
+               boolean result = player.create(signUpPage.getUsrTxt().getText(),signUpPage.getPassTxt().getText());
                 if(result){
                     logIn root = new logIn(primaryStage);
                     Scene scene = new Scene(root);
