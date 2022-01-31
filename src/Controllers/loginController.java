@@ -1,11 +1,11 @@
 package Controllers;
 
 
+import Models.Player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import services.PlayerServices;
 import ui_modules.Home;
 import ui_modules.SignUp;
 import ui_modules.logIn;
@@ -53,9 +53,9 @@ public class loginController {
         return new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                PlayerServices playerServices = new PlayerServices();
+                Player player = new Player();
                 if (loginPage.getUserNameTxt() != null && loginPage.getPasswordTxt() != null) {
-                    validUser = playerServices.checkLogin(loginPage.getUserNameTxt(), loginPage.getPasswordTxt());
+                    validUser = player.checkLogin(loginPage.getUserNameTxt(), loginPage.getPasswordTxt());
                     if (validUser) {
                         Home root = new Home(primaryStage);
                         Scene scene = new Scene(root);

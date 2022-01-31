@@ -4,4 +4,4 @@ search for it: xampp
 Add delay time
 
 search online :
-what is jason object ?
+what is json object?
