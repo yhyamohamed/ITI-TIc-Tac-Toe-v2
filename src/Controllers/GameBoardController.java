@@ -12,7 +12,9 @@ import ui_modules.Home;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.OptionalInt;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.IntStream;
+
 import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -30,11 +32,11 @@ public class GameBoardController {
     private final GameBoard Gameboard;
     private final Stage primaryStage;
     private final ArrayList<Button> btns;
-    private  boolean computerTurn = true;
-    private boolean palyagainstcomputer ;
-    private int [] marks = {0,0,0,0,0,0,0,0,0};
+    private boolean computerTurn = true;
+    private boolean palyagainstcomputer;
+    private int[] marks = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     private String playerMark = "X";
-    private boolean gameEnded ;
+    private boolean gameEnded;
     private int moves;
 
     public GameBoardController(GameBoard gameBoard, Stage primaryStage, ArrayList<Button> btns, boolean playAgainstPC) {
@@ -42,29 +44,31 @@ public class GameBoardController {
         this.primaryStage = primaryStage;
         this.btns = btns;
         palyagainstcomputer = playAgainstPC;
-        
+
         //array for each button
-        for(Button bt : btns){
-            bt.setOnAction(event->{
+        for (Button bt : btns) {
+            bt.setOnAction(event -> {
 //                System.out.println(bt);
 //                System.out.println(btns.indexOf(bt));
                 int index = btns.indexOf(bt);
                 bt.setFont(new Font("System Bold Italic", 200));
                 bt.setStyle("-fx-font-size:40");
-                if(!bt.isDisable()&&!gameEnded){
+                if (!bt.isDisable() && !gameEnded) {
                     bt.setText(getPlayer());
                     bt.setDisable(true);
 
                     toggleTurns();
-                    int sign = (bt.getText().equals("X"))?8:1;
-                    marks[index] =sign;
+                    int sign = (bt.getText().equals("X")) ? 8 : 1;
+                    marks[index] = sign;
                     moves++;
-                    if(computerTurn && palyagainstcomputer){
+
+                    if (computerTurn && palyagainstcomputer) {
 
                         computerTurn();
                         CheckWinning();
 
-                    }else if(!computerTurn && palyagainstcomputer){
+
+                    } else if (!computerTurn && palyagainstcomputer) {
                         computerTurn = true;
                     }
                     CheckWinning();
@@ -74,14 +78,14 @@ public class GameBoardController {
         Gameboard.restButton(resetGame());
         Gameboard.homeButton(HomeScreen(primaryStage));
     }
-    
+
     //home screen 
     private EventHandler<ActionEvent> HomeScreen(Stage primaryStage) {
         return new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                if( loginController.validUser){
-                    Home root = new Home(primaryStage) ;
+                if (loginController.validUser) {
+                    Home root = new Home(primaryStage);
                     Scene scene = new Scene(root);
                     primaryStage.setTitle("home screen");
                     primaryStage.setScene(scene);
@@ -96,132 +100,135 @@ public class GameBoardController {
                 }
             }
 
-            };
-        }
-    
+        };
+    }
 
 
     //how computer work
     private void computerTurn() {
+
         computerTurn = false;
-       int targetIndex = (int) (Math.random()*8);
-       while(marks[targetIndex] !=0){
-           targetIndex = (int) (Math.random()*8);
-       }
-       Button targetBtn = btns.get(targetIndex);
+        int targetIndex = (int) (Math.random() * 8);
+        while (marks[targetIndex] != 0) {
+            targetIndex = (int) (Math.random() * 8);
+        }
+        Button targetBtn = btns.get(targetIndex);
         targetBtn.fire();
     }
 
-    // check for Tie 
+    // check for Tie
     private void CheckWinning() {
-        if(!(winningRowFounded() || winningColFounded())){
-            if(!(checkTopRight() || checkTopLeft())){
+        if (!(winningRowFounded() || winningColFounded())) {
+            if (!(checkTopRight() || checkTopLeft())) {
                 checkFoeTie();
             }
         }
     }
 
-    
+
     //
-    public void toggleTurns(){
-        playerMark =(playerMark.equals("X"))?"O":"X";
+    public void toggleTurns() {
+        playerMark = (playerMark.equals("X")) ? "O" : "X";
 //        infoScreen.changeMsg("player "+player);
     }
 
-    
-    public String getPlayer(){
+
+    public String getPlayer() {
         return playerMark;
     }
-    
-       private boolean winningRowFounded() {
+
+    private boolean winningRowFounded() {
         boolean founded = false;
-        if(!gameEnded) {
+        if (!gameEnded) {
 //            0   1   2
 //            3   4   5
 //            6   7   8
-            for (int tile =0 ; tile <marks.length-2 ; tile+=3) {
-                if(marks[tile]==0)continue;
-                if((marks[tile] == marks[tile+1] )&&(marks[tile] == marks[tile+2])) {
+            for (int tile = 0; tile < marks.length - 2; tile += 3) {
+                if (marks[tile] == 0) continue;
+                if ((marks[tile] == marks[tile + 1]) && (marks[tile] == marks[tile + 2])) {
                     String wins = (marks[tile] == 9) ? "X" : "O";
                     gameEnding(wins);
                     founded = true;
-                    Button [] winningTiles={btns.get(tile),btns.get(tile+1),btns.get(tile+2)};
+                    Button[] winningTiles = {btns.get(tile), btns.get(tile + 1), btns.get(tile + 2)};
                     Gameboard.showWinningTiles(winningTiles);
+                    ShowWinDialog();
                 }
             }
-            for (int tile =marks.length-1 ; tile >=0 ; tile-=3) {
-                if(marks[tile]==0)continue;
-                if ((marks[tile] == marks[tile - 1]) && (marks[tile ] == marks[tile-2])) {
+            for (int tile = marks.length - 1; tile >= 0; tile -= 3) {
+                if (marks[tile] == 0) continue;
+                if ((marks[tile] == marks[tile - 1]) && (marks[tile] == marks[tile - 2])) {
                     String wins = (marks[tile] == 9) ? "X" : "O";
                     gameEnding(wins);
                     founded = true;
                     Button[] winningTiles = {btns.get(tile), btns.get(tile - 1), btns.get(tile - 2)};
                     Gameboard.showWinningTiles(winningTiles);
+                    ShowWinDialog();
                 }
             }
         }
         return founded;
     }
 
-    
+
     private boolean winningColFounded() {
         boolean founded = false;
-            if(!gameEnded) {
-                for (int tile =0 ; tile <3 ; tile++) {
-                    if(marks[tile]==0)break;
-                    if((marks[tile] == marks[tile+3] )&&(marks[tile] == marks[tile+6])) {
-                        String wins = (marks[tile] == 9) ? "X" : "O";
-                        gameEnding(wins);
-                        founded = true;
-                        Button [] winningTiles={btns.get(tile),btns.get(tile+3),btns.get(tile+6)};
-                        Gameboard.showWinningTiles(winningTiles);
-                        ShowWinDialog();
-                        
+        if (!gameEnded) {
+            for (int tile = 0; tile < 3; tile++) {
+                if (marks[tile] == 0) break;
+                if ((marks[tile] == marks[tile + 3]) && (marks[tile] == marks[tile + 6])) {
+                    String wins = (marks[tile] == 9) ? "X" : "O";
+                    gameEnding(wins);
+                    founded = true;
+                    Button[] winningTiles = {btns.get(tile), btns.get(tile + 3), btns.get(tile + 6)};
+                    Gameboard.showWinningTiles(winningTiles);
+                    ShowWinDialog();
                 }
             }
         }
-            return founded;
+        return founded;
     }
 
     private boolean checkTopRight() {
         boolean founded = false;
-        if(!gameEnded) {
-           int tile =0 ;
-                if(marks[tile]!=0){
-                if((marks[tile] == marks[tile+4] )&&(marks[tile] == marks[tile+8])) {
+        if (!gameEnded) {
+            int tile = 0;
+            if (marks[tile] != 0) {
+                if ((marks[tile] == marks[tile + 4]) && (marks[tile] == marks[tile + 8])) {
                     String wins = (marks[tile] == 9) ? "X" : "O";
                     System.out.println("top right");
                     gameEnding(wins);
-                    founded=true;
-                    Button [] winningTiles={btns.get(tile),btns.get(tile+4),btns.get(tile+8)};
+                    founded = true;
+                    Button[] winningTiles = {btns.get(tile), btns.get(tile + 4), btns.get(tile + 8)};
                     Gameboard.showWinningTiles(winningTiles);
                     ShowWinDialog();
                 }
             }
         }
-        return  founded;
+        return founded;
     }
+
     private boolean checkTopLeft() {
         boolean founded = false;
-        if(!gameEnded) {
-            int tile =2 ;
-            if(marks[tile]!=0){
-                if((marks[tile] == marks[tile+2] )&&(marks[tile] == marks[tile+4])) {
+        if (!gameEnded) {
+            int tile = 2;
+            if (marks[tile] != 0) {
+                if ((marks[tile] == marks[tile + 2]) && (marks[tile] == marks[tile + 4])) {
                     String wins = (marks[tile] == 9) ? "X" : "O";
                     System.out.println("top right");
                     gameEnding(wins);
-                    founded=true;
-                    Button [] winningTiles={btns.get(tile),btns.get(tile+2),btns.get(tile+4)};
+                    founded = true;
+                    Button[] winningTiles = {btns.get(tile), btns.get(tile + 2), btns.get(tile + 4)};
                     Gameboard.showWinningTiles(winningTiles);
                     ShowWinDialog();
                 }
             }
         }
-        return  founded;
+        return founded;
     }
+
     private void checkFoeTie() {
-        if (!gameEnded && moves==8) {
-            gameEnded= true;
+        if (!gameEnded && moves == 9) {
+            gameEnded = true;
             System.out.println("tieee");
 //            infoScreen.changeMsg("no one won its a tie!");
 //            infoScreen.showBtn();
@@ -230,35 +237,35 @@ public class GameBoardController {
 
     private void gameEnding(String wins) {
         gameEnded = true;
-        btns.forEach(bt->bt.setDisable(true));
+        btns.forEach(bt -> bt.setDisable(true));
 //        infoScreen.changeMsg(wins+" has won ");
 //        infoScreen.showBtn();
     }
 
-    public EventHandler<ActionEvent> resetGame(){
-    return event -> {
-        gameEnded=false;
-        moves = 0;
-        playerMark = "X";
-        marks = new int[marks.length];
-        Gameboard.resetAllTiles();
-        btns.forEach(bt->{
-            bt.setDisable(false);
-            bt.setText("");
+    public EventHandler<ActionEvent> resetGame() {
+        return event -> {
+            gameEnded = false;
+            moves = 0;
+            playerMark = "X";
+            marks = new int[marks.length];
+            Gameboard.resetAllTiles();
+            btns.forEach(bt -> {
+                bt.setDisable(false);
+                bt.setText("");
 
-        });
-    };
+            });
+        };
     }
 
-    public void ShowWinDialog(){
-        MediaPlayer player = new MediaPlayer( new Media(getClass().getResource("/Controllers/../ui_modules/Resources/winner.mp4").toExternalForm()));
+    public void ShowWinDialog() {
+        MediaPlayer player = new MediaPlayer(new Media(getClass().getResource("/Controllers/../ui_modules/Resources/winner.mp4").toExternalForm()));
         MediaView mediaView = new MediaView(player);
-        
+
         Alert alert = new Alert(AlertType.INFORMATION, "Content here", ButtonType.OK);
         alert.getDialogPane().setMinHeight(230);
         alert.getDialogPane().setMinWidth(210);
         alert.setTitle("You win!!");
-                
+
         VBox content = new VBox(mediaView);
         content.setAlignment(Pos.CENTER);
         alert.getDialogPane().setContent(content);
@@ -267,15 +274,15 @@ public class GameBoardController {
         alert.show();
     }
 
-     public void ShowLoseDialog(){
-        MediaPlayer player = new MediaPlayer( new Media(getClass().getResource("/Controllers/../ui_modules/Resources/losser.mp4").toExternalForm()));
+    public void ShowLoseDialog() {
+        MediaPlayer player = new MediaPlayer(new Media(getClass().getResource("/Controllers/../ui_modules/Resources/losser.mp4").toExternalForm()));
         MediaView mediaView = new MediaView(player);
-        
+
         Alert alert = new Alert(AlertType.INFORMATION, "Content here", ButtonType.OK);
         alert.getDialogPane().setMinHeight(210);
         alert.getDialogPane().setMinWidth(210);
         alert.setTitle("You lose!!");
-                
+
         VBox content = new VBox(mediaView);
         content.setAlignment(Pos.CENTER);
         alert.getDialogPane().setContent(content);
@@ -303,8 +310,6 @@ public class GameBoardController {
         alert.setOnShowing(e -> player.play());
         alert.show();
     }*/
-     
-     
-     
+
 
 }

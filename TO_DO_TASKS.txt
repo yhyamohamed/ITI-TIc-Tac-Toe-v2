@@ -1,8 +1,4 @@
-make winning line                                        // done
-delete chat from game board                              // done
-integrate database queries(prepared statements)          // done
-resize problem                                           // done
-winner screen                                            //done
-change start button place to button of game board        //done
-cancel btn functionality in signup page                  //done
-play offline==> (if home btn clicked ==> go to log in page if not logged in not to home directlly)
+bug in sign up screen >> space need to be handled , text field
+winning logic >> recheck it
+search for it: xampp
+Add delay time

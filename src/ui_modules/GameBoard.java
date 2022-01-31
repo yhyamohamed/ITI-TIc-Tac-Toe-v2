@@ -108,16 +108,16 @@ public class GameBoard extends AnchorPane {
         scoreUser2.setPrefWidth(101.0);
         scoreUser2.getStyleClass().add("text");
         scoreUser2.setText("score: 1213");
-        if (!playAgainstPC) {
-            send.setId("button");
-            send.setLayoutX(600.0);
-            send.setLayoutY(524.0);
-            send.setMnemonicParsing(false);
-            send.setPrefHeight(32.0);
-            send.setPrefWidth(62.0);
-            send.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
-            send.setText("send");
-        }
+//        if (!playAgainstPC) {
+//            send.setId("button");
+//            send.setLayoutX(600.0);
+//            send.setLayoutY(524.0);
+//            send.setMnemonicParsing(false);
+//            send.setPrefHeight(32.0);
+//            send.setPrefWidth(62.0);
+//            send.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
+//            send.setText("send");
+//        }
         record.setId("button");
         record.setLayoutX(580.0);
         record.setLayoutY(524.0);
@@ -133,18 +133,18 @@ public class GameBoard extends AnchorPane {
         home.setMnemonicParsing(false);
         home.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
         home.setText("home");
-        if (!playAgainstPC) {
-            AnchorPane.setBottomAnchor(textField, 12.0);
-            AnchorPane.setLeftAnchor(textField, 313.0);
-            AnchorPane.setRightAnchor(textField, 97.0);
-            textField.setLayoutX(313.0);
-            textField.setLayoutY(531.0);
-            textField.setPrefHeight(25.0);
-            textField.setPrefWidth(179.0);
-            textField.getStyleClass().add("text_field");
-            textField.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
-            textField.setText("enter your msg here ");
-        }
+//        if (!playAgainstPC) {
+//            AnchorPane.setBottomAnchor(textField, 12.0);
+//            AnchorPane.setLeftAnchor(textField, 313.0);
+//            AnchorPane.setRightAnchor(textField, 97.0);
+//            textField.setLayoutX(313.0);
+//            textField.setLayoutY(531.0);
+//            textField.setPrefHeight(25.0);
+//            textField.setPrefWidth(179.0);
+//            textField.getStyleClass().add("text_field");
+//            textField.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
+//            textField.setText("enter your msg here ");
+//        }
         gridPane.setGridLinesVisible(true);
         gridPane.setHgap(10.0);
         gridPane.setLayoutX(152.0);
@@ -282,14 +282,14 @@ public class GameBoard extends AnchorPane {
         getChildren().add(scoreUser1);
         getChildren().add(user2);
         getChildren().add(scoreUser2);
-        if (!playAgainstPC) {
-            getChildren().add(send);
-        }
+//        if (!playAgainstPC) {
+//            getChildren().add(send);
+//        }
         getChildren().add(record);
         getChildren().add(home);
-        if (!playAgainstPC) {
-            getChildren().add(textField);
-        }
+//        if (!playAgainstPC) {
+//            getChildren().add(textField);
+//        }
         gridPane.getColumnConstraints().add(columnConstraints);
         gridPane.getColumnConstraints().add(columnConstraints0);
         gridPane.getColumnConstraints().add(columnConstraints1);
