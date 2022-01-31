@@ -23,6 +23,7 @@ public class signUpController {
             @Override
             public void handle(ActionEvent event) {
                 Player player = new Player();
+                if (signUpPage.getUsrTxt().getText() != null && signUpPage.getPassTxt().getText() != null && (signUpPage.getUsrTxt().getText().trim().length() > 0)){
                boolean result = player.create(signUpPage.getUsrTxt().getText(),signUpPage.getPassTxt().getText());
                 if(result){
                     logIn root = new logIn(primaryStage);
@@ -31,6 +32,7 @@ public class signUpController {
                     primaryStage.setTitle("log in screen");
                     primaryStage.setScene(scene);
                     primaryStage.show();
+                }
                 }
 //                else{
 //                    // display message *failed to sign up* >>> UI
