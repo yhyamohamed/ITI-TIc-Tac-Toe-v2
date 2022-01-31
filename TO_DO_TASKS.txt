@@ -1,7 +1,3 @@
-bug in sign up screen >> space need to be handled , text field
-winning logic >> recheck it
-search for it: xampp
-Add delay time
-
 search online :
 what is json object?
+search for it: xampp
