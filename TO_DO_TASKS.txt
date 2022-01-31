@@ -2,7 +2,5 @@ make winning line                                        // done
 delete chat from game board                              // done
 integrate database queries(prepared statements)          // done
 resize problem                                           // done
-winner screen                                            loading ....
-change start button place to button of game board        loading ....
-cancel btn functionality in signup page                  //done
-play offline==> (if home btn clicked ==> go to log in page if not logged in not to home directlly)
+winner screen                                           .// done
+change start button place to button of game board        .// done

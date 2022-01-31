@@ -13,6 +13,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.OptionalInt;
 import java.util.stream.IntStream;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 
 public class GameBoardController {
 
@@ -31,6 +41,8 @@ public class GameBoardController {
         this.primaryStage = primaryStage;
         this.btns = btns;
         palyagainstcomputer = playAgainstPC;
+        
+        //array for each button
         for(Button bt : btns){
             bt.setOnAction(event->{
 //                System.out.println(bt);
@@ -46,13 +58,13 @@ public class GameBoardController {
                     int sign = (bt.getText().equals("X"))?8:1;
                     marks[index] =sign;
                     moves++;
-                    CheckWinning();
-                    if(!gameEnded){
-                        if(computerTurn && palyagainstcomputer){
-                            computerTurn();
-                        }else if(!computerTurn && palyagainstcomputer){
-                            computerTurn = true;
-                        }
+                    if(computerTurn && palyagainstcomputer){
+
+                        computerTurn();
+                        CheckWinning();
+
+                    }else if(!computerTurn && palyagainstcomputer){
+                        computerTurn = true;
                     }
                     CheckWinning();
                 }
@@ -61,6 +73,8 @@ public class GameBoardController {
         Gameboard.restButton(resetGame());
         Gameboard.homeButton(HomeScreen(primaryStage));
     }
+    
+    //home screen 
     private EventHandler<ActionEvent> HomeScreen(Stage primaryStage) {
         return new EventHandler<ActionEvent>() {
             @Override
@@ -74,8 +88,10 @@ public class GameBoardController {
 
             };
         }
+    
 
 
+    //how computer work
     private void computerTurn() {
         computerTurn = false;
        int targetIndex = (int) (Math.random()*8);
@@ -86,6 +102,7 @@ public class GameBoardController {
         targetBtn.fire();
     }
 
+    // check for Tie 
     private void CheckWinning() {
         if(!(winningRowFounded() || winningColFounded())){
             if(!(checkTopRight() || checkTopLeft())){
@@ -94,14 +111,18 @@ public class GameBoardController {
         }
     }
 
+    
+    //
     public void toggleTurns(){
         playerMark =(playerMark.equals("X"))?"O":"X";
 //        infoScreen.changeMsg("player "+player);
     }
 
+    
     public String getPlayer(){
         return playerMark;
     }
+    
     private boolean winningRowFounded() {
         boolean founded = false;
         if(!gameEnded) {
@@ -113,11 +134,13 @@ public class GameBoardController {
                     founded = true;
                     Button [] winningTiles={btns.get(tile),btns.get(tile+1),btns.get(tile+2)};
                     Gameboard.showWinningTiles(winningTiles);
+                    ShowWinDialog();
                 }
             }
         }
         return founded;
     }
+    
     private boolean winningColFounded() {
         boolean founded = false;
             if(!gameEnded) {
@@ -129,6 +152,8 @@ public class GameBoardController {
                         founded = true;
                         Button [] winningTiles={btns.get(tile),btns.get(tile+3),btns.get(tile+6)};
                         Gameboard.showWinningTiles(winningTiles);
+                        ShowWinDialog();
+                        
                 }
             }
         }
@@ -147,6 +172,7 @@ public class GameBoardController {
                     founded=true;
                     Button [] winningTiles={btns.get(tile),btns.get(tile+4),btns.get(tile+8)};
                     Gameboard.showWinningTiles(winningTiles);
+                    ShowWinDialog();
                 }
             }
         }
@@ -164,6 +190,7 @@ public class GameBoardController {
                     founded=true;
                     Button [] winningTiles={btns.get(tile),btns.get(tile+2),btns.get(tile+4)};
                     Gameboard.showWinningTiles(winningTiles);
+                    ShowWinDialog();
                 }
             }
         }
@@ -200,6 +227,61 @@ public class GameBoardController {
     };
     }
 
+    public void ShowWinDialog(){
+        MediaPlayer player = new MediaPlayer( new Media(getClass().getResource("/Controllers/../ui_modules/Resources/winner.mp4").toExternalForm()));
+        MediaView mediaView = new MediaView(player);
+        
+        Alert alert = new Alert(AlertType.INFORMATION, "Content here", ButtonType.OK);
+        alert.getDialogPane().setMinHeight(230);
+        alert.getDialogPane().setMinWidth(210);
+        alert.setTitle("You win!!");
+                
+        VBox content = new VBox(mediaView);
+        content.setAlignment(Pos.CENTER);
+        alert.getDialogPane().setContent(content);
 
+        alert.setOnShowing(e -> player.play());
+        alert.show();
+    }
+
+     public void ShowLoseDialog(){
+        MediaPlayer player = new MediaPlayer( new Media(getClass().getResource("/Controllers/../ui_modules/Resources/losser.mp4").toExternalForm()));
+        MediaView mediaView = new MediaView(player);
+        
+        Alert alert = new Alert(AlertType.INFORMATION, "Content here", ButtonType.OK);
+        alert.getDialogPane().setMinHeight(210);
+        alert.getDialogPane().setMinWidth(210);
+        alert.setTitle("You lose!!");
+                
+        VBox content = new VBox(mediaView);
+        content.setAlignment(Pos.CENTER);
+        alert.getDialogPane().setContent(content);
+
+        alert.setOnShowing(e -> player.play());
+        alert.show();
+    }
+     /*  
+     mfe4 GIF monasb no7to lsa bndwr 
+     
+     
+     public void ShowTieDialog(){
+        MediaPlayer player = new MediaPlayer( new Media(getClass().getResource("/Controllers/../ui_modules/Resources/------").toExternalForm()));
+        MediaView mediaView = new MediaView(player);
+        
+        Alert alert = new Alert(AlertType.INFORMATION, "Content here", ButtonType.OK);
+        alert.getDialogPane().setMinHeight(210);
+        alert.getDialogPane().setMinWidth(210);
+        alert.setTitle("You lose!!");
+                
+        VBox content = new VBox(mediaView);
+        content.setAlignment(Pos.CENTER);
+        alert.getDialogPane().setContent(content);
+
+        alert.setOnShowing(e -> player.play());
+        alert.show();
+    }*/
+     
+     
+     
 
 }
