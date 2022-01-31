@@ -22,8 +22,8 @@
 }
 #button{
     -fx-background-color:#bb6579;
-    -fx-background-radius:30;
-    -fx-font-size:10;
+    -fx-background-radius:50;
+    -fx-font-size:17;
     -fx-font-weight:bold;
     -fx-text-fill:#dbe2e5;
 }

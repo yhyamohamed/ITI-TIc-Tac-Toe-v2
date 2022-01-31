@@ -119,14 +119,14 @@ public class GameBoard extends AnchorPane {
             send.setText("send");
         }
         record.setId("button");
-        record.setLayoutX(580.0);
+        record.setLayoutX(97.0);
         record.setLayoutY(524.0);
         record.setMnemonicParsing(false);
-        record.setPrefHeight(20.0);
-        record.setPrefWidth(90.0);
+        record.setPrefHeight(38.0);
+        record.setPrefWidth(86.0);
         record.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
         record.setText("record");
- 
+
         home.setId("button");
         home.setLayoutX(14.0);
         home.setLayoutY(524.0);
@@ -259,24 +259,16 @@ public class GameBoard extends AnchorPane {
         button9.setPrefWidth(193.0);
         button9.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
 
-        
-        
-        
-        
-        
-        
         start.setId("button");
-        start.setLayoutX(265.0);
-        start.setLayoutY(524.0);
+        start.setLayoutX(280.0);
+        start.setLayoutY(21.0);
         start.setMnemonicParsing(false);
-        start.setPrefHeight(34.0);
-        start.setPrefWidth(155.0);
+        start.setPrefHeight(48.0);
+        start.setPrefWidth(101.0);
         start.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
-        start.setText("Start New Game");
+        start.setText("start");
         getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
         getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
-        
-       
 
         getChildren().add(user1);
         getChildren().add(scoreUser1);
