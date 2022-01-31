@@ -46,13 +46,13 @@ public class GameBoardController {
                     int sign = (bt.getText().equals("X"))?8:1;
                     marks[index] =sign;
                     moves++;
-                    if(computerTurn && palyagainstcomputer){
-
-                        computerTurn();
-                        CheckWinning();
-
-                    }else if(!computerTurn && palyagainstcomputer){
-                        computerTurn = true;
+                    CheckWinning();
+                    if(!gameEnded){
+                        if(computerTurn && palyagainstcomputer){
+                            computerTurn();
+                        }else if(!computerTurn && palyagainstcomputer){
+                            computerTurn = true;
+                        }
                     }
                     CheckWinning();
                 }
