@@ -246,6 +246,7 @@ public class GameBoardController {
     public EventHandler<ActionEvent> resetGame() {
         return event -> {
             gameEnded = false;
+            computerTurn=true;
             moves = 0;
             playerMark = "X";
             marks = new int[marks.length];
