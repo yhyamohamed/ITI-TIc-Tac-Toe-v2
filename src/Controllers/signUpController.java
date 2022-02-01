@@ -23,7 +23,7 @@ public class signUpController {
             @Override
             public void handle(ActionEvent event) {
                 Player player = new Player();
-                if (signUpPage.getUsrTxt().getText() != null && signUpPage.getPassTxt().getText() != null && (signUpPage.getUsrTxt().getText().trim().length() > 0)){
+                if (signUpPage.getUsrTxt().getText() != null && signUpPage.getPassTxt().getText() != null && (signUpPage.getUsrTxt().getText().trim().length() > 0) && (signUpPage.getPassConfirmTxt().getText().equals(signUpPage.getPassTxt().getText()))){
                boolean result = player.create(signUpPage.getUsrTxt().getText(),signUpPage.getPassTxt().getText());
                 if(result){
                     logIn root = new logIn(primaryStage);
