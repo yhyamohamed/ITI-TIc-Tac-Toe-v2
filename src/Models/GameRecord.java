@@ -53,8 +53,9 @@ public class GameRecord {
 
     //Should keep track of step number in controller, because we removed auto increment in step number in database
 
-    public void create(int gameID, int playerXID, int playerOID, int stepNumber, int[] step) {
+    public GameRecord create(int gameID, int playerXID, int playerOID, int stepNumber, int[] step) {
         ConnectDB connectDB = new ConnectDB();
+        GameRecord gameRecord = new GameRecord();
 
         String sql = "insert into play values (?, ?, ?, ?, ?)";
 
@@ -67,10 +68,18 @@ public class GameRecord {
             st.setInt(4, playerXID);
             st.setInt(5, playerOID);
             st.executeUpdate();
+            gameRecord.setGameID(gameID);
+            gameRecord.setPlayerXID(playerXID);
+            gameRecord.setPlayerOID(playerOID);
+            gameRecord.setStepNumber(stepNumber);
+            gameRecord.setStep(step);
 
         } catch (SQLException e) {
             e.printStackTrace();
+            gameRecord = null;
         }
+
+        return gameRecord;
     }
 
     public void save() {

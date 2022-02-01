@@ -105,24 +105,25 @@ public class Player {
         return false;
     }
 
-    public boolean checkLogin(String username, String password) {
-        boolean isLogin = false;
-        ConnectDB connectDB = new ConnectDB();
-
-        String sql = "select username, hashed_password from player where username=? and hashed_password=?";
-
-        try (Connection con = connectDB.getConnection(); PreparedStatement st = con.prepareStatement(sql);) {
-
-            st.setString(1, username);
-            st.setString(2, password);
-            ResultSet x = st.executeQuery();
-            if(x.next()){isLogin = true;}
-
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+    public Player login(String username, String password) {
+        Player player = new Player();
+        player = player.findByUsername(username);
+        if(player != null) {
+            if(password.equals(player.getHashedPassword())) {
+                player.setOnline(true);
+                player.save(player);
+            } else {
+                player = null;
+            }
         }
-        return isLogin;
+        return player;
+    }
+
+    public void logout(String username) {
+        Player player = new Player();
+        player = player.findByUsername(username);
+        player.setOnline(false);
+        player.save(player);
     }
 
     public void save(Player player) {
