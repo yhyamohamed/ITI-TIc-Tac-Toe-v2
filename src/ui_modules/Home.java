@@ -68,7 +68,7 @@ public  class Home extends AnchorPane {
         onlinebtn.setPrefHeight(44.0);
         onlinebtn.setPrefWidth(187.0);
         onlinebtn.getStylesheets().add("ui_modules/Resources/application.css");
-        onlinebtn.setText("Play online");
+        onlinebtn.setText("Local game");
         onlinebtn.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
         username.setLayoutX(126.0);
@@ -107,7 +107,7 @@ public  class Home extends AnchorPane {
         new HomePageController(this, primaryStage);
 
     }
-    public void playOnline(EventHandler< ActionEvent > Action){
+    public void playLocally(EventHandler< ActionEvent > Action){
         onlinebtn.setOnAction(Action);
         
         }
@@ -117,4 +117,6 @@ public  class Home extends AnchorPane {
      public void pcbtnBtnAction(EventHandler< ActionEvent > Action){
         pcbtn.setOnAction(Action);
     }
+
+   
 }
