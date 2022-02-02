@@ -2,14 +2,12 @@ package Controllers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import ui_modules.GameBoard;
+import javafx.scene.control.Button;
 
-import java.awt.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import java.net.SocketException;
 import java.util.ArrayList;
 
 public class ServerConnector {
@@ -87,9 +85,9 @@ static
 
         return validuser;
     }
-public static void assignGameBoardButtons()
+public static void assignGameBoardButtons(ArrayList<Button> btns)
 {
-    buttons= GameBoard.gameBoardController.getBtns();
+  buttons= btns;
 }
 public static void play(int position,int sign)
 {
@@ -124,6 +122,7 @@ static public void getopponentId()
 {
     JsonObject requestObject=new JsonObject();
     requestObject.addProperty("type","getOpponentId");
+    System.out.println("getOpidclient");
     requestObject.addProperty("playerid",PlayerInfo.id);
     try {
         dataOutputStream.writeUTF(requestObject.toString());
@@ -132,6 +131,7 @@ static public void getopponentId()
     }
     try {
         String resMsg= dataInputStream.readUTF();
+        System.out.println(resMsg);
         JsonObject responseOpject=new JsonObject();
         responseOpject=JsonParser.parseString(resMsg).getAsJsonObject();
         PlayerInfo.opponentId=responseOpject.get("opponentid").getAsString();

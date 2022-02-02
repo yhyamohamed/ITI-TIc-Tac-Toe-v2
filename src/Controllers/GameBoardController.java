@@ -50,7 +50,7 @@ public class GameBoardController {
         palyagainstcomputer = playAgainstPC;
 
         if(!playAgainstPC) {
-            ServerConnector.assignGameBoardButtons();
+            ServerConnector.assignGameBoardButtons(btns);
             ServerConnector.getopponentId();
         }
         //array for each button
