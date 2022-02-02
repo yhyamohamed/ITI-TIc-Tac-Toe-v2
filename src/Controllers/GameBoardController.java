@@ -36,6 +36,7 @@ public class GameBoardController {
 
     private final ArrayList<Button> btns;
     private boolean computerTurn = true;
+    private boolean opponentsTurn ;
     private boolean palyagainstcomputer;
     private int[] marks = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     private String playerMark = "X";
@@ -66,12 +67,13 @@ public class GameBoardController {
                     marks[index] = sign;
                     moves++;
                     CheckWinning();
+                    if(!palyagainstcomputer && opponentsTurn){
+//                       ServerConnector.play(index,sign);
+//                       opponentsTurn=false;
+//                       ServerConnector.opponentsMove()
+                    }
                     if (!gameEnded && computerTurn && palyagainstcomputer) {
-
                         computerTurn();
-
-
-
                     } else if (!gameEnded && !computerTurn && palyagainstcomputer) {
                         computerTurn = true;
                     }
