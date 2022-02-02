@@ -29,9 +29,13 @@
 }
 #avatar{
     -fx-background-image: url("avatar.png");
-    -fx-background-size: 110 110;
-    
-    
-    
-    
+    -fx-background-size: 110 110;   
+}
+#playonlineanchor{
+    -fx-background-image:url("background.jpg");
+    -fx-background-size: 670 520;
+}
+#invitationanch{
+    -fx-background-image:url("background.jpg");
+    -fx-background-size: 670 520;
 }

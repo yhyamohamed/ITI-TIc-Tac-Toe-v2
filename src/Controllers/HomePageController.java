@@ -7,6 +7,7 @@ import javafx.stage.Stage;
 import ui_modules.GameBoard;
 import ui_modules.Home;
 import ui_modules.SignUp;
+import ui_modules.playonlinescreen;
 
 public class HomePageController {
     private  Home homeScreen;
@@ -15,13 +16,16 @@ public class HomePageController {
     public HomePageController(Home home, Stage primaryStage) {
         homeScreen = home;
         homeScreen.pcbtnBtnAction(playAgainstPc(primaryStage));
-        homeScreen.playOnline(playWithFriend(primaryStage));
+        homeScreen.playLocally(playLocal(primaryStage));
+        homeScreen.InviteAfriendToPlay(playWithfriend(primaryStage));
+        
+        
     }
     public HomePageController(Stage primaryStage) {
 
     }
 
-    private EventHandler<ActionEvent> playWithFriend(Stage primaryStage) {
+    private EventHandler<ActionEvent> playLocal(Stage primaryStage) {
         return new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -48,4 +52,21 @@ public class HomePageController {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-}
+
+    private EventHandler<ActionEvent> playWithfriend(Stage primaryStage) {
+        return new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                playonlinescreen root=new  playonlinescreen(primaryStage);
+                Scene scene = new Scene(root);
+                primaryStage.setTitle("Register screen");
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            }
+        };
+    }
+
+    }
+
+    
+

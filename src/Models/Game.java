@@ -42,6 +42,33 @@ public class Game {
         return game;
     }
 
+    public Game findByID(int id) {
+
+        ConnectDB connectDB = new ConnectDB();
+
+        String sql = "select * from game where game_id = ?";
+
+        Game game = null;
+
+        try (Connection con = connectDB.getConnection(); PreparedStatement st = con.prepareStatement(sql)) {
+
+            st.setInt(1, id);
+            ResultSet rs = st.executeQuery();
+
+            game = new Game();
+
+            while (rs.next()) {
+                game.setId(rs.getInt(1));
+                game.setWinner(rs.getString(2));
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return game;
+    }
+
     public int getLatestGameID() {
         ConnectDB connectDB = new ConnectDB();
         String sql = "select count(game_id) from game";
@@ -56,6 +83,13 @@ public class Game {
         }
 
         return latestGameID;
+    }
+
+    public void finishGame(int id, String winnerUsername) {
+        Game game = new Game();
+        game = game.findByID(id);
+        game.setWinner(winnerUsername);
+        game.save();
     }
 
     public void save() {
