@@ -2,6 +2,7 @@ package Controllers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import ui_modules.GameBoard;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -23,6 +24,7 @@ static
             e.printStackTrace();
         }
     }
+
     public ServerConnector()
     {
 
@@ -78,7 +80,7 @@ static
             e.printStackTrace();
             validuser=false;
         }
-
+        GameBoard.gameBoardController.getBtns();
         return validuser;
     }
 

@@ -8,7 +8,7 @@ import javafx.stage.Stage;
 import ui_modules.logIn;
 
 public class EntryScreen extends Application {
-    
+    // STATIC VARIABLE client
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setResizable(false);

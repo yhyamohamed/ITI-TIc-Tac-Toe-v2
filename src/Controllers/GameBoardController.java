@@ -31,6 +31,9 @@ public class GameBoardController {
 
     private final GameBoard Gameboard;
     private final Stage primaryStage;
+
+
+
     private final ArrayList<Button> btns;
     private boolean computerTurn = true;
     private boolean palyagainstcomputer;
@@ -104,6 +107,13 @@ public class GameBoardController {
         };
     }
 
+    public ArrayList<Button> getBtns() {
+        return btns;
+    }
+
+    public int[] getMarks() {
+        return marks;
+    }
 
     //how computer work
     private void computerTurn() {

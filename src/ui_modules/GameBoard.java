@@ -16,7 +16,7 @@ import javafx.stage.Stage;
 import javafx.scene.shape.Line;
 
 public class GameBoard extends AnchorPane {
-
+   public static GameBoardController gameBoardController ;
     protected final Label user1;
     protected final Label scoreUser1;
     protected final Label user2;
@@ -316,8 +316,8 @@ public class GameBoard extends AnchorPane {
         btns.add(button7);
         btns.add(button8);
         btns.add(button9);
-
-        new GameBoardController(this, primaryStage, btns, playAgainstPC);
+// added new
+        gameBoardController = new GameBoardController(this, primaryStage, btns, playAgainstPC);
 
     }
 
