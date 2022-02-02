@@ -49,6 +49,10 @@ public class GameBoardController {
         this.btns = btns;
         palyagainstcomputer = playAgainstPC;
 
+        if(!playAgainstPC) {
+            ServerConnector.assignGameBoardButtons();
+            ServerConnector.getopponentId();
+        }
         //array for each button
         for (Button bt : btns) {
             bt.setOnAction(event -> {
@@ -68,9 +72,9 @@ public class GameBoardController {
                     moves++;
                     CheckWinning();
                     if(!palyagainstcomputer && opponentsTurn){
-//                       ServerConnector.play(index,sign);
-//                       opponentsTurn=false;
-//                       ServerConnector.opponentsMove()
+                     ServerConnector.play(index,sign);
+                       opponentsTurn=false;
+                       ServerConnector.opponentsMove();
                     }
                     if (!gameEnded && computerTurn && palyagainstcomputer) {
                         computerTurn();

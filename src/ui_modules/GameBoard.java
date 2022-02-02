@@ -3,6 +3,7 @@ package ui_modules;
 import java.util.ArrayList;
 
 import Controllers.GameBoardController;
+import Controllers.ServerConnector;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.control.Button;
@@ -316,6 +317,8 @@ public class GameBoard extends AnchorPane {
         btns.add(button7);
         btns.add(button8);
         btns.add(button9);
+
+
 // added new
         gameBoardController = new GameBoardController(this, primaryStage, btns, playAgainstPC);
 

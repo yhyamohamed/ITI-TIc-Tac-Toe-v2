@@ -4,16 +4,19 @@ import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import ui_modules.GameBoard;
 
+import java.awt.*;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
 import java.net.SocketException;
+import java.util.ArrayList;
 
 public class ServerConnector {
     private static Socket socket;
     private static DataInputStream dataInputStream;
     private static DataOutputStream dataOutputStream;
+    private static ArrayList<javafx.scene.control.Button> buttons;
 static
     {
         try {
@@ -23,6 +26,7 @@ static
         }catch (IOException e){
             e.printStackTrace();
         }
+
     }
 
     public ServerConnector()
@@ -80,10 +84,63 @@ static
             e.printStackTrace();
             validuser=false;
         }
-        GameBoard.gameBoardController.getBtns();
+
         return validuser;
     }
+public static void assignGameBoardButtons()
+{
+    buttons= GameBoard.gameBoardController.getBtns();
+}
+public static void play(int position,int sign)
+{
+    JsonObject requestObject=new JsonObject();
+    requestObject.addProperty("type","play");
+    requestObject.addProperty("opponet",PlayerInfo.opponentId);
+    requestObject.addProperty("position",position);
+    requestObject.addProperty("sign",sign);
+    try {
+        dataOutputStream.writeUTF(requestObject.toString());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
 
+
+}
+
+public static void opponentsMove()
+{
+    String resMsg= null;
+    try {
+        resMsg = dataInputStream.readUTF();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    JsonObject gameresponse =JsonParser.parseString(resMsg).getAsJsonObject();
+    int position=gameresponse.get("positon").getAsInt();
+    buttons.get(position).fire();
+
+}
+static public void getopponentId()
+{
+    JsonObject requestObject=new JsonObject();
+    requestObject.addProperty("type","getOpponentId");
+    requestObject.addProperty("playerid",PlayerInfo.id);
+    try {
+        dataOutputStream.writeUTF(requestObject.toString());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+    try {
+        String resMsg= dataInputStream.readUTF();
+        JsonObject responseOpject=new JsonObject();
+        responseOpject=JsonParser.parseString(resMsg).getAsJsonObject();
+        PlayerInfo.opponentId=responseOpject.get("opponentid").getAsString();
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+
+
+}
     public static class PlayerInfo
     {
         static String username;
@@ -92,6 +149,7 @@ static
         static String losses;
         static String id;
         static String login;
+        static String opponentId;
 
 
         public String getLogin() {
