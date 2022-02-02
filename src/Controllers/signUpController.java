@@ -22,9 +22,9 @@ public class signUpController {
         return new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                Player player = new Player();
+               // Player player = new Player();
                 if (signUpPage.getUsrTxt().getText() != null && signUpPage.getPassTxt().getText() != null && (signUpPage.getUsrTxt().getText().trim().length() > 0) && (signUpPage.getPassConfirmTxt().getText().equals(signUpPage.getPassTxt().getText()))){
-               boolean result = player.create(signUpPage.getUsrTxt().getText(),signUpPage.getPassTxt().getText());
+               boolean result = ServerConnector.signUp(signUpPage.getUsrTxt().getText(),signUpPage.getPassTxt().getText());
                 if(result){
                     logIn root = new logIn(primaryStage);
                     Scene scene = new Scene(root);

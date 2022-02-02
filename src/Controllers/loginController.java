@@ -14,13 +14,14 @@ public class loginController {
     private logIn loginPage;
     private HomePageController homePageController;
     static boolean validUser= false;
+    //private ServerConnector serverConnector;
 
     public loginController(logIn logInPage, Stage primaryStage) {
         loginPage = logInPage;
-
         loginPage.logInBtnAction(logIn(primaryStage));
         loginPage.signUPBtnAction(signUp(primaryStage));
         loginPage.playOffLineFromEntryScreen(playOffLine(primaryStage));
+        //serverConnector=new ServerConnector();
 
 
     }
@@ -55,8 +56,9 @@ public class loginController {
             public void handle(ActionEvent event) {
                 Player player = new Player();
                 if (loginPage.getUserNameTxt() != null && loginPage.getPasswordTxt() != null) {
-                    validUser = player.checkLogin(loginPage.getUserNameTxt(), loginPage.getPasswordTxt());
-                    if (validUser) {
+                    //validUser = player.checkLogin(loginPage.getUserNameTxt(), loginPage.getPasswordTxt());
+                    String response=ServerConnector.signIn(loginPage.getUserNameTxt(),loginPage.getPasswordTxt());
+                    if (response.equals("true")) {
                         Home root = new Home(primaryStage);
                         Scene scene = new Scene(root);
                         primaryStage.setTitle("home screen");

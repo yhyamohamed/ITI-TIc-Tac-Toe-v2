@@ -8,6 +8,7 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import Controllers.ServerConnector;
 
 public  class Home extends AnchorPane {
 
@@ -17,6 +18,10 @@ public  class Home extends AnchorPane {
     protected final Label username;
     protected final Label label;
     protected final Label score;
+    protected final Label wins;
+    protected final Label losses;
+    protected final Label labelWins;
+    protected final Label labelLosses;
     protected final AnchorPane anchorPane;
 
     public Home(Stage primaryStage) {
@@ -26,7 +31,12 @@ public  class Home extends AnchorPane {
         onlinebtn = new Button();
         username = new Label();
         label = new Label();
+        wins=new Label();
+        losses=new Label();
         score = new Label();
+        labelWins=new  Label();
+        labelLosses=new Label();
+
         anchorPane = new AnchorPane();
 
         setId("homaanchorpane");
@@ -73,9 +83,33 @@ public  class Home extends AnchorPane {
 
         username.setLayoutX(126.0);
         username.setLayoutY(14.0);
-        username.setText("username");
+        username.setText(ServerConnector.PlayerInfo.getUsername());
         username.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
         username.setFont(new Font("System Bold Italic", 33.0));
+
+        labelWins.setLayoutX(440);
+        labelWins.setLayoutY(14.0);
+        labelWins.setText("wins:");
+        labelWins.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
+        labelWins.setFont(new Font("System Bold Italic", 33.0));
+
+        wins.setLayoutX(540);
+        wins.setLayoutY(14.0);
+        wins.setText(ServerConnector.PlayerInfo.getWins());
+        wins.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
+        wins.setFont(new Font("System Bold Italic", 33.0));
+
+        losses.setLayoutX(540);
+        losses.setLayoutY(68.0);
+        losses.setText(ServerConnector.PlayerInfo.getLosses());
+        losses.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
+        losses.setFont(new Font("System Bold Italic", 33.0));
+
+        labelLosses.setLayoutX(440);
+        labelLosses.setLayoutY(68.0);
+        labelLosses.setText("losses:");
+        labelLosses.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
+        labelLosses.setFont(new Font("System Bold Italic", 33.0));
 
         label.setLayoutX(126.0);
         label.setLayoutY(68.0);
@@ -85,7 +119,7 @@ public  class Home extends AnchorPane {
 
         score.setLayoutX(220.0);
         score.setLayoutY(68.0);
-        score.setText("123");
+        score.setText(ServerConnector.PlayerInfo.getScore());
         score.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
         score.setFont(new Font("System Bold Italic", 33.0));
 
@@ -101,6 +135,10 @@ public  class Home extends AnchorPane {
         getChildren().add(onlinebtn);
         getChildren().add(username);
         getChildren().add(label);
+        getChildren().add(labelWins);
+        getChildren().add(labelLosses);
+        getChildren().add(wins);
+        getChildren().add(losses);
         getChildren().add(score);
         getChildren().add(anchorPane);
 
