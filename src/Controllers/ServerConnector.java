@@ -153,10 +153,22 @@ static public void getopponentId()
 
     reader.start();
 }
-/*private static ArrayList<Player> getPlayersInfo()
-{
 
-}*/
+    public static void close(JsonObject closingObj) {
+        try {
+            dataOutputStream.writeUTF(closingObj.toString());
+            dataOutputStream.close();
+            dataInputStream.close();
+            socket.close();
+        } catch (IOException e) {
+
+        }
+}
+
+    /*private static ArrayList<Player> getPlayersInfo()
+    {
+
+    }*/
 public class Player
 {
     private int id;
@@ -214,7 +226,7 @@ public class Player
         @Override
         public void  run()
         {
-            while (true)
+            while (socket.isConnected())
             {
                 try {
                     String lineSent = dataInputStream.readUTF();

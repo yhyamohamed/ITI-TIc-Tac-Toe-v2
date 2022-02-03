@@ -2,6 +2,7 @@ package Controllers;
 
 
 import Models.Player;
+import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -66,8 +67,11 @@ public class loginController {
                         primaryStage.setTitle("home screen");
                         primaryStage.setScene(scene);
                         primaryStage.show();
-                        System.out.println(loginPage.getUserNameTxt());
-                        System.out.println(loginPage.getPasswordTxt());
+                        primaryStage.setOnCloseRequest((e)->{
+                            JsonObject closingObj = new JsonObject();
+                            closingObj.addProperty("type","client_close");
+                            ServerConnector.close(closingObj);
+                        });
 
                     } else {
                         validUser=false;
