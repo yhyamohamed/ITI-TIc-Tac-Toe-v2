@@ -15,29 +15,26 @@ import ui_modules.playonlinescreen;
 
 
 public class playonlineController {
-    private  playonlinescreen onlinescreen;
-    
-    
-    
-   
-    public playonlineController(playonlinescreen playonline ,Stage primaryStage){
-        onlinescreen=playonline;
+    private playonlinescreen onlinescreen;
+
+
+    public playonlineController(playonlinescreen playonline, Stage primaryStage) {
+        onlinescreen = playonline;
         onlinescreen.homeButton(home(primaryStage));
     }
 
     private EventHandler<ActionEvent> home(Stage primaryStage) {
-     return new EventHandler<ActionEvent>() {
+        return new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                System.out.println("tammm");
-//                Home root = new Home(primaryStage);
-//                Scene scene = new Scene(root);
-//                primaryStage.setTitle("home screen");
-//                primaryStage.setScene(scene);
-//                primaryStage.show();
+                Home root = new Home(primaryStage);
+                Scene scene = new Scene(root);
+                primaryStage.setTitle("home screen");
+                primaryStage.setScene(scene);
+                primaryStage.show();
 
             }
         };
     }
-    
+
 }

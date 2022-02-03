@@ -131,9 +131,9 @@ public  class playonlinescreen extends AnchorPane {
       
 
         getChildren().add(onlinepeple);
-        getChildren().add(homebtn);
         getChildren().add(vBox);
         getChildren().add(vBox2);
+        getChildren().add(homebtn);
         
         
          
