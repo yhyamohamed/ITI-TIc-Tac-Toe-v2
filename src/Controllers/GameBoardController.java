@@ -1,5 +1,6 @@
 package Controllers;
 
+import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -54,9 +55,16 @@ public class GameBoardController {
         {
             ServerConnector.PlayerInfo.allowFire=true;
         }
-        if(!playAgainstPC) {
+        if(!palyagainstcomputer) {
             ServerConnector.assignGameBoardButtons(btns);
             ServerConnector.getopponentId();
+            primaryStage.setOnCloseRequest((e)->{
+                JsonObject closingObj = new JsonObject();
+                closingObj.addProperty("type","client_close_while_playing");
+                closingObj.addProperty("opponentId", ServerConnector.PlayerInfo.opponentId);
+                ServerConnector.close(closingObj);
+            });
+
         }
         currentplayerturn=ServerConnector.PlayerInfo.playerTurn;
         /*if(currentplayerturn)
