@@ -307,7 +307,7 @@ public class GameBoard extends AnchorPane {
         gridPane.getChildren().add(button8);
         gridPane.getChildren().add(button9);
         getChildren().add(gridPane);
-        getChildren().add(start);
+       // getChildren().add(start);
         btns.add(button1);
         btns.add(button2);
         btns.add(button3);

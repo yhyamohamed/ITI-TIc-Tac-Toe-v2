@@ -67,17 +67,7 @@ public class GameBoardController {
 
         }
         currentplayerturn=ServerConnector.PlayerInfo.playerTurn;
-        /*if(currentplayerturn)
-        {
-            opponentsTurn=false;
-        }else {
-            opponentsTurn=false;
-            ServerConnector.opponentsMove();
-            currentplayerturn=true;
 
-        }*/
-
-        //array for each button
         for (Button bt : btns) {
             bt.setOnAction(event -> {
                 if (ServerConnector.PlayerInfo.allowFire){
@@ -95,6 +85,7 @@ public class GameBoardController {
                     toggleTurns();
                     marks[index] = sign;
                     moves++;
+
                     CheckWinning();
                     if(ServerConnector.PlayerInfo.playerTurn) {
                         ServerConnector.play(index, sign);
