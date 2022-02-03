@@ -100,7 +100,8 @@ public class GameBoardController {
                     primaryStage.setTitle("home screen");
                     primaryStage.setScene(scene);
                     primaryStage.show();
-                } else {
+              } 
+                else {
                     logIn root = new logIn(primaryStage);
                     Scene scene = new Scene(root);
                     scene.getStylesheets().add("ui_modules/Resources/application.css");

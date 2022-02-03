@@ -5,6 +5,8 @@ import Models.Player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import ui_modules.SignUp;
 import ui_modules.logIn;
@@ -25,7 +27,9 @@ public class signUpController {
                // Player player = new Player();
                 if (signUpPage.getUsrTxt().getText() != null && signUpPage.getPassTxt().getText() != null && (signUpPage.getUsrTxt().getText().trim().length() > 0) && (signUpPage.getPassConfirmTxt().getText().equals(signUpPage.getPassTxt().getText()))){
                boolean result = ServerConnector.signUp(signUpPage.getUsrTxt().getText(),signUpPage.getPassTxt().getText());
-                if(result){
+                
+               if(result){
+                        ShowSignUpsucess();
                     logIn root = new logIn(primaryStage);
                     Scene scene = new Scene(root);
                     scene.getStylesheets().add("ui_modules/Resources/application.css");
@@ -60,5 +64,14 @@ public class signUpController {
             }
         };
     }
-
+    
+    
+    public void ShowSignUpsucess() {
+            Alert alert = new Alert(Alert.AlertType.NONE, "Sign Up Successfuly", ButtonType.OK);
+            alert.getDialogPane().setMinHeight(100);
+            alert.getDialogPane().setMinWidth(100);
+            alert.setTitle("sign up successfully");
+            alert.setResizable(false);
+            alert.show();
+    }
 }

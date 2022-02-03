@@ -15,6 +15,7 @@ public  class Home extends AnchorPane {
     protected final Button pcbtn;
     protected final Button friendsbtn;
     protected final Button onlinebtn;
+     protected final Button LogOut;
     protected final Label username;
     protected final Label label;
     protected final Label score;
@@ -29,6 +30,7 @@ public  class Home extends AnchorPane {
         pcbtn = new Button();
         friendsbtn = new Button();
         onlinebtn = new Button();
+        LogOut = new Button();
         username = new Label();
         label = new Label();
         wins=new Label();
@@ -129,10 +131,23 @@ public  class Home extends AnchorPane {
         anchorPane.setPrefHeight(110.0);
         anchorPane.setPrefWidth(114.0);
         anchorPane.getStylesheets().add("ui_modules/Resources/application.css");
+        
+        LogOut.setAccessibleText("loginBtn");
+        LogOut.setId("btn");
+        LogOut.setLayoutX(524.0);
+        LogOut.setLayoutY(446.0);
+        LogOut.setMaxHeight(60.0);
+        LogOut.setMnemonicParsing(false);
+        LogOut.setPrefHeight(44.0);
+        LogOut.setPrefWidth(126.0);
+        LogOut.getStylesheets().add("ui_modules/Resources/application.css");
+        LogOut.setText("Log Out");
+        LogOut.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
         getChildren().add(pcbtn);
         getChildren().add(friendsbtn);
         getChildren().add(onlinebtn);
+        getChildren().add(LogOut);
         getChildren().add(username);
         getChildren().add(label);
         getChildren().add(labelWins);
@@ -149,6 +164,14 @@ public  class Home extends AnchorPane {
         onlinebtn.setOnAction(Action);
         
         }
+    public String getUserName()
+    {
+        return username.getText();
+    }
+    public void SetUserName(String str)
+    {
+        username.setText(str);
+    }
     public void InviteAfriendToPlay(EventHandler< ActionEvent > Action){
         friendsbtn.setOnAction(Action);
     }
@@ -156,5 +179,7 @@ public  class Home extends AnchorPane {
         pcbtn.setOnAction(Action);
     }
 
-   
+    public void LogoutAction(EventHandler< ActionEvent > Action){
+        LogOut.setOnAction(Action);
+    }
 }

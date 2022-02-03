@@ -1,5 +1,6 @@
 package Controllers;
 
+import Models.Player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -7,6 +8,7 @@ import javafx.stage.Stage;
 import ui_modules.GameBoard;
 import ui_modules.Home;
 import ui_modules.SignUp;
+import ui_modules.logIn;
 import ui_modules.playonlinescreen;
 
 public class HomePageController {
@@ -18,6 +20,7 @@ public class HomePageController {
         homeScreen.pcbtnBtnAction(playAgainstPc(primaryStage));
         homeScreen.playLocally(playLocal(primaryStage));
         homeScreen.InviteAfriendToPlay(playWithfriend(primaryStage));
+        homeScreen.LogoutAction(logout(primaryStage));
         
         
     }
@@ -66,7 +69,23 @@ public class HomePageController {
         };
     }
 
+    private EventHandler<ActionEvent> logout(Stage primaryStage) {
+      return new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                Player player = new Player();
+                player.logout(homeScreen.getUserName());
+                logIn root=new  logIn(primaryStage);
+                Scene scene = new Scene(root);
+                primaryStage.setTitle("logIn screen");
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            }
+        };
     }
+    }
+
+    
 
     
 

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane id="homaanchorpane" prefHeight="512.0" prefWidth="664.0" style="-fx-border-style: solid;" stylesheets="@../application/application.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Button id="btn" fx:id="pcbtn" accessibleText="loginBtn" layoutX="202.0" layoutY="187.0" maxHeight="60.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="187.0" stylesheets="@../application/application.css" text="Player VS computer" textFill="#dbe2e5" />
+      <Button id="btn" fx:id="friendsbtn" accessibleText="loginBtn" layoutX="203.0" layoutY="350.0" maxHeight="60.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="187.0" stylesheets="@../application/application.css" text="Invite Friend" textFill="#dbe2e5" />
+      <Button id="btn" fx:id="onlinebtn" accessibleText="loginBtn" layoutX="202.0" layoutY="268.0" maxHeight="60.0" mnemonicParsing="false" prefHeight="44.0" prefWidth="187.0" stylesheets="@../application/application.css" text="Play online" textFill="#dbe2e5" />
+      <Label fx:id="username" layoutX="126.0" layoutY="14.0" text="username" textFill="#dbe2e5">
+         <font>
+            <Font name="System Bold Italic" size="33.0" />
+         </font>
+      </Label>
+      <Label layoutX="126.0" layoutY="68.0" text="Score:" textFill="#dbe2e5">
+         <font>
+            <Font name="System Bold Italic" size="33.0" />
+         </font>
+      </Label>
+      <Label fx:id="score" layoutX="220.0" layoutY="68.0" text="123" textFill="#dbe2e5">
+         <font>
+            <Font name="System Bold Italic" size="33.0" />
+         </font>
+      </Label>
+      <AnchorPane id="avatar" layoutX="12.0" layoutY="8.0" prefHeight="110.0" prefWidth="114.0" stylesheets="@../application/application.css" />
+   </children>
+</AnchorPane>

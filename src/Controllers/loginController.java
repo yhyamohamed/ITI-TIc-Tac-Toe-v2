@@ -14,6 +14,7 @@ public class loginController {
     private logIn loginPage;
     private HomePageController homePageController;
     static boolean validUser= false;
+   
     //private ServerConnector serverConnector;
 
     public loginController(logIn logInPage, Stage primaryStage) {
@@ -59,6 +60,7 @@ public class loginController {
                     //validUser = player.checkLogin(loginPage.getUserNameTxt(), loginPage.getPasswordTxt());
                     String response=ServerConnector.signIn(loginPage.getUserNameTxt(),loginPage.getPasswordTxt());
                     if (response.equals("true")) {
+                        validUser=true;
                         Home root = new Home(primaryStage);
                         Scene scene = new Scene(root);
                         primaryStage.setTitle("home screen");
@@ -68,6 +70,7 @@ public class loginController {
                         System.out.println(loginPage.getPasswordTxt());
 
                     } else {
+                        validUser=false;
                         loginPage.getLogInMsg().setVisible(true);
                     }
                 }
