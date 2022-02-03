@@ -15,6 +15,7 @@ public class ServerConnector {
     private static DataInputStream dataInputStream;
     private static DataOutputStream dataOutputStream;
     private static ArrayList<javafx.scene.control.Button> buttons;
+    private static StreamReader reader;
 static
     {
         try {
@@ -25,6 +26,7 @@ static
             e.printStackTrace();
         }
 
+         reader=new StreamReader();
     }
 
     public ServerConnector()
@@ -48,6 +50,8 @@ static
             String resMsg= dataInputStream.readUTF();
             JsonObject response =JsonParser.parseString(resMsg).getAsJsonObject();
             System.out.println(response);
+            String type=response.get("type").getAsString();
+            if(type.equals("loginresponse")){
             PlayerInfo.login=response.get("successful").getAsString();
             if(PlayerInfo.login.equals("true")) {
                 PlayerInfo.id = response.get("id").getAsString();
@@ -55,10 +59,13 @@ static
                 PlayerInfo.score = response.get("score").getAsString();
                 PlayerInfo.wins = response.get("wins").getAsString();
                 PlayerInfo.losses = response.get("losses").getAsString();
+
+            }
             }else{}
         } catch (IOException e) {
             e.printStackTrace();
         }
+
         return PlayerInfo.login;
     }
     public  static boolean signUp(String username,String password)
@@ -96,26 +103,23 @@ public static void play(int position,int sign)
     requestObject.addProperty("opponet",PlayerInfo.opponentId);
     requestObject.addProperty("position",position);
     requestObject.addProperty("sign",sign);
+    System.out.println(position);
     try {
         dataOutputStream.writeUTF(requestObject.toString());
     } catch (IOException e) {
         e.printStackTrace();
     }
-
+    //opponentsMove();
 
 }
 
-public static void opponentsMove()
+public static void opponentsMove(int position)
 {
-    String resMsg= null;
-    try {
-        resMsg = dataInputStream.readUTF();
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-    JsonObject gameresponse =JsonParser.parseString(resMsg).getAsJsonObject();
-    int position=gameresponse.get("positon").getAsInt();
+
+    System.out.println("opponent"+position);
+    PlayerInfo.allowFire=true;
     buttons.get(position).fire();
+    PlayerInfo.playerTurn=true;
 
 }
 static public void getopponentId()
@@ -135,11 +139,13 @@ static public void getopponentId()
         JsonObject responseOpject=new JsonObject();
         responseOpject=JsonParser.parseString(resMsg).getAsJsonObject();
         PlayerInfo.opponentId=responseOpject.get("opponentid").getAsString();
+        PlayerInfo.playerTurn=responseOpject.get("turn").getAsBoolean();
+        PlayerInfo.allowFire=PlayerInfo.playerTurn;
     } catch (IOException e) {
         e.printStackTrace();
     }
 
-
+    reader.start();
 }
     public static class PlayerInfo
     {
@@ -150,6 +156,8 @@ static public void getopponentId()
         static String id;
         static String login;
         static String opponentId;
+        static boolean playerTurn;
+        static boolean allowFire;
 
 
         public String getLogin() {
@@ -174,6 +182,44 @@ static public void getopponentId()
 
         public static String getWins() {
             return wins;
+        }
+    }
+    private static class StreamReader extends Thread
+    {
+        public StreamReader()
+        {
+
+        }
+
+        @Override
+        public void  run()
+        {
+            while (true)
+            {
+                try {
+                    String lineSent = dataInputStream.readUTF();
+                    if (lineSent == null) throw new IOException();
+                    JsonObject requestObject = JsonParser.parseString(lineSent).getAsJsonObject();
+                    String type = requestObject.get("type").getAsString();
+                    switch (type)
+                    {
+                        case "oponnetmove" :
+                            int position=requestObject.get("position").getAsInt();
+                            opponentsMove(position);
+
+                            break;
+                        case "loginresponse":
+                            System.out.println("responsethroughthread");
+
+                            break;
+                    }
+                }catch (IOException e){}
+                try {
+                    sleep(1000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
         }
     }
 }

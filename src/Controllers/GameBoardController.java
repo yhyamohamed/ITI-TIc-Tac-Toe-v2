@@ -37,6 +37,7 @@ public class GameBoardController {
     private final ArrayList<Button> btns;
     private boolean computerTurn = true;
     private boolean opponentsTurn ;
+    private boolean currentplayerturn;
     private boolean palyagainstcomputer;
     private int[] marks = {0, 0, 0, 0, 0, 0, 0, 0, 0};
     private String playerMark = "X";
@@ -49,16 +50,29 @@ public class GameBoardController {
         this.btns = btns;
         palyagainstcomputer = playAgainstPC;
 
+
         if(!playAgainstPC) {
             ServerConnector.assignGameBoardButtons(btns);
             ServerConnector.getopponentId();
         }
+        currentplayerturn=ServerConnector.PlayerInfo.playerTurn;
+        /*if(currentplayerturn)
+        {
+            opponentsTurn=false;
+        }else {
+            opponentsTurn=false;
+            ServerConnector.opponentsMove();
+            currentplayerturn=true;
+
+        }*/
+
         //array for each button
         for (Button bt : btns) {
             bt.setOnAction(event -> {
-//                System.out.println(bt);
-//                System.out.println(btns.indexOf(bt));
-                int index = btns.indexOf(bt);
+                if (ServerConnector.PlayerInfo.allowFire){
+              System.out.println(bt);
+               System.out.println(btns.indexOf(bt));
+                    int index = btns.indexOf(bt);
                 bt.setFont(new Font("System Bold Italic", 200));
                 bt.setStyle("-fx-font-size:40");
                 if (!bt.isDisable() && !gameEnded) {
@@ -71,11 +85,19 @@ public class GameBoardController {
                     marks[index] = sign;
                     moves++;
                     CheckWinning();
-                    if(!palyagainstcomputer && opponentsTurn){
-                     ServerConnector.play(index,sign);
-                       opponentsTurn=false;
-                       ServerConnector.opponentsMove();
+                    if(ServerConnector.PlayerInfo.playerTurn) {
+                        ServerConnector.play(index, sign);
+                        ServerConnector.PlayerInfo.playerTurn=false;
+                        ServerConnector.PlayerInfo.allowFire=false;
                     }
+                    System.out.println("aplay");
+                    currentplayerturn=true;
+
+                    /*if (!palyagainstcomputer && opponentsTurn) {
+                        opponentsTurn = false;
+                        ServerConnector.opponentsMove();
+
+                    }*/
                     if (!gameEnded && computerTurn && palyagainstcomputer) {
                         computerTurn();
                     } else if (!gameEnded && !computerTurn && palyagainstcomputer) {
@@ -83,7 +105,9 @@ public class GameBoardController {
                     }
                     CheckWinning();
                 }
+            }
             });
+
         }
         Gameboard.restButton(resetGame());
         Gameboard.homeButton(HomeScreen(primaryStage));

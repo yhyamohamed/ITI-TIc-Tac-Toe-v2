@@ -4,7 +4,7 @@ package application;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-
+import Controllers.ServerConnector;
 import ui_modules.logIn;
 
 public class EntryScreen extends Application {
@@ -12,7 +12,7 @@ public class EntryScreen extends Application {
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setResizable(false);
-    
+        //Controllers.ServerConnector sc=new ServerConnector();
         logIn root = new logIn(primaryStage);
             
         Scene scene = new Scene(root);
