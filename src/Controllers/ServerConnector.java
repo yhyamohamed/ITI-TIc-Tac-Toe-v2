@@ -160,6 +160,7 @@ static public void getopponentId()
             dataOutputStream.close();
             dataInputStream.close();
             socket.close();
+            StreamReader.running=false;
         } catch (IOException e) {
 
         }
@@ -218,6 +219,8 @@ public class Player
     }
     private static class StreamReader extends Thread
     {
+        static boolean running;
+
         public StreamReader()
         {
 
@@ -226,7 +229,7 @@ public class Player
         @Override
         public void  run()
         {
-            while (socket.isConnected())
+            while (running)
             {
                 try {
                     String lineSent = dataInputStream.readUTF();
@@ -244,13 +247,29 @@ public class Player
                             System.out.println("responsethroughthread");
 
                             break;
+                        case "opponent_disconnect":
+                            ServerConnector.dataOutputStream.close();
+                            ServerConnector.dataInputStream.close();
+                            ServerConnector.socket.close();
+                            running=false;
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                //render pop up
+                                }
+                            });
                     }
-                }catch (IOException e){}
+                }catch (IOException e){
+                    running=false;
+                    return;
+                }if(running){
                 try {
                     sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                }
+
             }
         }
     }

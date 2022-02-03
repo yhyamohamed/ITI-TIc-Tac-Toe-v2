@@ -81,11 +81,5 @@ public class loginController {
             }
         };
     }
-/*
-* made it static
-* */
-//    public static boolean loggedIn() {
-//        return  validUser; // x > boolean
-//    }
 
 }
