@@ -2,6 +2,7 @@ package Controllers;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import javafx.application.Platform;
 import javafx.scene.control.Button;
 
 import java.io.*;
@@ -115,11 +116,16 @@ public static void play(int position,int sign)
 
 public static void opponentsMove(int position)
 {
-
     System.out.println("opponent"+position);
-    PlayerInfo.allowFire=true;
-    buttons.get(position).fire();
-    PlayerInfo.playerTurn=true;
+    Platform.runLater(new Runnable() {
+        @Override
+        public void run() {
+            PlayerInfo.allowFire=true;
+
+            buttons.get(position).fire();
+            PlayerInfo.playerTurn=true;
+        }
+    });
 
 }
 static public void getopponentId()
