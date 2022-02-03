@@ -73,6 +73,7 @@ public class HomePageController {
       return new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                loginController.validUser=false;
                 Player player = new Player();
                 player.logout(homeScreen.getUserName());
                 logIn root=new  logIn(primaryStage);
@@ -80,6 +81,7 @@ public class HomePageController {
                 primaryStage.setTitle("logIn screen");
                 primaryStage.setScene(scene);
                 primaryStage.show();
+                
             }
         };
     }
