@@ -153,6 +153,20 @@ static public void getopponentId()
 
     reader.start();
 }
+/*private static ArrayList<Player> getPlayersInfo()
+{
+
+}*/
+public class Player
+{
+    private int id;
+    private String username;
+    private String hashedPassword;
+    private int wins;
+    private int losses;
+    private int score;
+    private boolean online;
+}
     public static class PlayerInfo
     {
         static String username;

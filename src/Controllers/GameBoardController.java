@@ -50,7 +50,10 @@ public class GameBoardController {
         this.btns = btns;
         palyagainstcomputer = playAgainstPC;
 
-
+        if(palyagainstcomputer)
+        {
+            ServerConnector.PlayerInfo.allowFire=true;
+        }
         if(!playAgainstPC) {
             ServerConnector.assignGameBoardButtons(btns);
             ServerConnector.getopponentId();
