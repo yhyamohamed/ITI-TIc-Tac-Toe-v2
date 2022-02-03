@@ -1,7 +1,6 @@
 package Models;
 
 import application.AppConfig;
-import jdk.nashorn.internal.runtime.regexp.joni.Config;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
