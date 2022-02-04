@@ -28,6 +28,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+
 import Controllers.ServerConnector;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
@@ -123,7 +124,7 @@ public class playonlinescreen extends AnchorPane {
         x.forEach((Player player1) ->{
                 if(!player1.getUsername().equals(ServerConnector.PlayerInfo.getUsername())){
                     Label playerName=new Label();
-                    playerName.setText(player1.getUsername());
+                    playerName.setText(player1.getId()+": "+ player1.getUsername());
                     playerName.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
                     playerName.setFont(new Font("System Bold Italic", 33.0));
                     
@@ -144,6 +145,9 @@ public class playonlinescreen extends AnchorPane {
                         public void handle(Event event) {
                             //waiting notification 
                             Alert alert = new Alert(Alert.AlertType.NONE, "waiting for player...", ButtonType.CANCEL);
+                            Label chosenLable=(Label) event.getSource();
+                            int playerID=Integer.parseInt(chosenLable.getText().substring(0,1));
+                            ServerConnector.sendInvetation(playerID);
                             alert.getDialogPane().setMinHeight(100);
                             alert.getDialogPane().setMinWidth(100);
                             alert.setResizable(false);

@@ -75,13 +75,15 @@ static
                 PlayerInfo.score = response.get("score").getAsString();
                 PlayerInfo.wins = response.get("wins").getAsString();
                 PlayerInfo.losses = response.get("losses").getAsString();
+                reader=new StreamReader();
+                reader.start();
 
             }
             }else{}
         } catch (IOException e) {
             e.printStackTrace();
         }
-        reader=new StreamReader();
+
         return PlayerInfo.login;
     }
     public  static boolean signUp(String username,String password)
@@ -154,7 +156,7 @@ public static void opponentsMove(int position)
     });
 
 }
-static public void getopponentId()
+/*static public void getopponentId()
 {
     JsonObject requestObject=new JsonObject();
     requestObject.addProperty("type","getOpponentId");
@@ -178,7 +180,7 @@ static public void getopponentId()
     }
 
     reader.start();
-}
+}*/
 public static ArrayList<Player> getOnlinePlayersFromServer()
 {
     return onlinePlayersFromServer;
@@ -208,10 +210,24 @@ private static void getOnlinePlayersInfo()
         e.printStackTrace();
     }
 }*/
+    public static void sendInvetation(int id)
+    {
+        JsonObject requestObject=new JsonObject();
+        requestObject.addProperty("type","sendInvitation");
+        requestObject.addProperty("senderplayerid",PlayerInfo.id);
+        requestObject.addProperty("sendtoid",id);
+        PlayerInfo.opponentId= String.valueOf(id);
+        try {
+            dataOutputStream.writeUTF(requestObject.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
     public static void acceptInvetation()
     {
         JsonObject requestObject=new JsonObject();
         requestObject.addProperty("type","acceptinvetation");
+        requestObject.addProperty("game_id",PlayerInfo.gameId);
         requestObject.addProperty("accepter",PlayerInfo.id);
         requestObject.addProperty("accepted",PlayerInfo.opponentId);
 
@@ -283,7 +299,7 @@ public static class Player
     }
     private static class StreamReader extends Thread
     {
-        static boolean running;
+        static boolean running=true;
         public StreamReader()
         {
 
@@ -292,6 +308,8 @@ public static class Player
         @Override
         public void  run()
         {
+            System.out.println("readeron");
+            System.out.println(running);
             while (running)
             {
                 try {
@@ -299,6 +317,7 @@ public static class Player
                     if (lineSent == null) throw new IOException();
                     JsonObject requestObject = JsonParser.parseString(lineSent).getAsJsonObject();
                     String type = requestObject.get("type").getAsString();
+                    System.out.println(type);
                     switch (type)
                     {
                         case "oponnetmove" :
