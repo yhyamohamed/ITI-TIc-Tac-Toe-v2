@@ -85,7 +85,7 @@ public class GameBoard extends AnchorPane {
         user1.setPrefWidth(86.0);
         user1.getStyleClass().add("text");
         user1.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
-        user1.setText("user 1");
+        user1.setText(ServerConnector.PlayerInfo.getUsername());
 
         scoreUser1.setLayoutX(25.0);
         scoreUser1.setLayoutY(47.0);
@@ -93,7 +93,7 @@ public class GameBoard extends AnchorPane {
         scoreUser1.setPrefWidth(101.0);
         scoreUser1.getStyleClass().add("text");
         scoreUser1.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
-        scoreUser1.setText("score: 1213");
+        scoreUser1.setText("score: "+ServerConnector.PlayerInfo.getScore());
 
         user2.setLayoutX(587.0);
         user2.setLayoutY(14.0);
