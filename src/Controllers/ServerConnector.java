@@ -445,19 +445,7 @@ public static class Player
                            String moves= requestObject.get("moves").getAsString();
                             renderRecordedGame(moves);
                             break;
-                        case "opponent_disconnect":
-                            ServerConnector.dataOutputStream.close();
-                            ServerConnector.dataInputStream.close();
-                            ServerConnector.socket.close();
-                            running=false;
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    //render pop up =>
-                                }
-                            });
-                            break;
-                        case "onlineplayers":
+                            case "onlineplayers":
                             JsonArray onlinePlayers=requestObject.getAsJsonArray();
                             for(JsonElement rplayerobject : onlinePlayers) {
                                 JsonObject playerObject=rplayerobject.getAsJsonObject();
