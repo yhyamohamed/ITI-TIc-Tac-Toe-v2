@@ -10,7 +10,7 @@ import Controllers.HomePageController;
 import Controllers.HomePageController;
 
 import Controllers.playonlineController;
-import Models.Player;
+//import Models.Player;
 import javafx.scene.Scene;
 import ui_modules.Home;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 
-import Controllers.ServerConnector;
+import Controllers.ServerConnector.Player;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
@@ -61,10 +61,10 @@ public class playonlinescreen extends AnchorPane {
         
         Player player=new Player();
         ArrayList<Player> x = new ArrayList<>();
-        x=player.findOnlinePlayers();
+        x=ServerConnector.getOnlinePlayersFromServer();
         
         ArrayList<Player> f = new ArrayList<>();
-        f=player.findOfflinePlayers();
+        f=ServerConnector.getofflinePlayersFromServer();
 
  
 
