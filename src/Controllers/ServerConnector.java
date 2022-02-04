@@ -1,113 +1,100 @@
 package Controllers;
 
-import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
-import javafx.scene.control.ButtonType;
-import javafx.stage.Stage;
-import ui_modules.GameBoard;
-import ui_modules.Home;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
 import java.util.ArrayList;
-import java.util.Optional;
+import javafx.geometry.Pos;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 
 public class ServerConnector {
     private static Socket socket;
-    private static DataInputStream dataInputStream;
-    private static DataOutputStream dataOutputStream;
+    static DataInputStream dataInputStream;
+    public static DataOutputStream dataOutputStream;
     private static ArrayList<javafx.scene.control.Button> buttons;
     private static StreamReader reader;
-    private static Stage primaryStage;
-    private static ArrayList<Player> onlinePlayersFromServer =new ArrayList<>();
 static
     {
+        try {
+            socket= new Socket(InetAddress.getLocalHost(),5001);
+            dataInputStream = new DataInputStream(socket.getInputStream());
+            dataOutputStream = new DataOutputStream(socket.getOutputStream());
+        }catch (IOException e){
+               
+        }
 
+         reader=new StreamReader();
     }
 
     public ServerConnector()
     {
 
     }
-    public static void setPrimaryStage(Stage currentPrimaryStage)
-    {
-        primaryStage=currentPrimaryStage;
-    }
+    
     public static String signIn(String userName,String passWord)
     {
-        if(socket==null)
-        {
-            try {
-                socket= new Socket(InetAddress.getLocalHost(),5001);
-                dataInputStream = new DataInputStream(socket.getInputStream());
-                dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
-
+     
+        String Empty ="";
         JsonObject jasoSign=new JsonObject();
         jasoSign.addProperty("type","login");
         jasoSign.addProperty("username",userName);
         jasoSign.addProperty("password",passWord);
         try {
+            if(dataOutputStream==null)throw new IOException();
             dataOutputStream.writeUTF(jasoSign.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+          
+           return Empty;
+         
         }
         try {
             String resMsg= dataInputStream.readUTF();
             JsonObject response =JsonParser.parseString(resMsg).getAsJsonObject();
             System.out.println(response);
             String type=response.get("type").getAsString();
+            
             if(type.equals("loginresponse")){
             PlayerInfo.login=response.get("successful").getAsString();
+            
             if(PlayerInfo.login.equals("true")) {
                 PlayerInfo.id = response.get("id").getAsString();
                 PlayerInfo.username = response.get("username").getAsString();
                 PlayerInfo.score = response.get("score").getAsString();
                 PlayerInfo.wins = response.get("wins").getAsString();
                 PlayerInfo.losses = response.get("losses").getAsString();
-                reader=new StreamReader();
-                reader.start();
-
             }
             }else{}
         } catch (IOException e) {
-            e.printStackTrace();
+      
         }
 
         return PlayerInfo.login;
     }
     public  static boolean signUp(String username,String password)
     {
-        if(socket==null)
-        {
-            try {
-                socket= new Socket(InetAddress.getLocalHost(),5001);
-                dataInputStream = new DataInputStream(socket.getInputStream());
-                dataOutputStream = new DataOutputStream(socket.getOutputStream());
-            }catch (IOException e){
-                e.printStackTrace();
-            }
-        }
+   
         Boolean validuser;
         JsonObject jsonsignup=new JsonObject();
         jsonsignup.addProperty("type","signup");
         jsonsignup.addProperty("username",username);
         jsonsignup.addProperty("password",password);
+      
         try {
+             if(dataOutputStream==null)throw new IOException();
             dataOutputStream.writeUTF(jsonsignup.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException e) {  
+     
         }
         try {
             String resMsg= dataInputStream.readUTF();
@@ -117,6 +104,7 @@ static
         } catch (IOException e) {
             e.printStackTrace();
             validuser=false;
+            
         }
 
         return validuser;
@@ -130,9 +118,9 @@ public static void play(int position,int sign)
     JsonObject requestObject=new JsonObject();
     requestObject.addProperty("type","play");
     requestObject.addProperty("opponet",PlayerInfo.opponentId);
-    requestObject.addProperty("game_id",PlayerInfo.gameId);
     requestObject.addProperty("position",position);
     requestObject.addProperty("sign",sign);
+    System.out.println("ayy 7aga");
     System.out.println(position);
     try {
         dataOutputStream.writeUTF(requestObject.toString());
@@ -157,7 +145,7 @@ public static void opponentsMove(int position)
     });
 
 }
-/*static public void getopponentId()
+static public void getopponentId()
 {
     JsonObject requestObject=new JsonObject();
     requestObject.addProperty("type","getOpponentId");
@@ -181,11 +169,8 @@ public static void opponentsMove(int position)
     }
 
     reader.start();
-}*/
-public static ArrayList<Player> getOnlinePlayersFromServer()
-{
-    return onlinePlayersFromServer;
 }
+
     public static void close(JsonObject closingObj) {
         try {
             dataOutputStream.writeUTF(closingObj.toString());
@@ -198,67 +183,21 @@ public static ArrayList<Player> getOnlinePlayersFromServer()
         }
 }
 
+    
+
     /*private static ArrayList<Player> getPlayersInfo()
     {
-private static void getOnlinePlayersInfo()
-{
-    JsonObject requestObject=new JsonObject();
-    requestObject.addProperty("type","getonlineplayers");
 
-    try {
-        dataOutputStream.writeUTF(requestObject.toString());
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}*/
-    public static void sendInvetation(int id)
-    {
-        JsonObject requestObject=new JsonObject();
-        requestObject.addProperty("type","sendInvitation");
-        requestObject.addProperty("senderplayerid",PlayerInfo.id);
-        requestObject.addProperty("sendtoid",id);
-        PlayerInfo.opponentId= String.valueOf(id);
-        try {
-            dataOutputStream.writeUTF(requestObject.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public static void acceptInvetation()
-    {
-        JsonObject requestObject=new JsonObject();
-        requestObject.addProperty("type","acceptinvetation");
-        requestObject.addProperty("game_id",PlayerInfo.gameId);
-        requestObject.addProperty("accepter",PlayerInfo.id);
-        requestObject.addProperty("accepted",PlayerInfo.opponentId);
-
-        try {
-            dataOutputStream.writeUTF(requestObject.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-public static class Player
+    }*/
+public class Player
 {
     private int id;
     private String username;
+    private String hashedPassword;
     private int wins;
     private int losses;
     private int score;
     private boolean online;
-
-    public int getId() {
-        return id;
-    }
-
-
-    public String getUsername() {
-        return username;
-    }
-    public int getWins()
-    {
-        return wins;
-    }
 }
     public static class PlayerInfo
     {
@@ -271,7 +210,6 @@ public static class Player
         static String opponentId;
         static boolean playerTurn;
         static boolean allowFire;
-        static int gameId;
 
 
         public String getLogin() {
@@ -301,6 +239,7 @@ public static class Player
     private static class StreamReader extends Thread
     {
         static boolean running=true;
+
         public StreamReader()
         {
 
@@ -309,8 +248,6 @@ public static class Player
         @Override
         public void  run()
         {
-            System.out.println("readeron");
-            System.out.println(running);
             while (running)
             {
                 try {
@@ -318,84 +255,19 @@ public static class Player
                     if (lineSent == null) throw new IOException();
                     JsonObject requestObject = JsonParser.parseString(lineSent).getAsJsonObject();
                     String type = requestObject.get("type").getAsString();
-                    System.out.println(type);
                     switch (type)
                     {
                         case "oponnetmove" :
                             int position=requestObject.get("position").getAsInt();
+                            System.out.println(position+"bbbbbb");
                             opponentsMove(position);
+
 
                             break;
                         case "loginresponse":
                             System.out.println("responsethroughthread");
 
                             break;
-                        case "yourinvetationaccepted":
-                            int accepterID=requestObject.get("whoaccepted").getAsInt();
-                            PlayerInfo.opponentId= String.valueOf(accepterID);
-                            PlayerInfo.gameId=requestObject.get("game_id").getAsInt();
-                            PlayerInfo.playerTurn=false;
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    boolean playAgainstPC=false;
-                                    System.out.println("newgameboard");
-                                    GameBoard root = new GameBoard(primaryStage, playAgainstPC);
-                                    Scene scene = new Scene(root);
-                                    primaryStage.setTitle("GameBoard screen ");
-                                    primaryStage.setScene(scene);
-                                    primaryStage.show();
-                                }
-                            });
-
-
-                            break;
-                        case "invitationreceived":
-                            int opponentID=requestObject.get("sender").getAsInt();
-                            PlayerInfo.gameId=requestObject.get("game_id").getAsInt();
-                            PlayerInfo.opponentId= String.valueOf(opponentID);
-                            System.out.println(opponentID+"chalenges you");
-                            Platform.runLater(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION, "waiting for response...", ButtonType.NO, ButtonType.YES);
-                                    alert2.setTitle("invitation");
-                                    alert2.setHeaderText("Do you want to play with " + PlayerInfo.opponentId + " ?");
-                                    alert2.setResizable(false);
-                                    Optional<ButtonType> result = alert2.showAndWait();
-                                    ButtonType button = result.orElse(ButtonType.NO);
-
-                                    if (button == ButtonType.YES) {
-                                        // if condition yes && no : call isma3el methods
-                                        System.out.println("yes"); //accept play
-                                        PlayerInfo.playerTurn=true;
-                                        PlayerInfo.allowFire=true;
-                                        acceptInvetation();
-                                        boolean playAgainstPC=false;
-                                        System.out.println("newgameboard");
-                                        GameBoard root = new GameBoard(primaryStage, playAgainstPC);
-                                        Scene scene = new Scene(root);
-                                        primaryStage.setTitle("GameBoard screen ");
-                                        primaryStage.setScene(scene);
-                                        primaryStage.show();
-
-                                    } else {
-                                        System.out.println("noo"); // reject play
-                                    }
-                                }
-                            });
-                            break;
-
-                        case "onlineplayers":
-                            JsonArray onlinePlayers=requestObject.getAsJsonArray();
-                            for(JsonElement rplayerobject : onlinePlayers) {
-                                JsonObject playerObject=rplayerobject.getAsJsonObject();
-                                Player player= new  Player();
-                                player.id=playerObject.get("id").getAsInt();
-                                player.username=playerObject.get("username").getAsString();
-                                player.score=playerObject.get("score").getAsInt();
-                                onlinePlayersFromServer.add(player);
-                            }
                         case "opponent_disconnect":
                             ServerConnector.dataOutputStream.close();
                             ServerConnector.dataInputStream.close();
@@ -404,37 +276,26 @@ public static class Player
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
-                                    //render pop up
-                                    Alert alert = new Alert(Alert.AlertType.WARNING, "Connnection failed",  ButtonType.OK);
-
-                                    alert.getDialogPane().setMinHeight(100);
-                                    alert.getDialogPane().setMinWidth(100);
-                                    alert.setResizable(false);
-                                    alert.setTitle("Connection");
-                                    alert.show();
-
-//                                    Optional<ButtonType> result = alert.showAndWait();
-//                                    ButtonType button = result.orElse(ButtonType.NO);
-//
-//                                    if (button == ButtonType.YES) {
-//                                        System.out.println("yes");
-//                                        Home root = new Home(primaryStage);
-//                                        Scene scene = new Scene(root);
-//                                        primaryStage.setTitle("home screen");
-//                                        primaryStage.setScene(scene);
-//                                        primaryStage.show();
-//
-//                                    }
+                //render pop up
                                 }
                             });
                     }
-                }catch (IOException e){}
+                }catch (IOException e){
+                    running=false;
+                    return;
+                }if(running){
                 try {
                     sleep(1000);
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
+                }
+
             }
         }
     }
+
+   
+
+    
 }
