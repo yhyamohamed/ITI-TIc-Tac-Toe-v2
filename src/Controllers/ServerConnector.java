@@ -16,6 +16,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui_modules.GameBoard;
+import ui_modules.Home;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -466,6 +467,37 @@ public static class Player
                                 player.score=playerObject.get("score").getAsInt();
                                 onlinePlayersFromServer.add(player);
                             }
+                        case "opponent_disconnect":
+                            ServerConnector.dataOutputStream.close();
+                            ServerConnector.dataInputStream.close();
+                            ServerConnector.socket.close();
+                            running=false;
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //render pop up
+                                    Alert alert = new Alert(Alert.AlertType.WARNING, "Connnection failed",  ButtonType.OK);
+
+                                    alert.getDialogPane().setMinHeight(100);
+                                    alert.getDialogPane().setMinWidth(100);
+                                    alert.setResizable(false);
+                                    alert.setTitle("Connection");
+                                    alert.show();
+
+//                                    Optional<ButtonType> result = alert.showAndWait();
+//                                    ButtonType button = result.orElse(ButtonType.NO);
+//
+//                                    if (button == ButtonType.YES) {
+//                                        System.out.println("yes");
+//                                        Home root = new Home(primaryStage);
+//                                        Scene scene = new Scene(root);
+//                                        primaryStage.setTitle("home screen");
+//                                        primaryStage.setScene(scene);
+//                                        primaryStage.show();
+//
+//                                    }
+                                }
+                            });
                     }
                 }catch (IOException e){}
                 try {
