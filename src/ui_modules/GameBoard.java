@@ -45,7 +45,7 @@ public class GameBoard extends AnchorPane {
     protected final Button start;
     ArrayList<Button> btns = new ArrayList<>();
 
-    public GameBoard(Stage primaryStage, boolean playAgainstPC) {
+    public GameBoard(Stage primaryStage, boolean playAgainstPC,boolean isItAreplay) {
 
         user1 = new Label();
         scoreUser1 = new Label();
@@ -127,6 +127,7 @@ public class GameBoard extends AnchorPane {
         record.setPrefWidth(90.0);
         record.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
         record.setText("record");
+        record.setVisible(false);
  
         home.setId("button");
         home.setLayoutX(14.0);
@@ -320,13 +321,21 @@ public class GameBoard extends AnchorPane {
 
 
 // added new
-        gameBoardController = new GameBoardController(this, primaryStage, btns, playAgainstPC);
+        gameBoardController = new GameBoardController(this, primaryStage, btns, playAgainstPC,isItAreplay);
 
     }
 
 
     public void boardBtnsAction(Button b, EventHandler<ActionEvent> Action) {
         b.setOnAction(Action);
+
+    }
+    public Button getRecord()
+    {
+        return record;
+    }
+    public void replay(EventHandler<ActionEvent> Action) {
+        record.setOnAction(Action);
 
     }
 

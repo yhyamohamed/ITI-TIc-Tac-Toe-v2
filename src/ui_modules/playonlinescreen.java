@@ -236,7 +236,7 @@ public class playonlinescreen extends AnchorPane {
     }
     // new method direct game-board
     public static void goToPlayOnlineScene() {
-        GameBoard root = new GameBoard(primaryStage1, false);
+        GameBoard root = new GameBoard(primaryStage1, false,false);
         Scene scene = new Scene(root);
         primaryStage1.setTitle("GameBoard screen ");
         primaryStage1.setScene(scene);

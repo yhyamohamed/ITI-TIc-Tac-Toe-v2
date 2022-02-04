@@ -33,7 +33,7 @@ public class HomePageController {
             @Override
             public void handle(ActionEvent event) {
                 playAgainstPC = false;
-                loadGameBoard(primaryStage,playAgainstPC);
+                loadGameBoard(primaryStage,playAgainstPC,false);
             }
         };
     }
@@ -43,13 +43,13 @@ public class HomePageController {
             @Override
             public void handle(ActionEvent event) {
                 playAgainstPC = true;
-                loadGameBoard(primaryStage,playAgainstPC);
+                loadGameBoard(primaryStage,playAgainstPC,false);
             }
         };
     }
 
-    public void loadGameBoard(Stage primaryStage, boolean playAgainstPC) {
-        GameBoard root = new GameBoard(primaryStage, playAgainstPC);
+    public void loadGameBoard(Stage primaryStage, boolean playAgainstPC,boolean isItAreplay) {
+        GameBoard root = new GameBoard(primaryStage, playAgainstPC,isItAreplay);
         Scene scene = new Scene(root);
         primaryStage.setTitle("GameBoard screen ");
         primaryStage.setScene(scene);

@@ -4,12 +4,17 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import javafx.animation.KeyFrame;
+import javafx.animation.PauseTransition;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import ui_modules.GameBoard;
 
 import java.io.*;
@@ -17,6 +22,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class ServerConnector {
@@ -141,6 +147,52 @@ public static void play(int position,int sign)
     //opponentsMove();
 
 }
+    public static void sendReplayreq(JsonObject showRecObj)
+    {
+        try {
+            dataOutputStream.writeUTF(showRecObj.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void renderRecordedGame(String recordsArray) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                GameBoard root = new GameBoard(primaryStage, true,true);
+                Scene scene = new Scene(root);
+                primaryStage.setTitle("record screen ");
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            }
+        });
+        String[] string = recordsArray.replaceAll("\\[", "")
+                .replaceAll("]", "")
+                .split(",");
+        for (int i = 0; i < string.length; i++) {
+            String[] st = string[i].trim().split("-");
+            System.out.println(Arrays.toString(st));
+
+
+            int pos = Integer.parseInt(st[0]);
+            int sign = Integer.parseInt(st[1]);
+            int player_id = Integer.parseInt(st[2]);
+
+
+            double tim = i + 0.5;
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(i));
+            pause.setOnFinished(event -> {
+                Button btn = buttons.get(pos);
+                btn.setFont(new Font("System Bold Italic", 200));
+                btn.setStyle("-fx-font-size:40");
+                String si = (sign == 8) ? "X" : "O";
+                btn.setText(si);
+            });
+            pause.playFromStart();
+        }
+        }
 
 public static void opponentsMove(int position)
 {
@@ -268,6 +320,7 @@ public static class Player
         static String id;
         static String login;
         static String opponentId;
+        static String mySign;
         static boolean playerTurn;
         static boolean allowFire;
         static int gameId;
@@ -334,12 +387,13 @@ public static class Player
                             PlayerInfo.opponentId= String.valueOf(accepterID);
                             PlayerInfo.gameId=requestObject.get("game_id").getAsInt();
                             PlayerInfo.playerTurn=false;
+                            PlayerInfo.mySign="O";
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
                                     boolean playAgainstPC=false;
                                     System.out.println("newgameboard");
-                                    GameBoard root = new GameBoard(primaryStage, playAgainstPC);
+                                    GameBoard root = new GameBoard(primaryStage, playAgainstPC,false);
                                     Scene scene = new Scene(root);
                                     primaryStage.setTitle("GameBoard screen ");
                                     primaryStage.setScene(scene);
@@ -369,10 +423,11 @@ public static class Player
                                         System.out.println("yes"); //accept play
                                         PlayerInfo.playerTurn=true;
                                         PlayerInfo.allowFire=true;
+                                        PlayerInfo.mySign="X";
                                         acceptInvetation();
                                         boolean playAgainstPC=false;
                                         System.out.println("newgameboard");
-                                        GameBoard root = new GameBoard(primaryStage, playAgainstPC);
+                                        GameBoard root = new GameBoard(primaryStage, playAgainstPC,false);
                                         Scene scene = new Scene(root);
                                         primaryStage.setTitle("GameBoard screen ");
                                         primaryStage.setScene(scene);
@@ -384,7 +439,23 @@ public static class Player
                                 }
                             });
                             break;
-
+                        case "game_record":
+                            System.out.println(requestObject);
+                           String moves= requestObject.get("moves").getAsString();
+                            renderRecordedGame(moves);
+                            break;
+                        case "opponent_disconnect":
+                            ServerConnector.dataOutputStream.close();
+                            ServerConnector.dataInputStream.close();
+                            ServerConnector.socket.close();
+                            running=false;
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //render pop up =>
+                                }
+                            });
+                            break;
                         case "onlineplayers":
                             JsonArray onlinePlayers=requestObject.getAsJsonArray();
                             for(JsonElement rplayerobject : onlinePlayers) {
