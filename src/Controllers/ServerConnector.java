@@ -1,5 +1,7 @@
 package Controllers;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import javafx.application.Platform;
@@ -24,6 +26,7 @@ public class ServerConnector {
     private static ArrayList<javafx.scene.control.Button> buttons;
     private static StreamReader reader;
     private static Stage primaryStage;
+    private static ArrayList<Player> onlinePlayersFromServer =new ArrayList<>();
 static
     {
 
@@ -124,6 +127,7 @@ public static void play(int position,int sign)
     JsonObject requestObject=new JsonObject();
     requestObject.addProperty("type","play");
     requestObject.addProperty("opponet",PlayerInfo.opponentId);
+    requestObject.addProperty("game_id",PlayerInfo.gameId);
     requestObject.addProperty("position",position);
     requestObject.addProperty("sign",sign);
     System.out.println(position);
@@ -175,7 +179,10 @@ static public void getopponentId()
 
     reader.start();
 }
-
+public static ArrayList<Player> getOnlinePlayersFromServer()
+{
+    return onlinePlayersFromServer;
+}
     public static void close(JsonObject closingObj) {
         try {
             dataOutputStream.writeUTF(closingObj.toString());
@@ -218,11 +225,23 @@ public static class Player
 {
     private int id;
     private String username;
-    private String hashedPassword;
     private int wins;
     private int losses;
     private int score;
     private boolean online;
+
+    public int getId() {
+        return id;
+    }
+
+
+    public String getUsername() {
+        return username;
+    }
+    public int getWins()
+    {
+        return wins;
+    }
 }
     public static class PlayerInfo
     {
@@ -235,6 +254,7 @@ public static class Player
         static String opponentId;
         static boolean playerTurn;
         static boolean allowFire;
+        static int gameId;
 
 
         public String getLogin() {
@@ -293,6 +313,7 @@ public static class Player
                         case "yourinvetationaccepted":
                             int accepterID=requestObject.get("whoaccepted").getAsInt();
                             PlayerInfo.opponentId= String.valueOf(accepterID);
+                            PlayerInfo.gameId=requestObject.get("game_id").getAsInt();
                             PlayerInfo.playerTurn=false;
                             Platform.runLater(new Runnable() {
                                 @Override
@@ -311,6 +332,7 @@ public static class Player
                             break;
                         case "invitationreceived":
                             int opponentID=requestObject.get("sender").getAsInt();
+                            PlayerInfo.gameId=requestObject.get("game_id").getAsInt();
                             PlayerInfo.opponentId= String.valueOf(opponentID);
                             System.out.println(opponentID+"chalenges you");
                             Platform.runLater(new Runnable() {
@@ -320,8 +342,6 @@ public static class Player
                                     alert2.setTitle("invitation");
                                     alert2.setHeaderText("Do you want to play with " + PlayerInfo.opponentId + " ?");
                                     alert2.setResizable(false);
-
-
                                     Optional<ButtonType> result = alert2.showAndWait();
                                     ButtonType button = result.orElse(ButtonType.NO);
 
@@ -346,6 +366,16 @@ public static class Player
                             });
                             break;
 
+                        case "onlineplayers":
+                            JsonArray onlinePlayers=requestObject.getAsJsonArray();
+                            for(JsonElement rplayerobject : onlinePlayers) {
+                                JsonObject playerObject=rplayerobject.getAsJsonObject();
+                                Player player= new  Player();
+                                player.id=playerObject.get("id").getAsInt();
+                                player.username=playerObject.get("username").getAsString();
+                                player.score=playerObject.get("score").getAsInt();
+                                onlinePlayersFromServer.add(player);
+                            }
                     }
                 }catch (IOException e){}
                 try {

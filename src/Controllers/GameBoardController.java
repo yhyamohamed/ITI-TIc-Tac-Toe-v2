@@ -44,6 +44,7 @@ public class GameBoardController {
     private String playerMark = "X";
     private boolean gameEnded;
     private int moves;
+    private int gameID;
 
     public GameBoardController(GameBoard gameBoard, Stage primaryStage, ArrayList<Button> btns, boolean playAgainstPC) {
         Gameboard = gameBoard;
@@ -54,9 +55,11 @@ public class GameBoardController {
         if(palyagainstcomputer)
         {
             ServerConnector.PlayerInfo.allowFire=true;
+
         }
         if(!playAgainstPC) {
             ServerConnector.assignGameBoardButtons(btns);
+            gameID=ServerConnector.PlayerInfo.gameId;
            // ServerConnector.getopponentId();
 
             primaryStage.setOnCloseRequest((e)->{
