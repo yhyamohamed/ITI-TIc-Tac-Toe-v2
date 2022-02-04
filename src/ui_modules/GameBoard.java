@@ -14,7 +14,6 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.RowConstraints;
 import javafx.stage.Stage;
-import javafx.scene.shape.Line;
 
 public class GameBoard extends AnchorPane {
    public static GameBoardController gameBoardController ;
@@ -45,7 +44,7 @@ public class GameBoard extends AnchorPane {
     protected final Button start;
     ArrayList<Button> btns = new ArrayList<>();
 
-    public GameBoard(Stage primaryStage, boolean playAgainstPC,boolean isItAreplay) {
+    public GameBoard(Stage primaryStage, boolean playAgainstPC, boolean isItAreplay,boolean playLocally) {
 
         user1 = new Label();
         scoreUser1 = new Label();
@@ -321,7 +320,7 @@ public class GameBoard extends AnchorPane {
 
 
 // added new
-        gameBoardController = new GameBoardController(this, primaryStage, btns, playAgainstPC,isItAreplay);
+        gameBoardController = new GameBoardController(this, primaryStage, btns, playAgainstPC,playLocally);
 
     }
 

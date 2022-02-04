@@ -4,15 +4,11 @@ package ui_modules;
 
 import Controllers.ServerConnector;
 
-import Controllers.HomePageController;
-
-
-import Controllers.HomePageController;
 
 import Controllers.playonlineController;
 import Models.Player;
 import javafx.scene.Scene;
-import ui_modules.Home;
+
 import java.util.ArrayList;
 import java.util.Optional;
 
@@ -27,12 +23,6 @@ import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
-
-
-import Controllers.ServerConnector;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-
 
 
 public class playonlinescreen extends AnchorPane {
@@ -236,7 +226,7 @@ public class playonlinescreen extends AnchorPane {
     }
     // new method direct game-board
     public static void goToPlayOnlineScene() {
-        GameBoard root = new GameBoard(primaryStage1, false,false);
+        GameBoard root = new GameBoard(primaryStage1,  false,false,false);
         Scene scene = new Scene(root);
         primaryStage1.setTitle("GameBoard screen ");
         primaryStage1.setScene(scene);

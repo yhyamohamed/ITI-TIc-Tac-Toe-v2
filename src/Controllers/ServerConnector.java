@@ -4,9 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -16,7 +14,6 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui_modules.GameBoard;
-import ui_modules.Home;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -161,7 +158,7 @@ public static void play(int position,int sign)
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                GameBoard root = new GameBoard(primaryStage, true,true);
+                GameBoard root = new GameBoard(primaryStage, false,true,false);
                 Scene scene = new Scene(root);
                 primaryStage.setTitle("record screen ");
                 primaryStage.setScene(scene);
@@ -394,7 +391,7 @@ public static class Player
                                 public void run() {
                                     boolean playAgainstPC=false;
                                     System.out.println("newgameboard");
-                                    GameBoard root = new GameBoard(primaryStage, playAgainstPC,false);
+                                    GameBoard root = new GameBoard(primaryStage,  playAgainstPC,false,false);
                                     Scene scene = new Scene(root);
                                     primaryStage.setTitle("GameBoard screen ");
                                     primaryStage.setScene(scene);
@@ -428,7 +425,7 @@ public static class Player
                                         acceptInvetation();
                                         boolean playAgainstPC=false;
                                         System.out.println("newgameboard");
-                                        GameBoard root = new GameBoard(primaryStage, playAgainstPC,false);
+                                        GameBoard root = new GameBoard(primaryStage,  playAgainstPC,false,false);
                                         Scene scene = new Scene(root);
                                         primaryStage.setTitle("GameBoard screen ");
                                         primaryStage.setScene(scene);
