@@ -45,13 +45,13 @@ single player vs Computer
 player vs player            
 show recorded games                              
               
-- server
+- server 
 Activate or disable the server
 
 # team member 
--yehya shehata
--mohamed ismail 
--mohamed saeed 
--abdulla haggab 
--rana ehab
--sarah abdeldaym
+- yehya shehata
+- mohamed ismail 
+- mohamed saeed 
+- abdulla haggab 
+- rana ehab
+- sarah abdeldaym
