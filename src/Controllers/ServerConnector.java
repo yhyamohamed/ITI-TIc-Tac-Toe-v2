@@ -14,6 +14,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import ui_modules.GameBoard;
+import ui_modules.Home;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -431,6 +432,7 @@ public static class Player
                                         primaryStage.setScene(scene);
                                         primaryStage.show();
 
+
                                     } else {
                                         System.out.println("noo"); // reject play
                                     }
@@ -461,26 +463,24 @@ public static class Player
                                 @Override
                                 public void run() {
                                     //render pop up
-                                    Alert alert = new Alert(Alert.AlertType.WARNING, "Connnection failed",  ButtonType.OK);
-
+                                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                                    alert.setContentText("Connection Failed");
+                                    alert.setTitle("Connection");
                                     alert.getDialogPane().setMinHeight(100);
                                     alert.getDialogPane().setMinWidth(100);
                                     alert.setResizable(false);
-                                    alert.setTitle("Connection");
-                                    alert.show();
 
-//                                    Optional<ButtonType> result = alert.showAndWait();
-//                                    ButtonType button = result.orElse(ButtonType.NO);
-//
-//                                    if (button == ButtonType.YES) {
-//                                        System.out.println("yes");
-//                                        Home root = new Home(primaryStage);
-//                                        Scene scene = new Scene(root);
-//                                        primaryStage.setTitle("home screen");
-//                                        primaryStage.setScene(scene);
-//                                        primaryStage.show();
-//
-//                                    }
+                                    alert.getButtonTypes();
+
+                                    Optional<ButtonType> result = alert.showAndWait();
+                                    if (result.get() == ButtonType.OK){
+                                        // ... user chose OK button
+                                        Home root = new Home(primaryStage);
+                                        Scene scene = new Scene(root);
+                                        primaryStage.setTitle("home screen");
+                                        primaryStage.setScene(scene);
+                                        primaryStage.show();
+                                    }
                                 }
                             });
                     }
