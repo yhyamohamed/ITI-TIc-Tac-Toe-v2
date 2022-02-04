@@ -25,11 +25,7 @@ public class signUpController {
             @Override
             public void handle(ActionEvent event) {
                // Player player = new Player();
-                if(ServerConnector.dataOutputStream == null  ){
-                             showServerStatus();
-                     }
-               
-               if (signUpPage.getUsrTxt().getText() != null && signUpPage.getPassTxt().getText() != null && (signUpPage.getUsrTxt().getText().trim().length() > 0) && (signUpPage.getPassConfirmTxt().getText().equals(signUpPage.getPassTxt().getText()))){
+                if (signUpPage.getUsrTxt().getText() != null && signUpPage.getPassTxt().getText() != null && (signUpPage.getUsrTxt().getText().trim().length() > 0) && (signUpPage.getPassConfirmTxt().getText().equals(signUpPage.getPassTxt().getText()))){
                boolean result = ServerConnector.signUp(signUpPage.getUsrTxt().getText(),signUpPage.getPassTxt().getText());
                 
                if(result){
@@ -77,15 +73,5 @@ public class signUpController {
             alert.setTitle("sign up successfully");
             alert.setResizable(false);
             alert.show();
-    }
-    
-    public  void showServerStatus() {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content here", ButtonType.OK);
-        alert.getDialogPane().setMinHeight(230);
-        alert.getDialogPane().setMinWidth(210);
-        alert.setTitle("warning");
-        alert.setContentText("Server is disconected");
-        alert.show();
-        
     }
 }
