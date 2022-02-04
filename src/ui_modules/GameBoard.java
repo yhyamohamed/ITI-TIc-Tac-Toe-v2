@@ -320,7 +320,7 @@ public class GameBoard extends AnchorPane {
 
 
 // added new
-        gameBoardController = new GameBoardController(this, primaryStage, btns, playAgainstPC,playLocally);
+        gameBoardController = new GameBoardController(this, primaryStage, btns, playAgainstPC, isItAreplay,playLocally);
 
     }
 

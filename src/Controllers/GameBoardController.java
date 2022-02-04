@@ -45,13 +45,58 @@ public class GameBoardController {
     private boolean gameEnded;
     private int moves;
     private int gameID;
+    private boolean isLocal;
 
-    public GameBoardController(GameBoard gameBoard, Stage primaryStage, ArrayList<Button> btns, boolean playAgainstPC,boolean isItAreplay) {
+    public GameBoardController(GameBoard gameBoard, Stage primaryStage, ArrayList<Button> btns, boolean playAgainstPC,boolean isItAreplay, boolean isLocal) {
         Gameboard = gameBoard;
         this.primaryStage = primaryStage;
         this.btns = btns;
+        this.isLocal = isLocal;
         palyagainstcomputer = playAgainstPC;
-        if(!isItAreplay){
+
+        if (isLocal) {
+            ServerConnector.PlayerInfo.allowFire = true;
+            System.out.println("local");
+            for (Button bt : btns) {
+                bt.setOnAction(event -> {
+                    if (ServerConnector.PlayerInfo.allowFire){
+                        System.out.println(bt);
+                        System.out.println(btns.indexOf(bt));
+                        int index = btns.indexOf(bt);
+                        bt.setFont(new Font("System Bold Italic", 200));
+                        bt.setStyle("-fx-font-size:40");
+                        if (!bt.isDisable() && !gameEnded) {
+                            bt.setText(getPlayer());
+                            bt.setDisable(true);
+
+
+                            int sign = (bt.getText().equals("X")) ? 8 : 1;
+                            toggleTurns();
+                            marks[index] = sign;
+                            moves++;
+                            CheckWinning();
+                            System.out.println("aplay");
+                            currentplayerturn=true;
+
+                    /*if (!palyagainstcomputer && opponentsTurn) {
+                        opponentsTurn = false;
+                        ServerConnector.opponentsMove();
+
+                    }*/
+                            if (!gameEnded && computerTurn && palyagainstcomputer) {
+                                computerTurn();
+                            } else if (!gameEnded && !computerTurn && palyagainstcomputer) {
+                                computerTurn = true;
+                            }
+                            CheckWinning();
+                        }
+                    }
+                });
+
+            }
+        }
+
+        if(!isItAreplay && !isLocal){
 
 
         if(palyagainstcomputer)
@@ -326,16 +371,19 @@ public class GameBoardController {
         Gameboard.resetAllTiles();
         Gameboard.getRecord().setVisible(true);
 
-        if(wins.equals("X")&&ServerConnector.PlayerInfo.mySign.equals("X")){
-            System.out.println("you won");
-            ShowWinDialog();
-        }
-        if(wins.equals("O")&&ServerConnector.PlayerInfo.mySign.equals("O")) {
-            System.out.println("you won");
-            ShowWinDialog();
-        }else{
-            System.out.println("you lost");
-            ShowLoseDialog();
+        if(!isLocal) {
+
+            if (wins.equals("X") && ServerConnector.PlayerInfo.mySign.equals("X")) {
+                System.out.println("you won");
+                ShowWinDialog();
+            }
+            if (wins.equals("O") && ServerConnector.PlayerInfo.mySign.equals("O")) {
+                System.out.println("you won");
+                ShowWinDialog();
+            } else {
+                System.out.println("you lost");
+                ShowLoseDialog();
+            }
         }
 
     }
