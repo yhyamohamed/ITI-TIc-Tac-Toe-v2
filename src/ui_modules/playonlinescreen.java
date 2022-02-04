@@ -81,7 +81,7 @@ public class playonlinescreen extends AnchorPane {
         x.forEach((Player player1) -> {
             if (!player1.getUsername().equals(ServerConnector.PlayerInfo.getUsername())) {
                 Label playerName = new Label();
-                playerName.setText(player1.getUsername());
+                playerName.setText(player1.getId()+": "+ player1.getUsername());
                 playerName.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
                 playerName.setFont(new Font("System Bold Italic", 33.0));
 
@@ -108,6 +108,12 @@ public class playonlinescreen extends AnchorPane {
                         alert.setResizable(false);
                         alert.setTitle("waiting");
                         alert.show();
+                        Label chosenPlayer=(Label)event.getSource();
+
+                        int chosenPlayerId=Integer.parseInt(chosenPlayer.getText().substring(0,1));
+                        ServerConnector.sendInvetation(chosenPlayerId);
+
+
 
 
                         event.consume();

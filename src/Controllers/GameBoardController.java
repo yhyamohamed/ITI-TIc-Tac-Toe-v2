@@ -56,7 +56,7 @@ public class GameBoardController {
         }
         if(!playAgainstPC) {
             ServerConnector.assignGameBoardButtons(btns);
-            ServerConnector.getopponentId();
+           // ServerConnector.getopponentId();
         }
         currentplayerturn=ServerConnector.PlayerInfo.playerTurn;
         /*if(currentplayerturn)

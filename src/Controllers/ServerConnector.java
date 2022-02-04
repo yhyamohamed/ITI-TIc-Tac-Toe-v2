@@ -1,43 +1,67 @@
 package Controllers;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import javafx.application.Platform;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.stage.Stage;
+import ui_modules.GameBoard;
 
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 public class ServerConnector {
     private static Socket socket;
     private static DataInputStream dataInputStream;
     private static DataOutputStream dataOutputStream;
     private static ArrayList<javafx.scene.control.Button> buttons;
+    private static ArrayList<Player> onlinePlayersFromServer =new ArrayList<>();
     private static StreamReader reader;
+    private static Stage primaryStage;
 static
     {
-        try {
+       /* try {
             socket= new Socket(InetAddress.getLocalHost(),5001);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
         }catch (IOException e){
             e.printStackTrace();
         }
-
          reader=new StreamReader();
+        getOnlinePlayersInfo();*/
     }
 
     public ServerConnector()
     {
-
+    }
+    public static void setPrimaryStage(Stage currentPrimaryStage)
+    {
+        primaryStage=currentPrimaryStage;
     }
     public static String signIn(String userName,String passWord)
     {
+        if(socket==null) {
+            try {
+                socket = new Socket(InetAddress.getLocalHost(), 5001);
+                dataInputStream = new DataInputStream(socket.getInputStream());
+                dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
 
 
+        reader = new StreamReader();
         JsonObject jasoSign=new JsonObject();
         jasoSign.addProperty("type","login");
         jasoSign.addProperty("username",userName);
@@ -66,11 +90,23 @@ static
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        getOnlinePlayersInfo();
+        reader.start();
         return PlayerInfo.login;
     }
+
     public  static boolean signUp(String username,String password)
     {
+        if(socket==null) {
+            try {
+                socket = new Socket(InetAddress.getLocalHost(), 5001);
+                dataInputStream = new DataInputStream(socket.getInputStream());
+                dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+        }
         Boolean validuser;
         JsonObject jsonsignup=new JsonObject();
         jsonsignup.addProperty("type","signup");
@@ -151,21 +187,64 @@ static public void getopponentId()
         e.printStackTrace();
     }
 
-    reader.start();
-}
-/*private static ArrayList<Player> getPlayersInfo()
-{
 
-}*/
-public class Player
+}
+private static void getOnlinePlayersInfo()
+{
+    JsonObject requestObject=new JsonObject();
+    requestObject.addProperty("type","getonlineplayers");
+
+    try {
+        dataOutputStream.writeUTF(requestObject.toString());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+public static class Player
 {
     private int id;
     private String username;
-    private String hashedPassword;
-    private int wins;
-    private int losses;
     private int score;
-    private boolean online;
+}
+public static void instantiateNewOnlineGameboard()
+{
+
+            boolean playAgainstPC=false;
+            System.out.println("newgameboard");
+            GameBoard root = new GameBoard(primaryStage, playAgainstPC);
+            Scene scene = new Scene(root);
+            primaryStage.setTitle("GameBoard screen ");
+            primaryStage.setScene(scene);
+            primaryStage.show();
+
+
+
+}
+public static void sendInvetation(int id)
+{
+    JsonObject requestObject=new JsonObject();
+    requestObject.addProperty("type","sendInvitation");
+    requestObject.addProperty("senderplayerid",PlayerInfo.id);
+    requestObject.addProperty("sendtoid",id);
+    PlayerInfo.opponentId= String.valueOf(id);
+    try {
+        dataOutputStream.writeUTF(requestObject.toString());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
+public static void acceptInvetation()
+{
+    JsonObject requestObject=new JsonObject();
+    requestObject.addProperty("type","acceptinvetation");
+    requestObject.addProperty("accepter",PlayerInfo.id);
+    requestObject.addProperty("accepted",PlayerInfo.opponentId);
+
+    try {
+        dataOutputStream.writeUTF(requestObject.toString());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
 }
     public static class PlayerInfo
     {
@@ -214,6 +293,7 @@ public class Player
         @Override
         public void  run()
         {
+            System.out.println("readeron");
             while (true)
             {
                 try {
@@ -221,6 +301,7 @@ public class Player
                     if (lineSent == null) throw new IOException();
                     JsonObject requestObject = JsonParser.parseString(lineSent).getAsJsonObject();
                     String type = requestObject.get("type").getAsString();
+                    System.out.println(type);
                     switch (type)
                     {
                         case "oponnetmove" :
@@ -231,6 +312,72 @@ public class Player
                         case "loginresponse":
                             System.out.println("responsethroughthread");
 
+                            break;
+                        case "onlineplayers":
+                            JsonArray onlinePlayers=requestObject.getAsJsonArray();
+                            for(JsonElement rplayerobject : onlinePlayers) {
+                                JsonObject playerObject=rplayerobject.getAsJsonObject();
+                                Player player= new  Player();
+                                player.id=playerObject.get("id").getAsInt();
+                                player.username=playerObject.get("username").getAsString();
+                                player.score=playerObject.get("score").getAsInt();
+                                onlinePlayersFromServer.add(player);
+                            }
+                            break;
+                        case "yourinvetationaccepted":
+                            int accepterID=requestObject.get("whoaccepted").getAsInt();
+                            PlayerInfo.opponentId= String.valueOf(accepterID);
+                            PlayerInfo.playerTurn=false;
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    boolean playAgainstPC=false;
+                                    System.out.println("newgameboard");
+                                    GameBoard root = new GameBoard(primaryStage, playAgainstPC);
+                                    Scene scene = new Scene(root);
+                                    primaryStage.setTitle("GameBoard screen ");
+                                    primaryStage.setScene(scene);
+                                    primaryStage.show();
+                                }
+                            });
+
+
+                            break;
+                        case "invitationreceived":
+                            int opponentID=requestObject.get("sender").getAsInt();
+                            PlayerInfo.opponentId= String.valueOf(opponentID);
+                            System.out.println(opponentID+"chalenges you");
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION, "waiting for response...", ButtonType.NO, ButtonType.YES);
+                                    alert2.setTitle("invitation");
+                                    alert2.setHeaderText("Do you want to play with " + PlayerInfo.opponentId + " ?");
+                                    alert2.setResizable(false);
+
+
+                                    Optional<ButtonType> result = alert2.showAndWait();
+                                    ButtonType button = result.orElse(ButtonType.NO);
+
+                                    if (button == ButtonType.YES) {
+                                        // if condition yes && no : call isma3el methods
+                                        System.out.println("yes"); //accept play
+                                        PlayerInfo.playerTurn=true;
+                                        PlayerInfo.allowFire=true;
+                                        acceptInvetation();
+                                        boolean playAgainstPC=false;
+                                        System.out.println("newgameboard");
+                                        GameBoard root = new GameBoard(primaryStage, playAgainstPC);
+                                        Scene scene = new Scene(root);
+                                        primaryStage.setTitle("GameBoard screen ");
+                                        primaryStage.setScene(scene);
+                                        primaryStage.show();
+
+                                    } else {
+                                        System.out.println("noo"); // reject play
+                                    }
+                                }
+                            });
                             break;
                     }
                 }catch (IOException e){}

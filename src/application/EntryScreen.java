@@ -11,6 +11,7 @@ public class EntryScreen extends Application {
     // STATIC VARIABLE client
     @Override
     public void start(Stage primaryStage) {
+        Controllers.ServerConnector.setPrimaryStage(primaryStage);
         primaryStage.setResizable(false);
         //Controllers.ServerConnector sc=new ServerConnector();
         logIn root = new logIn(primaryStage);
