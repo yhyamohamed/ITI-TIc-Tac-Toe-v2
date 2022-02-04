@@ -104,6 +104,7 @@ public static void play(int position,int sign)
     requestObject.addProperty("opponet",PlayerInfo.opponentId);
     requestObject.addProperty("position",position);
     requestObject.addProperty("sign",sign);
+    System.out.println("ayy 7aga");
     System.out.println(position);
     try {
         dataOutputStream.writeUTF(requestObject.toString());
@@ -219,7 +220,7 @@ public class Player
     }
     private static class StreamReader extends Thread
     {
-        static boolean running;
+        static boolean running=true;
 
         public StreamReader()
         {
@@ -240,7 +241,9 @@ public class Player
                     {
                         case "oponnetmove" :
                             int position=requestObject.get("position").getAsInt();
+                            System.out.println(position+"bbbbbb");
                             opponentsMove(position);
+
 
                             break;
                         case "loginresponse":
