@@ -375,10 +375,12 @@ public class GameBoardController {
 
             if (wins.equals("X") && ServerConnector.PlayerInfo.mySign.equals("X")) {
                 System.out.println("you won");
+                makeFinishGameObj();
                 ShowWinDialog();
             }
             if (wins.equals("O") && ServerConnector.PlayerInfo.mySign.equals("O")) {
                 System.out.println("you won");
+                makeFinishGameObj();
                 ShowWinDialog();
             } else {
                 System.out.println("you lost");
@@ -387,7 +389,15 @@ public class GameBoardController {
         }
 
     }
-
+public void makeFinishGameObj()
+{
+    JsonObject gameFinish = new JsonObject();
+    gameFinish.addProperty("type","finish_game");
+    gameFinish.addProperty("winner",ServerConnector.PlayerInfo.id);
+    gameFinish.addProperty("looser",ServerConnector.PlayerInfo.opponentId);
+    gameFinish.addProperty("game_id",ServerConnector.PlayerInfo.gameId);
+    ServerConnector.sendFinishingObj(gameFinish);
+}
     public EventHandler<ActionEvent> resetGame() {
         return event -> {
             gameEnded = false;

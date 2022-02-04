@@ -207,6 +207,14 @@ public static void opponentsMove(int position)
     });
 
 }
+public static void sendFinishingObj(JsonObject gameFinish)
+{
+    try {
+        dataOutputStream.writeUTF(gameFinish.toString());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
+}
 /*static public void getopponentId()
 {
     JsonObject requestObject=new JsonObject();
