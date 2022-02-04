@@ -57,6 +57,14 @@ public class GameBoardController {
         if(!playAgainstPC) {
             ServerConnector.assignGameBoardButtons(btns);
            // ServerConnector.getopponentId();
+            ServerConnector.getopponentId();
+            primaryStage.setOnCloseRequest((e)->{
+                JsonObject closingObj = new JsonObject();
+                closingObj.addProperty("type","client_close_while_playing");
+                closingObj.addProperty("opponentId", ServerConnector.PlayerInfo.opponentId);
+                ServerConnector.close(closingObj);
+            });
+
         }
         currentplayerturn=ServerConnector.PlayerInfo.playerTurn;
         /*if(currentplayerturn)

@@ -163,6 +163,7 @@ public  class logIn extends AnchorPane {
         
          new loginController(this,primaryStage);
 
+
     }
     public String getPasswordTxt() {
         return passwordTxt.getText();

@@ -21,6 +21,8 @@ public class EntryScreen extends Application {
         primaryStage.setTitle("log in screen");
         primaryStage.setScene(scene);
         primaryStage.show();
+
+
     }
 
 

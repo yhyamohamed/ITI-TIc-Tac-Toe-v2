@@ -183,7 +183,7 @@ public class Player {
 
         ConnectDB connectDB = new ConnectDB();
 
-        String sql = "select * from player where online = true";
+        String sql = "select * from player where online = true order by Score desc";
 
         ArrayList<Player> onlinePlayers = new ArrayList<>();
 
@@ -214,7 +214,7 @@ public class Player {
 
         ConnectDB connectDB = new ConnectDB();
 
-        String sql = "select * from player where online = false";
+        String sql = "select * from player where online = false order by Score desc";
 
         ArrayList<Player> offlinePlayers = new ArrayList<>();
 
