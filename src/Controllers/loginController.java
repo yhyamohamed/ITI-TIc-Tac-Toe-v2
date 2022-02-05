@@ -90,12 +90,12 @@ public class loginController {
                 } catch (Exception e) {
 //                    e.printStackTrace();
 
-                    Alert alert = new Alert(Alert.AlertType.WARNING, "Connnection failed",  ButtonType.OK);
+                    Alert alert = new Alert(Alert.AlertType.WARNING, "server is down",  ButtonType.OK);
 
                     alert.getDialogPane().setMinHeight(100);
                     alert.getDialogPane().setMinWidth(100);
                     alert.setResizable(false);
-                    alert.setTitle("Connection");
+                    alert.setTitle("server Connection");
                     alert.initOwner(primaryStage);
                     alert.show();
                 }
