@@ -14,7 +14,7 @@ public  class Home extends AnchorPane {
 
     protected final Button pcbtn;
     protected final Button friendsbtn;
-    protected final Button onlinebtn;
+    protected final Button playLocally;
      protected final Button LogOut;
     protected final Label username;
     protected final Label label;
@@ -29,7 +29,7 @@ public  class Home extends AnchorPane {
 
         pcbtn = new Button();
         friendsbtn = new Button();
-        onlinebtn = new Button();
+        playLocally = new Button();
         LogOut = new Button();
         username = new Label();
         label = new Label();
@@ -71,17 +71,17 @@ public  class Home extends AnchorPane {
         friendsbtn.setText("Invite Friend");
         friendsbtn.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
-        onlinebtn.setAccessibleText("loginBtn");
-        onlinebtn.setId("btn");
-        onlinebtn.setLayoutX(202.0);
-        onlinebtn.setLayoutY(268.0);
-        onlinebtn.setMaxHeight(60.0);
-        onlinebtn.setMnemonicParsing(false);
-        onlinebtn.setPrefHeight(44.0);
-        onlinebtn.setPrefWidth(187.0);
-        onlinebtn.getStylesheets().add("ui_modules/Resources/application.css");
-        onlinebtn.setText("Local game");
-        onlinebtn.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
+        playLocally.setAccessibleText("loginBtn");
+        playLocally.setId("btn");
+        playLocally.setLayoutX(202.0);
+        playLocally.setLayoutY(268.0);
+        playLocally.setMaxHeight(60.0);
+        playLocally.setMnemonicParsing(false);
+        playLocally.setPrefHeight(44.0);
+        playLocally.setPrefWidth(187.0);
+        playLocally.getStylesheets().add("ui_modules/Resources/application.css");
+        playLocally.setText("Local game");
+        playLocally.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
 
         username.setLayoutX(126.0);
         username.setLayoutY(14.0);
@@ -146,7 +146,7 @@ public  class Home extends AnchorPane {
 
         getChildren().add(pcbtn);
         getChildren().add(friendsbtn);
-        getChildren().add(onlinebtn);
+        getChildren().add(playLocally);
         getChildren().add(LogOut);
         getChildren().add(username);
         getChildren().add(label);
@@ -161,7 +161,7 @@ public  class Home extends AnchorPane {
 
     }
     public void playLocally(EventHandler< ActionEvent > Action){
-        onlinebtn.setOnAction(Action);
+        playLocally.setOnAction(Action);
         
         }
     public String getUserName()
