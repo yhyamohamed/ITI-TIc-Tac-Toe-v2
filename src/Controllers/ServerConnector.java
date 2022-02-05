@@ -28,7 +28,7 @@ import java.util.Optional;
 public class ServerConnector {
     private static Socket socket;
     private static DataInputStream dataInputStream;
-    private static DataOutputStream dataOutputStream;
+    static DataOutputStream dataOutputStream;
     private static ArrayList<javafx.scene.control.Button> buttons;
     private static StreamReader reader;
     private static playonlinescreen playonlinescreen;
@@ -530,27 +530,24 @@ public static class Player
                                 @Override
                                 public void run() {
                                     //render pop up
-                                    Alert alert = new Alert(Alert.AlertType.WARNING, "Connnection failed",  ButtonType.OK);
-
-                                    alert.getDialogPane().setMinHeight(100);
-                                    alert.getDialogPane().setMinWidth(100);
-                                    alert.setResizable(false);
-                                    alert.setTitle("Connection");
+                                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                                    alert.setContentText("Connection failed");
+                                    alert.setTitle("connection");
                                     alert.initOwner(primaryStage);
-                                    alert.show();
 
-//                                    Optional<ButtonType> result = alert.showAndWait();
-//                                    ButtonType button = result.orElse(ButtonType.NO);
-//
-//                                    if (button == ButtonType.YES) {
-//                                        System.out.println("yes");
-//                                        Home root = new Home(primaryStage);
-//                                        Scene scene = new Scene(root);
-//                                        primaryStage.setTitle("home screen");
-//                                        primaryStage.setScene(scene);
-//                                        primaryStage.show();
-//
-//                                    }
+
+                                    alert.getButtonTypes();
+
+                                    Optional<ButtonType> result = alert.showAndWait();
+                                    if (result.get() == ButtonType.OK){
+                                        // ... user chose OK button
+                                        Home root = new Home(primaryStage);
+                                        Scene scene = new Scene(root);
+                                        primaryStage.setTitle("home screen ");
+                                        primaryStage.setScene(scene);
+                                        primaryStage.show();
+
+                                    }
 
                                 }
                             });

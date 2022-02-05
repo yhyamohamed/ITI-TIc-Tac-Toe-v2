@@ -102,12 +102,12 @@ public class GameBoard extends AnchorPane {
         user2.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
         user2.setText(ServerConnector.PlayerInfo.getOpponentUsername());
 
-        scoreUser2.setLayoutX(561.0);
+        scoreUser2.setLayoutX(570.0);
         scoreUser2.setLayoutY(47.0);
         scoreUser2.setPrefHeight(26.0);
         scoreUser2.setPrefWidth(101.0);
         scoreUser2.getStyleClass().add("text");
-        scoreUser2.setText(String.valueOf(ServerConnector.PlayerInfo.getOpponentScore()));
+        scoreUser2.setText("score: "+String.valueOf(ServerConnector.PlayerInfo.getOpponentScore()));
 //        if (!playAgainstPC) {
 //            send.setId("button");
 //            send.setLayoutX(600.0);
