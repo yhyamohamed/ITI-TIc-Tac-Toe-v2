@@ -392,6 +392,7 @@ public static class Player
                                     alert2.setTitle("invitation");
                                     alert2.setHeaderText("Do you want to play with " + PlayerInfo.opponentId + " ?");
                                     alert2.setResizable(false);
+                                    alert2.initOwner(primaryStage);
                                     Optional<ButtonType> result = alert2.showAndWait();
                                     ButtonType button = result.orElse(ButtonType.NO);
 
@@ -467,6 +468,7 @@ public static class Player
                                     alert.getDialogPane().setMinWidth(100);
                                     alert.setResizable(false);
                                     alert.setTitle("Connection");
+                                    alert.initOwner(primaryStage);
                                     alert.show();
 
 //                                    Optional<ButtonType> result = alert.showAndWait();

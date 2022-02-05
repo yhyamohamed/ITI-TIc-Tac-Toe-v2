@@ -72,6 +72,7 @@ public class signUpController {
             alert.getDialogPane().setMinWidth(100);
             alert.setTitle("sign up successfully");
             alert.setResizable(false);
+//            alert.initOwner(primaryStage);
             alert.show();
     }
 }
