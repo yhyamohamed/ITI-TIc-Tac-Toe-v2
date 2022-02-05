@@ -37,7 +37,7 @@ public class loginController {
             @Override
             public void handle(ActionEvent event) {
                 homePageController = new HomePageController(primaryStage);
-                homePageController.loadGameBoard(primaryStage, true,false,false);
+                homePageController.loadGameBoard(primaryStage, true,false);
             }
         };
     }
