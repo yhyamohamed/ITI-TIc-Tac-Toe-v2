@@ -4,12 +4,15 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import javafx.animation.PauseTransition;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import ui_modules.GameBoard;
 import ui_modules.Home;
 import ui_modules.playonlinescreen;
@@ -19,6 +22,7 @@ import java.net.InetAddress;
 import java.net.Socket;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 public class ServerConnector {
@@ -185,13 +189,38 @@ public static void opponentsMove(int position)
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                GameBoard root = new GameBoard(primaryStage, false, true, false);
+                GameBoard root = new GameBoard(primaryStage, false,true,false);
                 Scene scene = new Scene(root);
                 primaryStage.setTitle("record screen ");
                 primaryStage.setScene(scene);
                 primaryStage.show();
             }
         });
+        String[] string = recordsArray.replaceAll("\\[", "")
+                .replaceAll("]", "")
+                .split(",");
+        for (int i = 0; i < string.length; i++) {
+            String[] st = string[i].trim().split("-");
+            System.out.println(Arrays.toString(st));
+
+
+            int pos = Integer.parseInt(st[0]);
+            int sign = Integer.parseInt(st[1]);
+            int player_id = Integer.parseInt(st[2]);
+
+
+            double tim = i + 0.5;
+
+            PauseTransition pause = new PauseTransition(Duration.seconds(i));
+            pause.setOnFinished(event -> {
+                Button btn = buttons.get(pos);
+                btn.setFont(new Font("System Bold Italic", 200));
+                btn.setStyle("-fx-font-size:40");
+                String si = (sign == 8) ? "X" : "O";
+                btn.setText(si);
+            });
+            pause.playFromStart();
+        }
     }
     public static void sendReplayreq(JsonObject showRecObj)
     {
@@ -237,6 +266,8 @@ public static ArrayList<Player> getOnlinePlayersFromServer()
         JsonObject requestObject=new JsonObject();
         requestObject.addProperty("type","sendInvitation");
         requestObject.addProperty("senderplayerid",PlayerInfo.id);
+        requestObject.addProperty("senderusername",PlayerInfo.username);
+        requestObject.addProperty("senderscore",PlayerInfo.score);
         requestObject.addProperty("sendtoid",id);
         PlayerInfo.opponentId= String.valueOf(id);
         try {
@@ -320,8 +351,18 @@ public static class Player
         static boolean allowFire;
         static String mySign;
         static int gameId;
+        static int opponentScore;
+        static String opponentUsername;
 
 
+       static public String getOpponentUsername()
+        {
+            return opponentUsername;
+        }
+        static    public int getOpponentScore()
+        {
+            return opponentScore;
+        }
         public String getLogin() {
             return login;
         }
@@ -403,13 +444,16 @@ public static class Player
                             int opponentID=requestObject.get("sender").getAsInt();
                             PlayerInfo.gameId=requestObject.get("game_id").getAsInt();
                             PlayerInfo.opponentId= String.valueOf(opponentID);
+                            PlayerInfo.opponentUsername=requestObject.get("opponentusername").getAsString();
+                            PlayerInfo.opponentScore=requestObject.get("opponentsscore").getAsInt();
+
                             System.out.println(opponentID+"chalenges you");
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
                                     Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION, "waiting for response...", ButtonType.NO, ButtonType.YES);
                                     alert2.setTitle("invitation");
-                                    alert2.setHeaderText("Do you want to play with " + PlayerInfo.opponentId + " ?");
+                                    alert2.setHeaderText("Do you want to play with " + PlayerInfo.opponentUsername + " ?");
                                     alert2.setResizable(false);
                                     alert2.initOwner(primaryStage);
                                     Optional<ButtonType> result = alert2.showAndWait();
