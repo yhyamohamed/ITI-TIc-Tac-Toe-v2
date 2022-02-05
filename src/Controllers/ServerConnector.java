@@ -28,8 +28,8 @@ import java.util.Optional;
 
 public class ServerConnector {
     private static Socket socket;
-    private static DataInputStream dataInputStream;
-    private static DataOutputStream dataOutputStream;
+    static DataInputStream dataInputStream;
+    static DataOutputStream dataOutputStream;
     private static ArrayList<javafx.scene.control.Button> buttons;
     private static StreamReader reader;
     private static Stage primaryStage;
@@ -52,22 +52,24 @@ static
         if(socket==null)
         {
             try {
-                socket= new Socket(InetAddress.getLocalHost(),5001);
+                socket= new Socket(InetAddress.getLocalHost(),5005);
                 dataInputStream = new DataInputStream(socket.getInputStream());
                 dataOutputStream = new DataOutputStream(socket.getOutputStream());
             }catch (IOException e){
-                e.printStackTrace();
+          
             }
         }
-
+   String Empty ="";
         JsonObject jasoSign=new JsonObject();
         jasoSign.addProperty("type","login");
         jasoSign.addProperty("username",userName);
         jasoSign.addProperty("password",passWord);
+        
         try {
+             if(dataOutputStream==null)throw new IOException();
             dataOutputStream.writeUTF(jasoSign.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            return Empty;
         }
         try {
             String resMsg= dataInputStream.readUTF();
@@ -88,7 +90,7 @@ static
             }
             }else{}
         } catch (IOException e) {
-            e.printStackTrace();
+           
         }
 
         return PlayerInfo.login;
@@ -102,7 +104,7 @@ static
                 dataInputStream = new DataInputStream(socket.getInputStream());
                 dataOutputStream = new DataOutputStream(socket.getOutputStream());
             }catch (IOException e){
-                e.printStackTrace();
+              
             }
         }
         Boolean validuser;
@@ -113,7 +115,7 @@ static
         try {
             dataOutputStream.writeUTF(jsonsignup.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+          
         }
         try {
             String resMsg= dataInputStream.readUTF();
@@ -121,7 +123,7 @@ static
             String serverResponse=response.get("successful").getAsString();
             validuser=(serverResponse.equals("true"))? true:false;
         } catch (IOException e) {
-            e.printStackTrace();
+          
             validuser=false;
         }
 

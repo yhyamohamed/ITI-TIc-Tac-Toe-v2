@@ -1,18 +1,22 @@
 package Controllers;
 
 
+import static Controllers.ServerConnector.dataOutputStream;
 import Models.Player;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import ui_modules.SignUp;
 import ui_modules.logIn;
 
 public class signUpController {
     private SignUp signUpPage;
+
     public signUpController(SignUp signUpPagee, Stage primaryStage) {
         signUpPage = signUpPagee;
 
@@ -25,10 +29,16 @@ public class signUpController {
             @Override
             public void handle(ActionEvent event) {
                // Player player = new Player();
-                if (signUpPage.getUsrTxt().getText() != null && signUpPage.getPassTxt().getText() != null && (signUpPage.getUsrTxt().getText().trim().length() > 0) && (signUpPage.getPassConfirmTxt().getText().equals(signUpPage.getPassTxt().getText()))){
-               boolean result = ServerConnector.signUp(signUpPage.getUsrTxt().getText(),signUpPage.getPassTxt().getText());
                 
+           if (signUpPage.getUsrTxt().getText() != null && signUpPage.getPassTxt().getText() != null && (signUpPage.getUsrTxt().getText().trim().length() > 0) && (signUpPage.getPassConfirmTxt().getText().equals(signUpPage.getPassTxt().getText()))  ){
+                
+                 
+              
+             if(ServerConnector.dataOutputStream != null  ){
+                    System.out.println("not null");
+                boolean result = ServerConnector.signUp(signUpPage.getUsrTxt().getText(),signUpPage.getPassTxt().getText());
                if(result){
+                      System.out.println("result is true");
                         ShowSignUpsucess();
                     logIn root = new logIn(primaryStage);
                     Scene scene = new Scene(root);
@@ -37,13 +47,16 @@ public class signUpController {
                     primaryStage.setScene(scene);
                     primaryStage.show();
                 }
+                
+          
                 }
-//                else{
-//                    // display message *failed to sign up* >>> UI
-//                }
-
-
-            }
+                }else{  
+               System.out.println("sss");
+               showServerStatus();
+             }
+            
+             }
+            
         };
     }
 
@@ -73,5 +86,23 @@ public class signUpController {
             alert.setTitle("sign up successfully");
             alert.setResizable(false);
             alert.show();
+    }
+    
+     
+ public  void showServerStatus() {
+    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content here", ButtonType.OK);
+         Image image = new Image(getClass().getResource("/Controllers/../ui_modules/Resources/serverDown.jpg").toExternalForm());    
+        ImageView imageView = new ImageView(image);
+    
+    
+        alert.getDialogPane().setMinHeight(150);
+        alert.getDialogPane().setMinWidth(50);
+        alert.setTitle("warning");
+         alert.setContentText("press enter in the server screen");
+    
+      
+        alert.setGraphic(imageView);
+        alert.showAndWait();
+       
     }
 }
