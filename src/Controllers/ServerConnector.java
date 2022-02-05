@@ -12,6 +12,7 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import ui_modules.GameBoard;
 import ui_modules.Home;
+import ui_modules.playonlinescreen;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -26,6 +27,7 @@ public class ServerConnector {
     private static DataOutputStream dataOutputStream;
     private static ArrayList<javafx.scene.control.Button> buttons;
     private static StreamReader reader;
+    private static playonlinescreen playonlinescreen;
     private static Stage primaryStage;
     private static ArrayList<Player> onlinePlayersFromServer =new ArrayList<>();
     private static ArrayList<Player> offlinePlayersFromServer =new ArrayList<>();
@@ -43,11 +45,13 @@ static
     {
         primaryStage=currentPrimaryStage;
     }
+    public static void setPlayonlinescreen(playonlinescreen currentplayOnlinescreen){playonlinescreen=currentplayOnlinescreen;}
     public static String signIn(String userName,String passWord)
     {
-        if(socket==null)
+        if(socket==null || socket.isClosed())
         {
             try {
+
                 socket= new Socket(InetAddress.getLocalHost(),5001);
                 dataInputStream = new DataInputStream(socket.getInputStream());
                 dataOutputStream = new DataOutputStream(socket.getOutputStream());
@@ -79,6 +83,7 @@ static
                 PlayerInfo.wins = response.get("wins").getAsString();
                 PlayerInfo.losses = response.get("losses").getAsString();
                 reader=new StreamReader();
+                reader.running=true;
                 reader.start();
                queryOfflinePlayersFromServer();
                queryOnlinePlayersFromServer();
@@ -125,6 +130,19 @@ static
         }
 
         return validuser;
+    }
+    public static void logOut()
+    {
+        JsonObject requestObject=new JsonObject();
+        requestObject.addProperty("type","logout");
+        requestObject.addProperty("username",PlayerInfo.username);
+        try {
+            dataOutputStream.writeUTF(requestObject.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 public static void assignGameBoardButtons(ArrayList<Button> btns)
 {
@@ -207,7 +225,7 @@ public static ArrayList<Player> getOnlinePlayersFromServer()
             dataOutputStream.close();
             dataInputStream.close();
             socket.close();
-            StreamReader.running=false;
+            reader.running=false;
         } catch (IOException e) {
 
         }
@@ -330,7 +348,7 @@ public static class Player
     }
     private static class StreamReader extends Thread
     {
-        static boolean running=true;
+         boolean running=true;
 
         public StreamReader()
         {
@@ -371,6 +389,7 @@ public static class Player
                                 @Override
                                 public void run() {
                                     boolean playAgainstPC=false;
+                                    playonlinescreen.getinvitationAlert().hide();
                                     System.out.println("newgameboard");
                                     GameBoard root = new GameBoard(primaryStage,  playAgainstPC,false,false);
                                     Scene scene = new Scene(root);
@@ -426,13 +445,14 @@ public static class Player
 
 
                         case "offlineplayers":
+                            if(offlinePlayersFromServer != null) offlinePlayersFromServer.clear();
                             JsonArray offlinePlayers=requestObject.getAsJsonArray("offlineplayers");
                             System.out.println(offlinePlayers);
                             for(JsonElement rplayerobject : offlinePlayers) {
                                 JsonObject playerObject=rplayerobject.getAsJsonObject();
                                 Player player= new  Player();
                                 player.id=playerObject.get("id").getAsInt();
-                                System.out.println(player.id);
+                               // System.out.println(player.id);
                                 player.username=playerObject.get("username").getAsString();
                                 player.score=playerObject.get("score").getAsInt();
                                 offlinePlayersFromServer.add(player);
@@ -443,7 +463,9 @@ public static class Player
                             break;
 
                         case "onlineplayers":
+
                             JsonArray onlinePlayers=requestObject.getAsJsonArray("onlineplayers");
+                            if(onlinePlayersFromServer != null) onlinePlayersFromServer.clear();
                             System.out.println(onlinePlayers);
                             for(JsonElement rplayerobject : onlinePlayers) {
                                 JsonObject playerObject=rplayerobject.getAsJsonObject();
@@ -458,8 +480,8 @@ public static class Player
                             ServerConnector.dataOutputStream.close();
                             ServerConnector.dataInputStream.close();
                             System.out.println("opponent_disconnect");
-                            /*ServerConnector.socket.close();
-                            running=false;*/
+                            ServerConnector.socket.close();
+                            running=false;
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -485,8 +507,56 @@ public static class Player
 //                                        primaryStage.show();
 //
 //                                    }
+
                                 }
                             });
+                            break;
+                        case "update-list":
+
+                            System.out.println("clientclosed");
+                            JsonArray newonlinePlayers=requestObject.getAsJsonArray("onlineplayers");
+                            if(onlinePlayersFromServer != null) onlinePlayersFromServer.clear();
+                            //System.out.println(newonlinePlayers);
+                            for(JsonElement rplayerobject : newonlinePlayers) {
+                                JsonObject playerObject=rplayerobject.getAsJsonObject();
+                                Player player= new  Player();
+                                player.id=playerObject.get("id").getAsInt();
+                                player.username=playerObject.get("username").getAsString();
+                                player.score=playerObject.get("score").getAsInt();
+                                onlinePlayersFromServer.add(player);
+                            }
+                            for(Player offplayer : onlinePlayersFromServer)
+                            {
+                                System.out.println("new onlineplayers");
+                                System.out.println(offplayer.getUsername());
+                            }
+                            if(offlinePlayersFromServer != null) offlinePlayersFromServer.clear();
+                            JsonArray newofflinePlayers=requestObject.getAsJsonArray("offlineplayers");
+                            //System.out.println(offlinePlayers);
+                            for(JsonElement rplayerobject : newofflinePlayers) {
+                                JsonObject playerObject=rplayerobject.getAsJsonObject();
+                                Player player= new  Player();
+                                player.id=playerObject.get("id").getAsInt();
+                                // System.out.println(player.id);
+                                player.username=playerObject.get("username").getAsString();
+                                player.score=playerObject.get("score").getAsInt();
+                                offlinePlayersFromServer.add(player);
+                            }
+                            for(Player offplayer : offlinePlayersFromServer)
+                            {
+                                System.out.println("new offlineplayers");
+                                System.out.println(offplayer.getUsername());
+                            }
+
+                            Platform.runLater(new Runnable() {
+                                @Override
+                                public void run() {
+                                    if(playonlinescreen !=null)
+                                    playonlinescreen.renderLists(onlinePlayersFromServer,offlinePlayersFromServer);
+                                }
+                            });
+
+                            break;
                     }
                 }catch (IOException e){}
                 try {

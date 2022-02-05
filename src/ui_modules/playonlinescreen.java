@@ -46,9 +46,12 @@ public class playonlinescreen extends AnchorPane {
     protected final VBox VScoreonline;
     protected final VBox Voffline;
     protected final VBox VScoreoffline;
+    private Stage primaryStage;
+    private Alert alert;
+
 
     public playonlinescreen(Stage primaryStage) {
-        primaryStage1= primaryStage;
+        this.primaryStage=primaryStage;
         onlinepeple = new Label();
         homebtn = new Button();
 
@@ -120,48 +123,76 @@ public class playonlinescreen extends AnchorPane {
         VScoreoffline.setPrefHeight(350.0);
         VScoreoffline.setPrefWidth(117.0);
         
-        
+        ServerConnector.setPlayonlinescreen(this);
+
+
+        getChildren().add(onlinepeple);
+        renderLists(x,f);
+        getChildren().add(Vonline);
+        getChildren().add(offlinepeople);
+        getChildren().add(VScoreonline);
+        getChildren().add(Voffline);
+        getChildren().add(VScoreoffline);
+         getChildren().add(homebtn);
+
+
+     new playonlineController(this,primaryStage);
+
+
+
+
+
+    }
+    public Alert getinvitationAlert(){ return alert;}
+    public void renderLists(ArrayList<Player> x,ArrayList<Player> f)
+    {
+
+        System.out.println("listupdated");
+        Vonline.getChildren().clear();
+        VScoreonline.getChildren().clear();
+        Voffline.getChildren().clear();
+        VScoreoffline.getChildren().clear();
         x.forEach((Player player1) ->{
-                if(!player1.getUsername().equals(ServerConnector.PlayerInfo.getUsername())){
-                    Label playerName=new Label();
-                    playerName.setText(player1.getId()+": "+ player1.getUsername());
-                    playerName.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
-                    playerName.setFont(new Font("System Bold Italic", 33.0));
-                    
-                    Label playerScore=new Label();
-                    int y=player1.getScore();
-                    String s=Integer.toString(y);
-                    playerScore.setText(s);
-                    playerScore.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
-                    playerScore.setFont(new Font("System Bold Italic", 33.0));
+            if(!player1.getUsername().equals(ServerConnector.PlayerInfo.getUsername())){
+                Label playerName=new Label();
+                playerName.setText(player1.getId()+": "+ player1.getUsername());
+                playerName.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
+                playerName.setFont(new Font("System Bold Italic", 33.0));
+                //System.out.println(player1.getUsername());
 
-                    Vonline.getChildren().add(playerName);
-                    VScoreonline.getChildren().add(playerScore);
+                Label playerScore=new Label();
+                int y=player1.getScore();
+                String s=Integer.toString(y);
+                playerScore.setText(s);
+                playerScore.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
+                playerScore.setFont(new Font("System Bold Italic", 33.0));
 
-                    playerName.setOnMouseClicked(new EventHandler<Event>() {
-                        @Override
-                        
-                        
-                        public void handle(Event event) {
-                            //waiting notification 
-                            Alert alert = new Alert(Alert.AlertType.NONE, "waiting for player...", ButtonType.CANCEL);
-                            Label chosenLable=(Label) event.getSource();
-                            int playerID=Integer.parseInt(chosenLable.getText().substring(0,1));
-                            ServerConnector.sendInvetation(playerID);
-                            alert.getDialogPane().setMinHeight(100);
-                            alert.getDialogPane().setMinWidth(100);
-                            alert.setResizable(false);
-                            alert.setTitle("waiting");
-                            alert.initOwner(primaryStage);
-                            alert.show();
-                                     
+                Vonline.getChildren().add(playerName);
+                VScoreonline.getChildren().add(playerScore);
 
-                                  //the other player 
+                playerName.setOnMouseClicked(new EventHandler<Event>() {
+                    @Override
+
+                    public void handle(Event event) {
+                        //waiting notification
+                         alert = new Alert(Alert.AlertType.NONE, "waiting for player...", ButtonType.CANCEL);
+                        Label chosenLable=(Label) event.getSource();
+                        int playerID=Integer.parseInt(chosenLable.getText().substring(0,1));
+                        ServerConnector.sendInvetation(playerID);
+                        alert.getDialogPane().setMinHeight(100);
+                        alert.getDialogPane().setMinWidth(100);
+                        alert.setResizable(false);
+                        alert.setTitle("waiting");
+                        alert.initOwner(primaryStage);
+                        alert.show();
+
+
+                        //the other player
 //                                Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION, "waiting for response...", ButtonType.NO,ButtonType.YES);
 //                                alert2.setTitle("invitation");
 //                                alert2.setHeaderText("Do you want to play with "+ServerConnector.PlayerInfo.getUsername()+" ?");
 //                                alert2.setResizable(false);
-//                            
+//
 //
 //                                Optional<ButtonType> result = alert.showAndWait();
 //                                ButtonType button = result.orElse(ButtonType.NO);
@@ -171,50 +202,35 @@ public class playonlinescreen extends AnchorPane {
 //                                } else {
 //                                    System.out.println("noo"); // reject play
 //                                }
-                            
-                            
-                            event.consume();
-                        }
-                    });
-                }
+
+
+                        event.consume();
+                    }
+                });
+            }
         });
-        
-        
+
+        System.out.println("offline");
         f.forEach((Player player2) ->{
-                if(!player2.getUsername().equals(ServerConnector.PlayerInfo.getUsername())){
-                    Label playerName=new Label();
-                    playerName.setText(player2.getUsername());
-                    playerName.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
-                    playerName.setFont(new Font("System Bold Italic", 33.0));
-                    
-                    Label playerScore=new Label();
-                    int y=player2.getScore();
-                    String s=Integer.toString(y);
-                    playerScore.setText(s);
-                    playerScore.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
-                    playerScore.setFont(new Font("System Bold Italic", 33.0));
+            if(!player2.getUsername().equals(ServerConnector.PlayerInfo.getUsername())){
+                Label playerName=new Label();
+                playerName.setText(player2.getUsername());
+                playerName.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
+                playerName.setFont(new Font("System Bold Italic", 33.0));
+                System.out.println(player2.getUsername());
 
-                    Voffline.getChildren().add(playerName);
-                    VScoreoffline.getChildren().add(playerScore);
+                Label playerScore=new Label();
+                int y=player2.getScore();
+                String s=Integer.toString(y);
+                playerScore.setText(s);
+                playerScore.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
+                playerScore.setFont(new Font("System Bold Italic", 33.0));
 
-                }
+                Voffline.getChildren().add(playerName);
+                VScoreoffline.getChildren().add(playerScore);
+
+            }
         });
-
-        getChildren().add(onlinepeple);
-       
-        getChildren().add(Vonline);
-        getChildren().add(offlinepeople);
-        getChildren().add(VScoreonline);
-        getChildren().add(Voffline);
-        getChildren().add(VScoreoffline);
-         getChildren().add(homebtn);
-
-   
-     new playonlineController(this,primaryStage);
-
-
-
-
     }
 
     public static void receivedInvitation(String x) {

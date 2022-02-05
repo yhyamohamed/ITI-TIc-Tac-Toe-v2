@@ -1,6 +1,7 @@
 package Controllers;
 
 import Models.Player;
+import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
@@ -10,6 +11,7 @@ import ui_modules.Home;
 import ui_modules.SignUp;
 import ui_modules.logIn;
 import ui_modules.playonlinescreen;
+import Controllers.ServerConnector;
 
 public class HomePageController {
     private  Home homeScreen;
@@ -75,9 +77,10 @@ public class HomePageController {
       return new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                loginController.validUser=false;
-                Player player = new Player();
-                player.logout(homeScreen.getUserName());
+                JsonObject closingObj = new JsonObject();
+                closingObj.addProperty("type","client_close");
+                closingObj.addProperty("username",ServerConnector.PlayerInfo.username);
+                ServerConnector.close(closingObj);
                 logIn root=new  logIn(primaryStage);
                 Scene scene = new Scene(root);
                 primaryStage.setTitle("logIn screen");

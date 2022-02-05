@@ -70,6 +70,7 @@ public class loginController {
                         primaryStage.setOnCloseRequest((e)->{
                             JsonObject closingObj = new JsonObject();
                             closingObj.addProperty("type","client_close");
+                            closingObj.addProperty("username",ServerConnector.PlayerInfo.username);
                             ServerConnector.close(closingObj);
                         });
 
