@@ -273,7 +273,7 @@ public class GameBoardController {
             for (int tile = 0; tile < marks.length - 2; tile += 3) {
                 if (marks[tile] == 0 || marks[tile+1]==0 || marks[tile+2]==0) continue;
                 if ((marks[tile] == marks[tile + 1]) && (marks[tile] == marks[tile + 2])) {
-                    String wins = (marks[tile] == 9) ? "X" : "O";
+                    String wins = (marks[tile] == 8) ? "X" : "O";
                     gameEnding(wins);
                     founded = true;
                     Button[] winningTiles = {btns.get(tile), btns.get(tile + 1), btns.get(tile + 2)};
@@ -304,7 +304,7 @@ public class GameBoardController {
             for (int tile = 0; tile < 3; tile++) {
                 if (marks[tile] == 0 || marks[tile+3] == 0 || marks[tile+6] == 0) continue;
                 if ((marks[tile] == marks[tile + 3]) && (marks[tile] == marks[tile + 6])) {
-                    String wins = (marks[tile] == 9) ? "X" : "O";
+                    String wins = (marks[tile] == 8) ? "X" : "O";
                     gameEnding(wins);
                     founded = true;
                     Button[] winningTiles = {btns.get(tile), btns.get(tile + 3), btns.get(tile + 6)};
@@ -322,7 +322,7 @@ public class GameBoardController {
             int tile = 0;
             if (marks[tile] != 0) {
                 if ((marks[tile] == marks[tile + 4]) && (marks[tile] == marks[tile + 8])) {
-                    String wins = (marks[tile] == 9) ? "X" : "O";
+                    String wins = (marks[tile] == 8) ? "X" : "O";
                     System.out.println("top right");
                     gameEnding(wins);
                     founded = true;
@@ -341,7 +341,7 @@ public class GameBoardController {
             int tile = 2;
             if (marks[tile] != 0) {
                 if ((marks[tile] == marks[tile + 2]) && (marks[tile] == marks[tile + 4])) {
-                    String wins = (marks[tile] == 9) ? "X" : "O";
+                    String wins = (marks[tile] == 8) ? "X" : "O";
                     System.out.println("top right");
                     gameEnding(wins);
                     founded = true;
@@ -378,7 +378,7 @@ public class GameBoardController {
                 makeFinishGameObj();
                 ShowWinDialog();
             }
-            if (wins.equals("O") && ServerConnector.PlayerInfo.mySign.equals("O")) {
+            else if (wins.equals("O") && ServerConnector.PlayerInfo.mySign.equals("O")) {
                 System.out.println("you won");
                 makeFinishGameObj();
                 ShowWinDialog();
