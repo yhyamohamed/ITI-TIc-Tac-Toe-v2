@@ -4,9 +4,7 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
-import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -163,7 +161,7 @@ public static void play(int position,int sign)
         Platform.runLater(new Runnable() {
             @Override
             public void run() {
-                GameBoard root = new GameBoard(primaryStage, true,true);
+                GameBoard root = new GameBoard(primaryStage, false,true,false);
                 Scene scene = new Scene(root);
                 primaryStage.setTitle("record screen ");
                 primaryStage.setScene(scene);
@@ -210,6 +208,14 @@ public static void opponentsMove(int position)
         }
     });
 
+}
+public static void sendFinishingObj(JsonObject gameFinish)
+{
+    try {
+        dataOutputStream.writeUTF(gameFinish.toString());
+    } catch (IOException e) {
+        e.printStackTrace();
+    }
 }
 /*static public void getopponentId()
 {
@@ -396,7 +402,7 @@ public static class Player
                                 public void run() {
                                     boolean playAgainstPC=false;
                                     System.out.println("newgameboard");
-                                    GameBoard root = new GameBoard(primaryStage, playAgainstPC,false);
+                                    GameBoard root = new GameBoard(primaryStage,  playAgainstPC,false,false);
                                     Scene scene = new Scene(root);
                                     primaryStage.setTitle("GameBoard screen ");
                                     primaryStage.setScene(scene);
@@ -430,11 +436,12 @@ public static class Player
                                         acceptInvetation();
                                         boolean playAgainstPC=false;
                                         System.out.println("newgameboard");
-                                        GameBoard root = new GameBoard(primaryStage, playAgainstPC,false);
+                                        GameBoard root = new GameBoard(primaryStage,  playAgainstPC,false,false);
                                         Scene scene = new Scene(root);
                                         primaryStage.setTitle("GameBoard screen ");
                                         primaryStage.setScene(scene);
                                         primaryStage.show();
+
 
                                     } else {
                                         System.out.println("noo"); // reject play
@@ -466,26 +473,24 @@ public static class Player
                                 @Override
                                 public void run() {
                                     //render pop up
-                                    Alert alert = new Alert(Alert.AlertType.WARNING, "Connnection failed",  ButtonType.OK);
-
+                                    Alert alert = new Alert(Alert.AlertType.WARNING);
+                                    alert.setContentText("Connection Failed");
+                                    alert.setTitle("Connection");
                                     alert.getDialogPane().setMinHeight(100);
                                     alert.getDialogPane().setMinWidth(100);
                                     alert.setResizable(false);
-                                    alert.setTitle("Connection");
-                                    alert.show();
 
-//                                    Optional<ButtonType> result = alert.showAndWait();
-//                                    ButtonType button = result.orElse(ButtonType.NO);
-//
-//                                    if (button == ButtonType.YES) {
-//                                        System.out.println("yes");
-//                                        Home root = new Home(primaryStage);
-//                                        Scene scene = new Scene(root);
-//                                        primaryStage.setTitle("home screen");
-//                                        primaryStage.setScene(scene);
-//                                        primaryStage.show();
-//
-//                                    }
+                                    alert.getButtonTypes();
+
+                                    Optional<ButtonType> result = alert.showAndWait();
+                                    if (result.get() == ButtonType.OK){
+                                        // ... user chose OK button
+                                        Home root = new Home(primaryStage);
+                                        Scene scene = new Scene(root);
+                                        primaryStage.setTitle("home screen");
+                                        primaryStage.setScene(scene);
+                                        primaryStage.show();
+                                    }
                                 }
                             });
                     }
