@@ -64,7 +64,7 @@ public class playonlinescreen extends AnchorPane {
         x=ServerConnector.getOnlinePlayersFromServer();
         
         ArrayList<Player> f = new ArrayList<>();
-        f=ServerConnector.getofflinePlayersFromServer();
+        f=ServerConnector.getOfflinePlayersFromServer();
 
  
 
@@ -235,13 +235,13 @@ public class playonlinescreen extends AnchorPane {
         }
     }
     // new method direct game-board
-    public static void goToPlayOnlineScene() {
+    /*public static void goToPlayOnlineScene() {
         GameBoard root = new GameBoard(primaryStage1, false);
         Scene scene = new Scene(root);
         primaryStage1.setTitle("GameBoard screen ");
         primaryStage1.setScene(scene);
         primaryStage1.show();
-    }
+    }*/
 
 
     public void homeButton(EventHandler<ActionEvent> Action) {

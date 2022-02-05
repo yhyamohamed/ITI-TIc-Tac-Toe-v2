@@ -28,6 +28,8 @@ public class ServerConnector {
     private static StreamReader reader;
     private static Stage primaryStage;
     private static ArrayList<Player> onlinePlayersFromServer =new ArrayList<>();
+    private static ArrayList<Player> offlinePlayersFromServer =new ArrayList<>();
+
 static
     {
 
@@ -78,6 +80,9 @@ static
                 PlayerInfo.losses = response.get("losses").getAsString();
                 reader=new StreamReader();
                 reader.start();
+                queryOfflinePlayersFromServer();
+                queryOnlinePlayersFromServer();
+
 
             }
             }else{}
@@ -157,35 +162,45 @@ public static void opponentsMove(int position)
     });
 
 }
-/*static public void getopponentId()
-{
-    JsonObject requestObject=new JsonObject();
-    requestObject.addProperty("type","getOpponentId");
-    System.out.println("getOpidclient");
-    requestObject.addProperty("playerid",PlayerInfo.id);
-    try {
-        dataOutputStream.writeUTF(requestObject.toString());
-    } catch (IOException e) {
-        e.printStackTrace();
+
+    private static void renderRecordedGame(String recordsArray) {
+        Platform.runLater(new Runnable() {
+            @Override
+            public void run() {
+                GameBoard root = new GameBoard(primaryStage, false, true, false);
+                Scene scene = new Scene(root);
+                primaryStage.setTitle("record screen ");
+                primaryStage.setScene(scene);
+                primaryStage.show();
+            }
+        });
     }
-    try {
-        String resMsg= dataInputStream.readUTF();
-        System.out.println(resMsg);
-        JsonObject responseOpject=new JsonObject();
-        responseOpject=JsonParser.parseString(resMsg).getAsJsonObject();
-        PlayerInfo.opponentId=responseOpject.get("opponentid").getAsString();
-        PlayerInfo.playerTurn=responseOpject.get("turn").getAsBoolean();
-        PlayerInfo.allowFire=PlayerInfo.playerTurn;
-    } catch (IOException e) {
-        e.printStackTrace();
+    public static void sendReplayreq(JsonObject showRecObj)
+    {
+        try {
+            dataOutputStream.writeUTF(showRecObj.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
-    reader.start();
-}*/
+    public static void sendFinishingObj(JsonObject gameFinish)
+    {
+        try {
+            dataOutputStream.writeUTF(gameFinish.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 public static ArrayList<Player> getOnlinePlayersFromServer()
 {
     return onlinePlayersFromServer;
 }
+    public static ArrayList<Player> getOfflinePlayersFromServer()
+    {
+        return offlinePlayersFromServer;
+    }
     public static void close(JsonObject closingObj) {
         try {
             dataOutputStream.writeUTF(closingObj.toString());
@@ -198,19 +213,7 @@ public static ArrayList<Player> getOnlinePlayersFromServer()
         }
 }
 
-    /*private static ArrayList<Player> getPlayersInfo()
-    {
-private static void getOnlinePlayersInfo()
-{
-    JsonObject requestObject=new JsonObject();
-    requestObject.addProperty("type","getonlineplayers");
 
-    try {
-        dataOutputStream.writeUTF(requestObject.toString());
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}*/
     public static void sendInvetation(int id)
     {
         JsonObject requestObject=new JsonObject();
@@ -238,6 +241,28 @@ private static void getOnlinePlayersInfo()
             e.printStackTrace();
         }
     }
+    private static void queryOnlinePlayersFromServer()
+    {
+        JsonObject requestObject=new JsonObject();
+        requestObject.addProperty("type","getonlineplayers");
+        try {
+            dataOutputStream.writeUTF(requestObject.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+    private static void queryOfflinePlayersFromServer()
+    {
+        JsonObject requestObject=new JsonObject();
+        requestObject.addProperty("type","getonlineplayers");
+        try {
+            dataOutputStream.writeUTF(requestObject.toString());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 public static class Player
 {
     private int id;
@@ -259,6 +284,10 @@ public static class Player
     {
         return wins;
     }
+
+    public int getScore() {
+        return score;
+    }
 }
     public static class PlayerInfo
     {
@@ -271,6 +300,7 @@ public static class Player
         static String opponentId;
         static boolean playerTurn;
         static boolean allowFire;
+        static String mySign;
         static int gameId;
 
 
@@ -301,6 +331,7 @@ public static class Player
     private static class StreamReader extends Thread
     {
         static boolean running=true;
+
         public StreamReader()
         {
 
@@ -335,20 +366,19 @@ public static class Player
                             PlayerInfo.opponentId= String.valueOf(accepterID);
                             PlayerInfo.gameId=requestObject.get("game_id").getAsInt();
                             PlayerInfo.playerTurn=false;
+                            PlayerInfo.mySign="O";
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
                                     boolean playAgainstPC=false;
                                     System.out.println("newgameboard");
-                                    GameBoard root = new GameBoard(primaryStage, playAgainstPC);
+                                    GameBoard root = new GameBoard(primaryStage,  playAgainstPC,false,false);
                                     Scene scene = new Scene(root);
                                     primaryStage.setTitle("GameBoard screen ");
                                     primaryStage.setScene(scene);
                                     primaryStage.show();
                                 }
                             });
-
-
                             break;
                         case "invitationreceived":
                             int opponentID=requestObject.get("sender").getAsInt();
@@ -370,14 +400,16 @@ public static class Player
                                         System.out.println("yes"); //accept play
                                         PlayerInfo.playerTurn=true;
                                         PlayerInfo.allowFire=true;
+                                        PlayerInfo.mySign="X";
                                         acceptInvetation();
                                         boolean playAgainstPC=false;
                                         System.out.println("newgameboard");
-                                        GameBoard root = new GameBoard(primaryStage, playAgainstPC);
+                                        GameBoard root = new GameBoard(primaryStage,  playAgainstPC,false,false);
                                         Scene scene = new Scene(root);
                                         primaryStage.setTitle("GameBoard screen ");
                                         primaryStage.setScene(scene);
                                         primaryStage.show();
+
 
                                     } else {
                                         System.out.println("noo"); // reject play
@@ -390,8 +422,7 @@ public static class Player
                            String moves= requestObject.get("moves").getAsString();
                             renderRecordedGame(moves);
                             break;
-                            case "onlineplayers":
-                            JsonArray onlinePlayers=requestObject.getAsJsonArray();
+
 
                         case "offlineplayers":
                             JsonArray offlinePlayers=requestObject.getAsJsonArray("offlineplayers");
