@@ -45,12 +45,59 @@ public class GameBoardController {
     private boolean gameEnded;
     private int moves;
     private int gameID;
+    private boolean isLocal;
 
-    public GameBoardController(GameBoard gameBoard, Stage primaryStage, ArrayList<Button> btns, boolean playAgainstPC) {
+    public GameBoardController(GameBoard gameBoard, Stage primaryStage, ArrayList<Button> btns, boolean playAgainstPC,boolean isItAreplay, boolean isLocal) {
         Gameboard = gameBoard;
         this.primaryStage = primaryStage;
         this.btns = btns;
+        this.isLocal = isLocal;
         palyagainstcomputer = playAgainstPC;
+
+        if (isLocal) {
+            ServerConnector.PlayerInfo.allowFire = true;
+            System.out.println("local");
+            for (Button bt : btns) {
+                bt.setOnAction(event -> {
+                    if (ServerConnector.PlayerInfo.allowFire){
+                        System.out.println(bt);
+                        System.out.println(btns.indexOf(bt));
+                        int index = btns.indexOf(bt);
+                        bt.setFont(new Font("System Bold Italic", 200));
+                        bt.setStyle("-fx-font-size:40");
+                        if (!bt.isDisable() && !gameEnded) {
+                            bt.setText(getPlayer());
+                            bt.setDisable(true);
+
+
+                            int sign = (bt.getText().equals("X")) ? 8 : 1;
+                            toggleTurns();
+                            marks[index] = sign;
+                            moves++;
+                            CheckWinning();
+                            System.out.println("aplay");
+                            currentplayerturn=true;
+
+                    /*if (!palyagainstcomputer && opponentsTurn) {
+                        opponentsTurn = false;
+                        ServerConnector.opponentsMove();
+
+                    }*/
+                            if (!gameEnded && computerTurn && palyagainstcomputer) {
+                                computerTurn();
+                            } else if (!gameEnded && !computerTurn && palyagainstcomputer) {
+                                computerTurn = true;
+                            }
+                            CheckWinning();
+                        }
+                    }
+                });
+
+            }
+        }
+
+        if(!isItAreplay && !isLocal){
+
 
         if(palyagainstcomputer)
         {
@@ -71,6 +118,7 @@ public class GameBoardController {
 
         }
         currentplayerturn=ServerConnector.PlayerInfo.playerTurn;
+
         /*if(currentplayerturn)
         {
             opponentsTurn=false;
@@ -124,8 +172,12 @@ public class GameBoardController {
             });
 
         }
+        }else{
+            ServerConnector.assignGameBoardButtons(btns);
+        }
         Gameboard.restButton(resetGame());
         Gameboard.homeButton(HomeScreen(primaryStage));
+        Gameboard.replay(showRecord(primaryStage));
     }
 
     //home screen 
@@ -153,6 +205,23 @@ public class GameBoardController {
         };
     }
 
+    private EventHandler<ActionEvent> showRecord(Stage primaryStage) {
+        return new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+                System.out.println("req records");
+                JsonObject showRecObj = new JsonObject();
+                showRecObj.addProperty("type","request_record");
+                showRecObj.addProperty("game_id",gameID);
+                ServerConnector.sendReplayreq(showRecObj);
+//                GameBoard root = new GameBoard(primaryStage, true,true);
+//                Scene scene = new Scene(root);
+//                primaryStage.setTitle("GameBoard screen ");
+//                primaryStage.setScene(scene);
+//                primaryStage.show();
+            }
+        };
+    }
     public ArrayList<Button> getBtns() {
         return btns;
     }
@@ -180,6 +249,7 @@ public class GameBoardController {
                 checkFoeTie();
             }
         }
+
     }
 
 
@@ -208,7 +278,8 @@ public class GameBoardController {
                     founded = true;
                     Button[] winningTiles = {btns.get(tile), btns.get(tile + 1), btns.get(tile + 2)};
                     Gameboard.showWinningTiles(winningTiles);
-                    ShowWinDialog();
+//                    ShowWinDialog();
+
                 }
             }
             /*for (int tile = marks.length - 1; tile >= 0; tile -= 3) {
@@ -238,7 +309,7 @@ public class GameBoardController {
                     founded = true;
                     Button[] winningTiles = {btns.get(tile), btns.get(tile + 3), btns.get(tile + 6)};
                     Gameboard.showWinningTiles(winningTiles);
-                    ShowWinDialog();
+//                    ShowWinDialog();
                 }
             }
         }
@@ -257,7 +328,7 @@ public class GameBoardController {
                     founded = true;
                     Button[] winningTiles = {btns.get(tile), btns.get(tile + 4), btns.get(tile + 8)};
                     Gameboard.showWinningTiles(winningTiles);
-                    ShowWinDialog();
+//                    ShowWinDialog();
                 }
             }
         }
@@ -276,7 +347,7 @@ public class GameBoardController {
                     founded = true;
                     Button[] winningTiles = {btns.get(tile), btns.get(tile + 2), btns.get(tile + 4)};
                     Gameboard.showWinningTiles(winningTiles);
-                    ShowWinDialog();
+//                    ShowWinDialog();
                 }
             }
         }
@@ -294,11 +365,39 @@ public class GameBoardController {
 
     private void gameEnding(String wins) {
         gameEnded = true;
-        btns.forEach(bt -> bt.setDisable(true));
-//        infoScreen.changeMsg(wins+" has won ");
-//        infoScreen.showBtn();
-    }
+        btns.forEach(bt -> {
+            bt.setDisable(true);
+        });
+        Gameboard.resetAllTiles();
+        Gameboard.getRecord().setVisible(true);
 
+        if(!isLocal) {
+
+            if (wins.equals("X") && ServerConnector.PlayerInfo.mySign.equals("X")) {
+                System.out.println("you won");
+                makeFinishGameObj();
+                ShowWinDialog();
+            }
+            if (wins.equals("O") && ServerConnector.PlayerInfo.mySign.equals("O")) {
+                System.out.println("you won");
+                makeFinishGameObj();
+                ShowWinDialog();
+            } else {
+                System.out.println("you lost");
+                ShowLoseDialog();
+            }
+        }
+
+    }
+public void makeFinishGameObj()
+{
+    JsonObject gameFinish = new JsonObject();
+    gameFinish.addProperty("type","finish_game");
+    gameFinish.addProperty("winner",ServerConnector.PlayerInfo.id);
+    gameFinish.addProperty("looser",ServerConnector.PlayerInfo.opponentId);
+    gameFinish.addProperty("game_id",ServerConnector.PlayerInfo.gameId);
+    ServerConnector.sendFinishingObj(gameFinish);
+}
     public EventHandler<ActionEvent> resetGame() {
         return event -> {
             gameEnded = false;
@@ -308,6 +407,7 @@ public class GameBoardController {
             marks = new int[marks.length];
             Gameboard.resetAllTiles();
             btns.forEach(bt -> {
+
                 bt.setDisable(false);
                 bt.setText("");
 

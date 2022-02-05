@@ -14,6 +14,7 @@ import ui_modules.playonlinescreen;
 public class HomePageController {
     private  Home homeScreen;
     private boolean playAgainstPC;
+    private boolean playLocallyWithFriend;
 
     public HomePageController(Home home, Stage primaryStage) {
         homeScreen = home;
@@ -33,7 +34,8 @@ public class HomePageController {
             @Override
             public void handle(ActionEvent event) {
                 playAgainstPC = false;
-                loadGameBoard(primaryStage,playAgainstPC);
+                playLocallyWithFriend= true;
+                loadGameBoard(primaryStage,playAgainstPC,false,true);
             }
         };
     }
@@ -43,13 +45,13 @@ public class HomePageController {
             @Override
             public void handle(ActionEvent event) {
                 playAgainstPC = true;
-                loadGameBoard(primaryStage,playAgainstPC);
+                loadGameBoard(primaryStage,playAgainstPC,false,false);
             }
         };
     }
 
-    public void loadGameBoard(Stage primaryStage, boolean playAgainstPC) {
-        GameBoard root = new GameBoard(primaryStage, playAgainstPC);
+    public void loadGameBoard(Stage primaryStage, boolean playAgainstPC,boolean isItAreplay,boolean playLocally) {
+        GameBoard root = new GameBoard(primaryStage, playAgainstPC,isItAreplay,playLocally);
         Scene scene = new Scene(root);
         primaryStage.setTitle("GameBoard screen ");
         primaryStage.setScene(scene);

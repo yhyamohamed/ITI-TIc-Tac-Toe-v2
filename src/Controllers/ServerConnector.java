@@ -28,9 +28,7 @@ public class ServerConnector {
     private static StreamReader reader;
     private static Stage primaryStage;
     private static ArrayList<Player> onlinePlayersFromServer =new ArrayList<>();
-    private static ArrayList<Player> offlinePlayersFromServer =new ArrayList<>();
-
-    static
+static
     {
 
     }
@@ -80,8 +78,6 @@ public class ServerConnector {
                 PlayerInfo.losses = response.get("losses").getAsString();
                 reader=new StreamReader();
                 reader.start();
-                queryOnlineplayers();
-                queryOfflineplayers();
 
             }
             }else{}
@@ -190,30 +186,6 @@ public static ArrayList<Player> getOnlinePlayersFromServer()
 {
     return onlinePlayersFromServer;
 }
-    public static ArrayList<Player> getofflinePlayersFromServer()
-    {
-        return offlinePlayersFromServer;
-    }
-private static void queryOnlineplayers()
-{
-    JsonObject requestObject=new JsonObject();
-    requestObject.addProperty("type","getonlineplayers");
-    try {
-        dataOutputStream.writeUTF(requestObject.toString());
-    } catch (IOException e) {
-        e.printStackTrace();
-    }
-}
-    private static void queryOfflineplayers()
-    {
-        JsonObject requestObject=new JsonObject();
-        requestObject.addProperty("type","getofflineplayers");
-        try {
-            dataOutputStream.writeUTF(requestObject.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
     public static void close(JsonObject closingObj) {
         try {
             dataOutputStream.writeUTF(closingObj.toString());
@@ -287,12 +259,8 @@ public static class Player
     {
         return wins;
     }
-
-    public int getScore() {
-        return score;
-    }
 }
-public static class PlayerInfo
+    public static class PlayerInfo
     {
         static String username;
         static String score;
@@ -330,12 +298,13 @@ public static class PlayerInfo
             return wins;
         }
     }
-
     private static class StreamReader extends Thread
     {
         static boolean running=true;
         public StreamReader()
-        {}
+        {
+
+        }
 
         @Override
         public void  run()
@@ -416,6 +385,13 @@ public static class PlayerInfo
                                 }
                             });
                             break;
+                        case "game_record":
+                            System.out.println(requestObject);
+                           String moves= requestObject.get("moves").getAsString();
+                            renderRecordedGame(moves);
+                            break;
+                            case "onlineplayers":
+                            JsonArray onlinePlayers=requestObject.getAsJsonArray();
 
                         case "offlineplayers":
                             JsonArray offlinePlayers=requestObject.getAsJsonArray("offlineplayers");
@@ -441,15 +417,10 @@ public static class PlayerInfo
                                 JsonObject playerObject=rplayerobject.getAsJsonObject();
                                 Player player= new  Player();
                                 player.id=playerObject.get("id").getAsInt();
-                                System.out.println(player.id);
                                 player.username=playerObject.get("username").getAsString();
                                 player.score=playerObject.get("score").getAsInt();
                                 onlinePlayersFromServer.add(player);
                             }
-                            for(Player player:onlinePlayersFromServer){
-                                System.out.println(player.username);
-                            }
-                            break;
                         case "opponent_disconnect":
                             ServerConnector.dataOutputStream.close();
                             ServerConnector.dataInputStream.close();
