@@ -80,8 +80,8 @@ static
                 PlayerInfo.losses = response.get("losses").getAsString();
                 reader=new StreamReader();
                 reader.start();
-                queryOfflinePlayersFromServer();
-                queryOnlinePlayersFromServer();
+               queryOfflinePlayersFromServer();
+               queryOnlinePlayersFromServer();
 
 
             }
@@ -255,7 +255,7 @@ public static ArrayList<Player> getOnlinePlayersFromServer()
     private static void queryOfflinePlayersFromServer()
     {
         JsonObject requestObject=new JsonObject();
-        requestObject.addProperty("type","getonlineplayers");
+        requestObject.addProperty("type","getofflineplayers");
         try {
             dataOutputStream.writeUTF(requestObject.toString());
         } catch (IOException e) {
@@ -452,11 +452,13 @@ public static class Player
                                 player.score=playerObject.get("score").getAsInt();
                                 onlinePlayersFromServer.add(player);
                             }
+                            break;
                         case "opponent_disconnect":
                             ServerConnector.dataOutputStream.close();
                             ServerConnector.dataInputStream.close();
-                            ServerConnector.socket.close();
-                            running=false;
+                            System.out.println("opponent_disconnect");
+                            /*ServerConnector.socket.close();
+                            running=false;*/
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
