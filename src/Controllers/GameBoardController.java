@@ -426,6 +426,7 @@ public void makeFinishGameObj()
         alert.getDialogPane().setContent(content);
 
         alert.setOnShowing(e -> player.play());
+        alert.initOwner(primaryStage);
         alert.show();
     }
 
@@ -443,6 +444,7 @@ public void makeFinishGameObj()
         alert.getDialogPane().setContent(content);
 
         alert.setOnShowing(e -> player.play());
+        alert.initOwner(primaryStage);
         alert.show();
     }
      /*  

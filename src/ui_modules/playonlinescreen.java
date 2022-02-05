@@ -152,6 +152,7 @@ public class playonlinescreen extends AnchorPane {
                             alert.getDialogPane().setMinWidth(100);
                             alert.setResizable(false);
                             alert.setTitle("waiting");
+                            alert.initOwner(primaryStage);
                             alert.show();
                                      
 
