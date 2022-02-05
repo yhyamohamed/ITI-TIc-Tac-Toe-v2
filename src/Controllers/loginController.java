@@ -6,10 +6,6 @@ import com.google.gson.JsonObject;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
-import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
 import ui_modules.Home;
 import ui_modules.SignUp;
@@ -61,18 +57,10 @@ public class loginController {
             @Override
             public void handle(ActionEvent event) {
                 Player player = new Player();
-                
-
-                if (loginPage.getUserNameTxt() != null && loginPage.getPasswordTxt() != null){ 
-                   
-               String response=ServerConnector.signIn(loginPage.getUserNameTxt(),loginPage.getPasswordTxt());
-
-                 if(ServerConnector.dataOutputStream != null  ){
-                      //validUser = player.checkLogin(loginPage.getUserNameTxt(), loginPage.getPasswordTxt());
-                     
-                          
+                if (loginPage.getUserNameTxt() != null && loginPage.getPasswordTxt() != null) {
+                    //validUser = player.checkLogin(loginPage.getUserNameTxt(), loginPage.getPasswordTxt());
+                    String response=ServerConnector.signIn(loginPage.getUserNameTxt(),loginPage.getPasswordTxt());
                     if (response.equals("true")) {
-                        
                         validUser=true;
                         Home root = new Home(primaryStage);
                         Scene scene = new Scene(root);
@@ -85,31 +73,13 @@ public class loginController {
                             ServerConnector.close(closingObj);
                         });
 
-                    
-                    } else{
-                        
+                    } else {
                         validUser=false;
                         loginPage.getLogInMsg().setVisible(true);
                     }
-                      }else{
-                         
-                       showServerStatus();}
                 }
             }
         };
     }
 
- public  void showServerStatus() {
-    Alert alert = new Alert(Alert.AlertType.INFORMATION, "Content here", ButtonType.OK);
-        alert.getDialogPane().setMinHeight(150);
-        alert.getDialogPane().setMinWidth(50);
-        alert.setTitle("warning");
-        
-      alert.setContentText("press enter in the server screen");
-        Image image = new Image(getClass().getResource("/Controllers/../ui_modules/Resources/serverDown.jpg").toExternalForm());    
-        ImageView imageView = new ImageView(image);
-        alert.setGraphic(imageView);
-        alert.showAndWait();
-          
-    }
 }
