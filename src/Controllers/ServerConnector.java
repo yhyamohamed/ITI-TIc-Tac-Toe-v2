@@ -37,14 +37,10 @@ public class ServerConnector {
     private static ArrayList<Player> offlinePlayersFromServer =new ArrayList<>();
 
 static
-    {
-
-    }
+    {}
 
     public ServerConnector()
-    {
-
-    }
+    {}
     public static void setPrimaryStage(Stage currentPrimaryStage)
     {
         primaryStage=currentPrimaryStage;
@@ -89,9 +85,7 @@ static
                 reader=new StreamReader();
                 reader.running=true;
                 reader.start();
-               queryOfflinePlayersFromServer();
-               queryOnlinePlayersFromServer();
-
+                //queryPlayersListsFromServer();
 
             }
             }else{}
@@ -290,10 +284,12 @@ public static ArrayList<Player> getOnlinePlayersFromServer()
             e.printStackTrace();
         }
     }
-    private static void queryOnlinePlayersFromServer()
+
+    private static void queryPlayersListsFromServer()
     {
         JsonObject requestObject=new JsonObject();
-        requestObject.addProperty("type","getonlineplayers");
+        requestObject.addProperty("type","getplayerslist");
+        System.out.println("getplayerslist");
         try {
             dataOutputStream.writeUTF(requestObject.toString());
         } catch (IOException e) {
@@ -301,101 +297,51 @@ public static ArrayList<Player> getOnlinePlayersFromServer()
         }
 
     }
-    private static void queryOfflinePlayersFromServer()
+    private static void setPlayersList(JsonObject responseObject)
     {
-        JsonObject requestObject=new JsonObject();
-        requestObject.addProperty("type","getofflineplayers");
-        try {
-            dataOutputStream.writeUTF(requestObject.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
+        JsonArray newonlinePlayers=responseObject.getAsJsonArray("onlineplayers");
+        if(onlinePlayersFromServer != null) onlinePlayersFromServer.clear();
+        //System.out.println(newonlinePlayers);
+        for(JsonElement rplayerobject : newonlinePlayers) {
+            JsonObject playerObject=rplayerobject.getAsJsonObject();
+            Player player= new  Player();
+            player.id=playerObject.get("id").getAsInt();
+            player.username=playerObject.get("username").getAsString();
+            player.score=playerObject.get("score").getAsInt();
+            onlinePlayersFromServer.add(player);
         }
-
-    }
-public static class Player
-{
-    private int id;
-    private String username;
-    private int wins;
-    private int losses;
-    private int score;
-    private boolean online;
-
-    public int getId() {
-        return id;
-    }
-
-
-    public String getUsername() {
-        return username;
-    }
-    public int getWins()
-    {
-        return wins;
-    }
-
-    public int getScore() {
-        return score;
-    }
-}
-    public static class PlayerInfo
-    {
-        static String username;
-        static String score;
-        static String wins;
-        static String losses;
-        static String id;
-        static String login;
-        static String opponentId;
-        static boolean playerTurn;
-        static boolean allowFire;
-        static String mySign;
-        static int gameId;
-        static int opponentScore;
-        static String opponentUsername;
-
-
-       static public String getOpponentUsername()
+        /*for(Player offplayer : onlinePlayersFromServer)
         {
-            return opponentUsername;
+            System.out.println("new onlineplayers");
+            System.out.println(offplayer.getUsername());
+        }*/
+        if(offlinePlayersFromServer != null) offlinePlayersFromServer.clear();
+        JsonArray newofflinePlayers=responseObject.getAsJsonArray("offlineplayers");
+        //System.out.println(offlinePlayers);
+        for(JsonElement rplayerobject : newofflinePlayers) {
+            JsonObject playerObject=rplayerobject.getAsJsonObject();
+            Player player= new  Player();
+            player.id=playerObject.get("id").getAsInt();
+            // System.out.println(player.id);
+            player.username=playerObject.get("username").getAsString();
+            player.score=playerObject.get("score").getAsInt();
+            offlinePlayersFromServer.add(player);
         }
-        static    public int getOpponentScore()
+        /*for(Player offplayer : offlinePlayersFromServer)
         {
-            return opponentScore;
-        }
-        public String getLogin() {
-            return login;
-        }
+            System.out.println("new offlineplayers");
+            System.out.println(offplayer.getUsername());
+        }*/
 
-        public String getId() {
-            return id;
-        }
-
-        public static String getLosses() {
-            return losses;
-        }
-
-        public static String getScore() {
-            return score;
-        }
-
-        public static String getUsername() {
-            return username;
-        }
-
-        public static String getWins() {
-            return wins;
-        }
     }
+
+
     private static class StreamReader extends Thread
     {
          boolean running=true;
 
         public StreamReader()
-        {
-
-        }
-
+        {}
         @Override
         public void  run()
         {
@@ -406,13 +352,13 @@ public static class Player
                 try {
                     String lineSent = dataInputStream.readUTF();
                     if (lineSent == null) throw new IOException();
-                    JsonObject requestObject = JsonParser.parseString(lineSent).getAsJsonObject();
-                    String type = requestObject.get("type").getAsString();
+                    JsonObject responseObject = JsonParser.parseString(lineSent).getAsJsonObject();
+                    String type = responseObject.get("type").getAsString();
                     System.out.println(type);
                     switch (type)
                     {
                         case "oponnetmove" :
-                            int position=requestObject.get("position").getAsInt();
+                            int position=responseObject.get("position").getAsInt();
                             opponentsMove(position);
 
                             break;
@@ -421,9 +367,9 @@ public static class Player
 
                             break;
                         case "yourinvetationaccepted":
-                            int accepterID=requestObject.get("whoaccepted").getAsInt();
+                            int accepterID=responseObject.get("whoaccepted").getAsInt();
                             PlayerInfo.opponentId= String.valueOf(accepterID);
-                            PlayerInfo.gameId=requestObject.get("game_id").getAsInt();
+                            PlayerInfo.gameId=responseObject.get("game_id").getAsInt();
                             PlayerInfo.playerTurn=false;
                             PlayerInfo.mySign="O";
                             Platform.runLater(new Runnable() {
@@ -441,11 +387,11 @@ public static class Player
                             });
                             break;
                         case "invitationreceived":
-                            int opponentID=requestObject.get("sender").getAsInt();
-                            PlayerInfo.gameId=requestObject.get("game_id").getAsInt();
+                            int opponentID=responseObject.get("sender").getAsInt();
+                            PlayerInfo.gameId=responseObject.get("game_id").getAsInt();
                             PlayerInfo.opponentId= String.valueOf(opponentID);
-                            PlayerInfo.opponentUsername=requestObject.get("opponentusername").getAsString();
-                            PlayerInfo.opponentScore=requestObject.get("opponentsscore").getAsInt();
+                            PlayerInfo.opponentUsername=responseObject.get("opponentusername").getAsString();
+                            PlayerInfo.opponentScore=responseObject.get("opponentsscore").getAsInt();
 
                             System.out.println(opponentID+"chalenges you");
                             Platform.runLater(new Runnable() {
@@ -482,44 +428,11 @@ public static class Player
                             });
                             break;
                         case "game_record":
-                            System.out.println(requestObject);
-                           String moves= requestObject.get("moves").getAsString();
+                            System.out.println(responseObject);
+                           String moves= responseObject.get("moves").getAsString();
                             renderRecordedGame(moves);
                             break;
 
-
-                        case "offlineplayers":
-                            if(offlinePlayersFromServer != null) offlinePlayersFromServer.clear();
-                            JsonArray offlinePlayers=requestObject.getAsJsonArray("offlineplayers");
-                            System.out.println(offlinePlayers);
-                            for(JsonElement rplayerobject : offlinePlayers) {
-                                JsonObject playerObject=rplayerobject.getAsJsonObject();
-                                Player player= new  Player();
-                                player.id=playerObject.get("id").getAsInt();
-                               // System.out.println(player.id);
-                                player.username=playerObject.get("username").getAsString();
-                                player.score=playerObject.get("score").getAsInt();
-                                offlinePlayersFromServer.add(player);
-                            }
-                            for(Player player:offlinePlayersFromServer){
-                                System.out.println(player.username);
-                            }
-                            break;
-
-                        case "onlineplayers":
-
-                            JsonArray onlinePlayers=requestObject.getAsJsonArray("onlineplayers");
-                            if(onlinePlayersFromServer != null) onlinePlayersFromServer.clear();
-                            System.out.println(onlinePlayers);
-                            for(JsonElement rplayerobject : onlinePlayers) {
-                                JsonObject playerObject=rplayerobject.getAsJsonObject();
-                                Player player= new  Player();
-                                player.id=playerObject.get("id").getAsInt();
-                                player.username=playerObject.get("username").getAsString();
-                                player.score=playerObject.get("score").getAsInt();
-                                onlinePlayersFromServer.add(player);
-                            }
-                            break;
                         case "opponent_disconnect":
                             ServerConnector.dataOutputStream.close();
                             ServerConnector.dataInputStream.close();
@@ -553,42 +466,7 @@ public static class Player
                             });
                             break;
                         case "update-list":
-
-                            System.out.println("clientclosed");
-                            JsonArray newonlinePlayers=requestObject.getAsJsonArray("onlineplayers");
-                            if(onlinePlayersFromServer != null) onlinePlayersFromServer.clear();
-                            //System.out.println(newonlinePlayers);
-                            for(JsonElement rplayerobject : newonlinePlayers) {
-                                JsonObject playerObject=rplayerobject.getAsJsonObject();
-                                Player player= new  Player();
-                                player.id=playerObject.get("id").getAsInt();
-                                player.username=playerObject.get("username").getAsString();
-                                player.score=playerObject.get("score").getAsInt();
-                                onlinePlayersFromServer.add(player);
-                            }
-                            for(Player offplayer : onlinePlayersFromServer)
-                            {
-                                System.out.println("new onlineplayers");
-                                System.out.println(offplayer.getUsername());
-                            }
-                            if(offlinePlayersFromServer != null) offlinePlayersFromServer.clear();
-                            JsonArray newofflinePlayers=requestObject.getAsJsonArray("offlineplayers");
-                            //System.out.println(offlinePlayers);
-                            for(JsonElement rplayerobject : newofflinePlayers) {
-                                JsonObject playerObject=rplayerobject.getAsJsonObject();
-                                Player player= new  Player();
-                                player.id=playerObject.get("id").getAsInt();
-                                // System.out.println(player.id);
-                                player.username=playerObject.get("username").getAsString();
-                                player.score=playerObject.get("score").getAsInt();
-                                offlinePlayersFromServer.add(player);
-                            }
-                            for(Player offplayer : offlinePlayersFromServer)
-                            {
-                                System.out.println("new offlineplayers");
-                                System.out.println(offplayer.getUsername());
-                            }
-
+                            setPlayersList(responseObject);
                             Platform.runLater(new Runnable() {
                                 @Override
                                 public void run() {
@@ -606,6 +484,81 @@ public static class Player
                     e.printStackTrace();
                 }
             }
+        }
+    }
+    public static class Player
+    {
+        private int id;
+        private String username;
+        private int wins;
+        private int losses;
+        private int score;
+        private boolean online;
+
+        public int getId() {
+            return id;
+        }
+
+
+        public String getUsername() {
+            return username;
+        }
+        public int getWins()
+        {
+            return wins;
+        }
+
+        public int getScore() {
+            return score;
+        }
+    }
+    public static class PlayerInfo
+    {
+        static String username;
+        static String score;
+        static String wins;
+        static String losses;
+        static String id;
+        static String login;
+        static String opponentId;
+        static boolean playerTurn;
+        static boolean allowFire;
+        static String mySign;
+        static int gameId;
+        static int opponentScore;
+        static String opponentUsername;
+
+
+        static public String getOpponentUsername()
+        {
+            return opponentUsername;
+        }
+        static    public int getOpponentScore()
+        {
+            return opponentScore;
+        }
+        public String getLogin() {
+            return login;
+        }
+
+        public String getId() {
+            return id;
+        }
+
+        public static String getLosses() {
+            return losses;
+        }
+
+        public static String getScore() {
+            return score;
+        }
+
+        public static String getUsername() {
+            return username;
+        }
+
+        public static String getWins() {
+            return wins;
         }
     }
 }
