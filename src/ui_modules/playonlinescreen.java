@@ -29,7 +29,7 @@ import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 
-import Controllers.ServerConnector.Player;
+import utility.Player;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 
@@ -48,26 +48,25 @@ public class playonlinescreen extends AnchorPane {
     protected final VBox VScoreoffline;
     private Stage primaryStage;
     private Alert alert;
+    private ServerConnector serverConnector;
 
 
     public playonlinescreen(Stage primaryStage) {
         this.primaryStage=primaryStage;
         onlinepeple = new Label();
         homebtn = new Button();
-
-
+        serverConnector=ServerConnector.getServerConnector();
         Vonline = new VBox();
         offlinepeople = new Label();
         VScoreonline = new VBox();
         Voffline = new VBox();
         VScoreoffline = new VBox();
-        
-        Player player=new Player();
+
         ArrayList<Player> x = new ArrayList<>();
-        x=ServerConnector.getOnlinePlayersFromServer();
+        x=serverConnector.getOnlinePlayersFromServer();
         
         ArrayList<Player> f = new ArrayList<>();
-        f=ServerConnector.getOfflinePlayersFromServer();
+        f=serverConnector.getOfflinePlayersFromServer();
 
  
 
@@ -123,7 +122,7 @@ public class playonlinescreen extends AnchorPane {
         VScoreoffline.setPrefHeight(350.0);
         VScoreoffline.setPrefWidth(117.0);
         
-        ServerConnector.setPlayonlinescreen(this);
+        serverConnector.setPlayonlinescreen(this);
 
 
         getChildren().add(onlinepeple);
@@ -144,7 +143,7 @@ public class playonlinescreen extends AnchorPane {
 
     }
     public Alert getinvitationAlert(){ return alert;}
-    public void renderLists(ArrayList<Player> x,ArrayList<Player> f)
+    public void renderLists(ArrayList<utility.Player> x,ArrayList<utility.Player> f)
     {
 
         System.out.println("listupdated");
@@ -153,15 +152,15 @@ public class playonlinescreen extends AnchorPane {
         Voffline.getChildren().clear();
         VScoreoffline.getChildren().clear();
         x.forEach((Player player1) ->{
-            if(!player1.getUsername().equals(ServerConnector.PlayerInfo.getUsername())){
+            if(!player1.username.equals(serverConnector.playerInfo.getUsername())){
                 Label playerName=new Label();
-                playerName.setText(player1.getId()+": "+ player1.getUsername());
+                playerName.setText(player1.id+": "+ player1.username);
                 playerName.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
                 playerName.setFont(new Font("System Bold Italic", 33.0));
                 //System.out.println(player1.getUsername());
 
                 Label playerScore=new Label();
-                int y=player1.getScore();
+                int y=player1.score;
                 String s=Integer.toString(y);
                 playerScore.setText(s);
                 playerScore.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
@@ -178,7 +177,7 @@ public class playonlinescreen extends AnchorPane {
                          alert = new Alert(Alert.AlertType.NONE, "waiting for player...", ButtonType.CANCEL);
                         Label chosenLable=(Label) event.getSource();
                         int playerID=Integer.parseInt(chosenLable.getText().substring(0,1));
-                        ServerConnector.sendInvetation(playerID);
+                        serverConnector.sendInvetation(playerID);
                         alert.getDialogPane().setMinHeight(100);
                         alert.getDialogPane().setMinWidth(100);
                         alert.setResizable(false);
@@ -212,15 +211,15 @@ public class playonlinescreen extends AnchorPane {
 
         System.out.println("offline");
         f.forEach((Player player2) ->{
-            if(!player2.getUsername().equals(ServerConnector.PlayerInfo.getUsername())){
+            if(!player2.username.equals(serverConnector.playerInfo.getUsername())){
                 Label playerName=new Label();
-                playerName.setText(player2.getUsername());
+                playerName.setText(player2.username);
                 playerName.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
                 playerName.setFont(new Font("System Bold Italic", 33.0));
-                System.out.println(player2.getUsername());
+                System.out.println(player2.username);
 
                 Label playerScore=new Label();
-                int y=player2.getScore();
+                int y=player2.score;
                 String s=Integer.toString(y);
                 playerScore.setText(s);
                 playerScore.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
@@ -233,11 +232,11 @@ public class playonlinescreen extends AnchorPane {
         });
     }
 
-    public static void receivedInvitation(String x) {
+    public  void receivedInvitation(String x) {
         // method shows scene invitation
         Alert alert2 = new Alert(Alert.AlertType.CONFIRMATION, "waiting for response...", ButtonType.NO, ButtonType.YES);
         alert2.setTitle("invitation");
-        alert2.setHeaderText("Do you want to play with " + ServerConnector.PlayerInfo.getUsername() + " ?");
+        alert2.setHeaderText("Do you want to play with " + serverConnector.playerInfo.getUsername() + " ?");
         alert2.setResizable(false);
 
 

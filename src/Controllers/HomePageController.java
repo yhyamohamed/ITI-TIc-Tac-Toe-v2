@@ -17,6 +17,7 @@ public class HomePageController {
     private  Home homeScreen;
     private boolean playAgainstPC;
     private boolean playLocallyWithFriend;
+    private ServerConnector serverConnector;
 
     public HomePageController(Home home, Stage primaryStage) {
         homeScreen = home;
@@ -24,11 +25,12 @@ public class HomePageController {
         homeScreen.playLocally(playLocal(primaryStage));
         homeScreen.InviteAfriendToPlay(playWithfriend(primaryStage));
         homeScreen.LogoutAction(logout(primaryStage));
+        serverConnector=ServerConnector.getServerConnector();
         
         
     }
     public HomePageController(Stage primaryStage) {
-
+        serverConnector=ServerConnector.getServerConnector();
     }
 
     private EventHandler<ActionEvent> playLocal(Stage primaryStage) {
@@ -79,8 +81,8 @@ public class HomePageController {
             public void handle(ActionEvent event) {
                 JsonObject closingObj = new JsonObject();
                 closingObj.addProperty("type","client_close");
-                closingObj.addProperty("username",ServerConnector.PlayerInfo.username);
-                ServerConnector.close(closingObj);
+                closingObj.addProperty("username",serverConnector.playerInfo.username);
+                serverConnector.close(closingObj);
                 logIn root=new  logIn(primaryStage);
                 Scene scene = new Scene(root);
                 primaryStage.setTitle("logIn screen");

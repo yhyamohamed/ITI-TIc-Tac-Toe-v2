@@ -46,6 +46,7 @@ public class GameBoardController {
     private int moves;
     private int gameID;
     private boolean isLocal;
+    private ServerConnector serverConnector;
 
     public GameBoardController(GameBoard gameBoard, Stage primaryStage, ArrayList<Button> btns, boolean playAgainstPC,boolean isItAreplay, boolean isLocal) {
         Gameboard = gameBoard;
@@ -53,6 +54,7 @@ public class GameBoardController {
         this.btns = btns;
         this.isLocal = isLocal;
         palyagainstcomputer = playAgainstPC;
+        serverConnector=ServerConnector.getServerConnector();
 
         if (isLocal) {
             System.out.println("local");
@@ -98,23 +100,23 @@ public class GameBoardController {
 
         if(palyagainstcomputer)
         {
-            ServerConnector.PlayerInfo.allowFire=true;
+            serverConnector.playerInfo.allowFire=true;
 
         }
         if(!playAgainstPC) {
-            ServerConnector.assignGameBoardButtons(btns);
-            gameID=ServerConnector.PlayerInfo.gameId;
+            serverConnector.assignGameBoardButtons(btns);
+            gameID=serverConnector.playerInfo.gameId;
            // ServerConnector.getopponentId();
 
             primaryStage.setOnCloseRequest((e)->{
                 JsonObject closingObj = new JsonObject();
                 closingObj.addProperty("type","client_close_while_playing");
-                closingObj.addProperty("opponentId", ServerConnector.PlayerInfo.opponentId);
-                ServerConnector.close(closingObj);
+                closingObj.addProperty("opponentId", serverConnector.playerInfo.opponentId);
+                serverConnector.close(closingObj);
             });
 
         }
-        currentplayerturn=ServerConnector.PlayerInfo.playerTurn;
+        currentplayerturn=serverConnector.playerInfo.playerTurn;
 
         /*if(currentplayerturn)
         {
@@ -129,7 +131,7 @@ public class GameBoardController {
         //array for each button
         for (Button bt : btns) {
             bt.setOnAction(event -> {
-                if (ServerConnector.PlayerInfo.allowFire){
+                if (serverConnector.playerInfo.allowFire){
               System.out.println(bt);
                System.out.println(btns.indexOf(bt));
                     int index = btns.indexOf(bt);
@@ -145,10 +147,10 @@ public class GameBoardController {
                     marks[index] = sign;
                     moves++;
                     CheckWinning();
-                    if(ServerConnector.PlayerInfo.playerTurn) {
-                        ServerConnector.play(index, sign);
-                        ServerConnector.PlayerInfo.playerTurn=false;
-                        ServerConnector.PlayerInfo.allowFire=false;
+                    if(serverConnector.playerInfo.playerTurn) {
+                        serverConnector.play(index, sign);
+                        serverConnector.playerInfo.playerTurn=false;
+                        serverConnector.playerInfo.allowFire=false;
                     }
                     System.out.println("aplay");
                     currentplayerturn=true;
@@ -170,7 +172,7 @@ public class GameBoardController {
 
         }
         }else{
-            ServerConnector.assignGameBoardButtons(btns);
+            serverConnector.assignGameBoardButtons(btns);
         }
         Gameboard.restButton(resetGame());
         Gameboard.homeButton(HomeScreen(primaryStage));
@@ -210,7 +212,7 @@ public class GameBoardController {
                 JsonObject showRecObj = new JsonObject();
                 showRecObj.addProperty("type","request_record");
                 showRecObj.addProperty("game_id",gameID);
-                ServerConnector.sendReplayreq(showRecObj);
+                serverConnector.sendReplayreq(showRecObj);
 //                GameBoard root = new GameBoard(primaryStage, true,true);
 //                Scene scene = new Scene(root);
 //                primaryStage.setTitle("GameBoard screen ");
@@ -370,12 +372,12 @@ public class GameBoardController {
 
         if(!isLocal) {
 
-            if (wins.equals("X") && ServerConnector.PlayerInfo.mySign.equals("X")) {
+            if (wins.equals("X") && serverConnector.playerInfo.mySign.equals("X")) {
                 System.out.println("you won");
                 makeFinishGameObj();
                 ShowWinDialog();
             }
-            else if (wins.equals("O") && ServerConnector.PlayerInfo.mySign.equals("O")) {
+            else if (wins.equals("O") && serverConnector.playerInfo.mySign.equals("O")) {
                 System.out.println("you won");
                 makeFinishGameObj();
                 ShowWinDialog();
@@ -390,10 +392,10 @@ public void makeFinishGameObj()
 {
     JsonObject gameFinish = new JsonObject();
     gameFinish.addProperty("type","finish_game");
-    gameFinish.addProperty("winner",ServerConnector.PlayerInfo.id);
-    gameFinish.addProperty("looser",ServerConnector.PlayerInfo.opponentId);
-    gameFinish.addProperty("game_id",ServerConnector.PlayerInfo.gameId);
-    ServerConnector.sendFinishingObj(gameFinish);
+    gameFinish.addProperty("winner",serverConnector.playerInfo.id);
+    gameFinish.addProperty("looser",serverConnector.playerInfo.opponentId);
+    gameFinish.addProperty("game_id",serverConnector.playerInfo.gameId);
+    serverConnector.sendFinishingObj(gameFinish);
 }
     public EventHandler<ActionEvent> resetGame() {
         return event -> {

@@ -11,11 +11,12 @@ public class EntryScreen extends Application {
     // STATIC VARIABLE client
     @Override
     public void start(Stage primaryStage) {
-        Controllers.ServerConnector.setPrimaryStage(primaryStage);
+        ServerConnector serverConnector = ServerConnector.getServerConnector();
+        serverConnector.setPrimaryStage(primaryStage);
         primaryStage.setResizable(false);
         //Controllers.ServerConnector sc=new ServerConnector();
         logIn root = new logIn(primaryStage);
-            
+
         Scene scene = new Scene(root);
         scene.getStylesheets().add("ui_modules/Resources/application.css");
         primaryStage.setTitle("log in screen");
@@ -29,5 +30,5 @@ public class EntryScreen extends Application {
     public static void main(String[] args) {
         launch(args);
     }
-    
+
 }
