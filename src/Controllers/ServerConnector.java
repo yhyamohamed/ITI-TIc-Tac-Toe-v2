@@ -16,23 +16,22 @@ import javafx.util.Duration;
 import ui_modules.GameBoard;
 import ui_modules.Home;
 import ui_modules.playonlinescreen;
+import utility.Player;
+import utility.RequestJsonBuilder;
 
-import java.io.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Optional;
 
-import utility.Player;
-import utility.PlayerInfo;
-import utility.RequestJsonBuilder;
-import utility.StreamReader;
-
 public class ServerConnector {
 
     private static ServerConnector serverConnector;
+    public utility.PlayerInfo playerInfo;
     private Socket socket;
     private DataInputStream dataInputStream;
     private DataOutputStream dataOutputStream;
@@ -40,9 +39,8 @@ public class ServerConnector {
     private utility.StreamReader reader;
     private playonlinescreen playonlinescreen;
     private Stage primaryStage;
-    private ArrayList<utility.Player> onlinePlayersFromServer = new ArrayList<Player>();
-    private ArrayList<utility.Player> offlinePlayersFromServer = new ArrayList<utility.Player>();
-    public utility.PlayerInfo playerInfo;
+    private final ArrayList<utility.Player> onlinePlayersFromServer = new ArrayList<Player>();
+    private final ArrayList<utility.Player> offlinePlayersFromServer = new ArrayList<utility.Player>();
 
 
     private ServerConnector() {
@@ -153,24 +151,23 @@ public class ServerConnector {
 
     public void play(Integer position, Integer sign) {
         RequestJsonBuilder requestJson = new RequestJsonBuilder();
+        System.out.println(sign.intValue());
         requestJson.setType("play")
                 .addProperty("opponet", playerInfo.opponentId)
                 .addProperty("game_id", playerInfo.gameId.toString())
                 .addProperty("position", position.toString())
-                .addProperty("sign", sign.toString()).send();
+                .addProperty("sign", sign.toString())
+                .send();
     }
 
 
     public void opponentsMove(int position) {
         System.out.println("opponent" + position);
-        Platform.runLater(new Runnable() {
-            @Override
-            public void run() {
-                playerInfo.allowFire = true;
+        Platform.runLater(() -> {
+            playerInfo.allowFire = true;
 
-                buttons.get(position).fire();
-                playerInfo.playerTurn = true;
-            }
+            buttons.get(position).fire();
+            playerInfo.playerTurn = true;
         });
 
     }
@@ -337,12 +334,6 @@ public class ServerConnector {
                 .addProperty("accepter", playerInfo.id)
                 .addProperty("accepted", playerInfo.opponentId)
                 .send();
-
-        try {
-            dataOutputStream.writeUTF(requestObject.toString());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     private void queryPlayersListsFromServer() {

@@ -61,6 +61,7 @@ public class PlayerInfo {
     }
     public void updateScore()
     {
-        score+=50;
+        Integer newscore=(Integer.parseInt(score)+50);
+        score=newscore.toString();
     }
 }
