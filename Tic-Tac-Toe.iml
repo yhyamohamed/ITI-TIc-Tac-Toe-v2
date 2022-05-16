@@ -7,7 +7,7 @@
       <sourceFolder url="file://$MODULE_DIR$" isTestSource="true" />
       <sourceFolder url="file://$MODULE_DIR$/src" isTestSource="false" />
     </content>
-    <orderEntry type="inheritedJdk" />
+    <orderEntry type="jdk" jdkName="openjdk-17" jdkType="JavaSDK" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module-library">
       <library>
@@ -27,7 +27,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="module-library">
+    <orderEntry type="module-library" exported="">
       <library>
         <CLASSES>
           <root url="jar://$MODULE_DIR$/../server2/gson-2.8.6.jar!/" />
@@ -70,6 +70,20 @@
         </CLASSES>
         <JAVADOC />
         <SOURCES />
+      </library>
+    </orderEntry>
+    <orderEntry type="library" exported="" name="javafx-sdk-18.0" level="project" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="file://$MODULE_DIR$/../../openjfx-18.0.1_linux-x64_bin-sdk/javafx-sdk-18.0.1/lib" />
+        </CLASSES>
+        <JAVADOC />
+        <NATIVE>
+          <root url="file://$MODULE_DIR$/../../openjfx-18.0.1_linux-x64_bin-sdk/javafx-sdk-18.0.1/lib" />
+        </NATIVE>
+        <SOURCES />
+        <jarDirectory url="file://$MODULE_DIR$/../../openjfx-18.0.1_linux-x64_bin-sdk/javafx-sdk-18.0.1/lib" recursive="false" />
       </library>
     </orderEntry>
   </component>

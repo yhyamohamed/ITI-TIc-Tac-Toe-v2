@@ -26,6 +26,7 @@ import java.util.Arrays;
 import java.util.Optional;
 
 public class ServerConnector {
+    private static ServerConnector serverConnector;
     private static Socket socket;
     private static DataInputStream dataInputStream;
     static DataOutputStream dataOutputStream;
@@ -36,11 +37,22 @@ public class ServerConnector {
     private static ArrayList<Player> onlinePlayersFromServer =new ArrayList<>();
     private static ArrayList<Player> offlinePlayersFromServer =new ArrayList<>();
 
-static
+
+
+    private ServerConnector()
     {}
 
-    public ServerConnector()
-    {}
+    public static ServerConnector getServerConnector()
+    {
+        if(serverConnector == null)
+        {
+            return new ServerConnector();
+        }
+        else
+        {
+            return serverConnector;
+        }
+    }
     public static void setPrimaryStage(Stage currentPrimaryStage)
     {
         primaryStage=currentPrimaryStage;
