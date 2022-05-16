@@ -24,9 +24,11 @@ public  class Home extends AnchorPane {
     protected final Label labelWins;
     protected final Label labelLosses;
     protected final AnchorPane anchorPane;
+    private ServerConnector serverConnector;
 
     public Home(Stage primaryStage) {
-
+        serverConnector=ServerConnector.getServerConnector();
+        System.out.println(serverConnector.playerInfo.getUsername());
         pcbtn = new Button();
         friendsbtn = new Button();
         playLocally = new Button();
@@ -85,7 +87,7 @@ public  class Home extends AnchorPane {
 
         username.setLayoutX(126.0);
         username.setLayoutY(14.0);
-        username.setText(ServerConnector.PlayerInfo.getUsername());
+        username.setText(serverConnector.playerInfo.getUsername());
         username.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
         username.setFont(new Font("System Bold Italic", 33.0));
 
@@ -97,13 +99,13 @@ public  class Home extends AnchorPane {
 
         wins.setLayoutX(540);
         wins.setLayoutY(14.0);
-        wins.setText(ServerConnector.PlayerInfo.getWins());
+        wins.setText(serverConnector.playerInfo.getWins());
         wins.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
         wins.setFont(new Font("System Bold Italic", 33.0));
 
         losses.setLayoutX(540);
         losses.setLayoutY(68.0);
-        losses.setText(ServerConnector.PlayerInfo.getLosses());
+        losses.setText(serverConnector.playerInfo.getLosses());
         losses.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
         losses.setFont(new Font("System Bold Italic", 33.0));
 
@@ -121,7 +123,7 @@ public  class Home extends AnchorPane {
 
         score.setLayoutX(220.0);
         score.setLayoutY(68.0);
-        score.setText(ServerConnector.PlayerInfo.getScore());
+        score.setText(serverConnector.playerInfo.getScore());
         score.setTextFill(javafx.scene.paint.Color.valueOf("#dbe2e5"));
         score.setFont(new Font("System Bold Italic", 33.0));
 

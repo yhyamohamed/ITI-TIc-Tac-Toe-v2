@@ -24,16 +24,13 @@ public class playonlineController {
     }
 
     private EventHandler<ActionEvent> home(Stage primaryStage) {
-        return new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                Home root = new Home(primaryStage);
-                Scene scene = new Scene(root);
-                primaryStage.setTitle("home screen");
-                primaryStage.setScene(scene);
-                primaryStage.show();
+        return event -> {
+            Home root = new Home(primaryStage);
+            Scene scene = new Scene(root);
+            primaryStage.setTitle("home screen");
+            primaryStage.setScene(scene);
+            primaryStage.show();
 
-            }
         };
     }
 

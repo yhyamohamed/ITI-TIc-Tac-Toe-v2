@@ -43,9 +43,10 @@ public class GameBoard extends AnchorPane {
     protected final Button button9;
     protected final Button start;
     ArrayList<Button> btns = new ArrayList<>();
+    private ServerConnector serverConnector;
 
     public GameBoard(Stage primaryStage, boolean playAgainstPC, boolean isItAreplay,boolean playLocally) {
-
+        serverConnector=ServerConnector.getServerConnector();
         user1 = new Label();
         scoreUser1 = new Label();
         user2 = new Label();
@@ -84,7 +85,7 @@ public class GameBoard extends AnchorPane {
         user1.setPrefWidth(86.0);
         user1.getStyleClass().add("text");
         user1.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
-        user1.setText(ServerConnector.PlayerInfo.getUsername());
+        user1.setText(serverConnector.playerInfo.getUsername());
 
         scoreUser1.setLayoutX(25.0);
         scoreUser1.setLayoutY(47.0);
@@ -92,7 +93,7 @@ public class GameBoard extends AnchorPane {
         scoreUser1.setPrefWidth(101.0);
         scoreUser1.getStyleClass().add("text");
         scoreUser1.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
-        scoreUser1.setText("score: "+ServerConnector.PlayerInfo.getScore());
+        scoreUser1.setText("score: "+serverConnector.playerInfo.getScore());
 
         user2.setLayoutX(587.0);
         user2.setLayoutY(14.0);
@@ -100,14 +101,14 @@ public class GameBoard extends AnchorPane {
         user2.setPrefWidth(56.0);
         user2.getStyleClass().add("text");
         user2.getStylesheets().add("ui_modules/Resources/gameBoardStyles.css");
-        user2.setText(ServerConnector.PlayerInfo.getOpponentUsername());
+        user2.setText(serverConnector.playerInfo.getOpponentUsername());
 
         scoreUser2.setLayoutX(570.0);
         scoreUser2.setLayoutY(47.0);
         scoreUser2.setPrefHeight(26.0);
         scoreUser2.setPrefWidth(101.0);
         scoreUser2.getStyleClass().add("text");
-        scoreUser2.setText("score: "+String.valueOf(ServerConnector.PlayerInfo.getOpponentScore()));
+        scoreUser2.setText("score: "+String.valueOf(serverConnector.playerInfo.getOpponentScore()));
 //        if (!playAgainstPC) {
 //            send.setId("button");
 //            send.setLayoutX(600.0);

@@ -13,9 +13,10 @@ import ui_modules.logIn;
 
 public class signUpController {
     private SignUp signUpPage;
+    private ServerConnector serverConnector;
     public signUpController(SignUp signUpPagee, Stage primaryStage) {
         signUpPage = signUpPagee;
-
+        serverConnector=ServerConnector.getServerConnector();
         signUpPagee.setSignUpBtnAction(signUp(primaryStage));
         signUpPagee.setCancelBtnAction(cancelSignUp(primaryStage));
     }
@@ -26,7 +27,7 @@ public class signUpController {
             public void handle(ActionEvent event) {
                // Player player = new Player();
                 if (signUpPage.getUsrTxt().getText() != null && signUpPage.getPassTxt().getText() != null && (signUpPage.getUsrTxt().getText().trim().length() > 0) && (signUpPage.getPassConfirmTxt().getText().equals(signUpPage.getPassTxt().getText()))){
-               boolean result = ServerConnector.signUp(signUpPage.getUsrTxt().getText(),signUpPage.getPassTxt().getText());
+               boolean result = serverConnector.signUp(signUpPage.getUsrTxt().getText(),signUpPage.getPassTxt().getText());
                 
                if(result){
                         ShowSignUpsucess();

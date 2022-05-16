@@ -3,17 +3,10 @@ package utility;
 import Controllers.ServerConnector;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import javafx.application.Platform;
-import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import ui_modules.GameBoard;
-import ui_modules.Home;
 
 import java.io.DataInputStream;
 import java.io.IOException;
 import java.net.Socket;
-import java.util.Optional;
 
 public class StreamReader extends Thread {
     public boolean running = true;
@@ -75,7 +68,6 @@ public class StreamReader extends Thread {
                     case "update-list":
                         serverConnector.setPlayersList(responseObject);
                         serverConnector.renderPlayersList();
-
                         break;
                 }
             } catch (IOException e) {
@@ -108,11 +100,7 @@ public class StreamReader extends Thread {
     }
 
     private void performOpponentDisconnected() {
-   /*     ServerConnector.dataOutputStream.close();
-        ServerConnector.dataInputStream.close();
-        System.out.println("opponent_disconnect");
-        ServerConnector.socket.close();
-        running = false;*/
+
         serverConnector.renderOpponentDisconnectedWarning();
 
     }

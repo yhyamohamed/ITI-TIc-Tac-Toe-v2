@@ -20,14 +20,14 @@ public class loginController {
     private HomePageController homePageController;
     static boolean validUser = false;
 
-    //private ServerConnector serverConnector;
+    private ServerConnector serverConnector;
 
     public loginController(logIn logInPage, Stage primaryStage) {
         loginPage = logInPage;
         loginPage.logInBtnAction(logIn(primaryStage));
         loginPage.signUPBtnAction(signUp(primaryStage));
         loginPage.playOffLineFromEntryScreen(playOffLine(primaryStage));
-        //serverConnector=new ServerConnector();
+        serverConnector=ServerConnector.getServerConnector();
 
 
     }
@@ -65,7 +65,7 @@ public class loginController {
                 try {
                     if (loginPage.getUserNameTxt() != null && loginPage.getPasswordTxt() != null) {
                         //validUser = player.checkLogin(loginPage.getUserNameTxt(), loginPage.getPasswordTxt());
-                        String response = ServerConnector.signIn(loginPage.getUserNameTxt(), loginPage.getPasswordTxt());
+                        String response = serverConnector.signIn(loginPage.getUserNameTxt(), loginPage.getPasswordTxt());
 
                         if (response.equals("true")) {
                             validUser = true;
@@ -77,8 +77,8 @@ public class loginController {
                             primaryStage.setOnCloseRequest((e) -> {
                                 JsonObject closingObj = new JsonObject();
                                 closingObj.addProperty("type", "client_close");
-                                closingObj.addProperty("username", ServerConnector.PlayerInfo.username);
-                                ServerConnector.close(closingObj);
+                                closingObj.addProperty("username", serverConnector.playerInfo.getUsername());
+                                serverConnector.close(closingObj);
                             });
 
                         } else {

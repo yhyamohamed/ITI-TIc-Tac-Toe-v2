@@ -27,6 +27,7 @@ import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import ui_modules.logIn;
+import utility.PlayerInfo;
 
 public class GameBoardController {
 
@@ -44,17 +45,19 @@ public class GameBoardController {
     private String playerMark = "X";
     private boolean gameEnded;
     private int moves;
-    private int gameID;
+    private Integer gameID;
     private boolean isLocal;
     private ServerConnector serverConnector;
+    private PlayerInfo playerInfo;
 
     public GameBoardController(GameBoard gameBoard, Stage primaryStage, ArrayList<Button> btns, boolean playAgainstPC,boolean isItAreplay, boolean isLocal) {
         Gameboard = gameBoard;
+        serverConnector= ServerConnector.getServerConnector();
+        playerInfo = PlayerInfo.getPlayerInfo();
         this.primaryStage = primaryStage;
         this.btns = btns;
         this.isLocal = isLocal;
         palyagainstcomputer = playAgainstPC;
-        serverConnector=ServerConnector.getServerConnector();
 
         if (isLocal) {
             System.out.println("local");
@@ -98,25 +101,25 @@ public class GameBoardController {
         if(!isItAreplay && !isLocal){
 
 
-        if(palyagainstcomputer)
-        {
-            serverConnector.playerInfo.allowFire=true;
+            if(palyagainstcomputer)
+            {
+                playerInfo.allowFire=true;
 
-        }
-        if(!playAgainstPC) {
-            serverConnector.assignGameBoardButtons(btns);
-            gameID=serverConnector.playerInfo.gameId;
-           // ServerConnector.getopponentId();
+            }
+            if(!playAgainstPC) {
+                serverConnector.assignGameBoardButtons(btns);
+                gameID=playerInfo.gameId;
+                // ServerConnector.getopponentId();
 
-            primaryStage.setOnCloseRequest((e)->{
-                JsonObject closingObj = new JsonObject();
-                closingObj.addProperty("type","client_close_while_playing");
-                closingObj.addProperty("opponentId", serverConnector.playerInfo.opponentId);
-                serverConnector.close(closingObj);
-            });
+                primaryStage.setOnCloseRequest((e)->{
+                    JsonObject closingObj = new JsonObject();
+                    closingObj.addProperty("type","client_close_while_playing");
+                    closingObj.addProperty("opponentId", playerInfo.opponentId);
+                    serverConnector.close(closingObj);
+                });
 
-        }
-        currentplayerturn=serverConnector.playerInfo.playerTurn;
+            }
+            currentplayerturn=playerInfo.playerTurn;
 
         /*if(currentplayerturn)
         {
@@ -128,49 +131,49 @@ public class GameBoardController {
 
         }*/
 
-        //array for each button
-        for (Button bt : btns) {
-            bt.setOnAction(event -> {
-                if (serverConnector.playerInfo.allowFire){
-              System.out.println(bt);
-               System.out.println(btns.indexOf(bt));
-                    int index = btns.indexOf(bt);
-                bt.setFont(new Font("System Bold Italic", 200));
-                bt.setStyle("-fx-font-size:40");
-                if (!bt.isDisable() && !gameEnded) {
-                    bt.setText(getPlayer());
-                    bt.setDisable(true);
+            //array for each button
+            for (Button bt : btns) {
+                bt.setOnAction(event -> {
+                    if (playerInfo.allowFire){
+                        System.out.println(bt);
+                        System.out.println(btns.indexOf(bt));
+                        int index = btns.indexOf(bt);
+                        bt.setFont(new Font("System Bold Italic", 200));
+                        bt.setStyle("-fx-font-size:40");
+                        if (!bt.isDisable() && !gameEnded) {
+                            bt.setText(getPlayer());
+                            bt.setDisable(true);
 
 
-                    int sign = (bt.getText().equals("X")) ? 8 : 1;
-                    toggleTurns();
-                    marks[index] = sign;
-                    moves++;
-                    CheckWinning();
-                    if(serverConnector.playerInfo.playerTurn) {
-                        serverConnector.play(index, sign);
-                        serverConnector.playerInfo.playerTurn=false;
-                        serverConnector.playerInfo.allowFire=false;
-                    }
-                    System.out.println("aplay");
-                    currentplayerturn=true;
+                            int sign = (bt.getText().equals("X")) ? 8 : 1;
+                            toggleTurns();
+                            marks[index] = sign;
+                            moves++;
+                            CheckWinning();
+                            if(playerInfo.playerTurn) {
+                                serverConnector.play(index, sign);
+                                playerInfo.playerTurn=false;
+                                playerInfo.allowFire=false;
+                            }
+                            System.out.println("aplay");
+                            currentplayerturn=true;
 
                     /*if (!palyagainstcomputer && opponentsTurn) {
                         opponentsTurn = false;
                         ServerConnector.opponentsMove();
 
                     }*/
-                    if (!gameEnded && computerTurn && palyagainstcomputer) {
-                        computerTurn();
-                    } else if (!gameEnded && !computerTurn && palyagainstcomputer) {
-                        computerTurn = true;
+                            if (!gameEnded && computerTurn && palyagainstcomputer) {
+                                computerTurn();
+                            } else if (!gameEnded && !computerTurn && palyagainstcomputer) {
+                                computerTurn = true;
+                            }
+                            CheckWinning();
+                        }
                     }
-                    CheckWinning();
-                }
-            }
-            });
+                });
 
-        }
+            }
         }else{
             serverConnector.assignGameBoardButtons(btns);
         }
@@ -179,7 +182,7 @@ public class GameBoardController {
         Gameboard.replay(showRecord(primaryStage));
     }
 
-    //home screen 
+    //home screen
     private EventHandler<ActionEvent> HomeScreen(Stage primaryStage) {
         return new EventHandler<ActionEvent>() {
             @Override
@@ -190,7 +193,7 @@ public class GameBoardController {
                     primaryStage.setTitle("home screen");
                     primaryStage.setScene(scene);
                     primaryStage.show();
-              } 
+                }
                 else {
                     logIn root = new logIn(primaryStage);
                     Scene scene = new Scene(root);
@@ -372,15 +375,17 @@ public class GameBoardController {
 
         if(!isLocal) {
 
-            if (wins.equals("X") && serverConnector.playerInfo.mySign.equals("X")) {
+            if (wins.equals("X") && playerInfo.mySign.equals("X")) {
                 System.out.println("you won");
                 makeFinishGameObj();
                 ShowWinDialog();
+                playerInfo.updateScore();
             }
-            else if (wins.equals("O") && serverConnector.playerInfo.mySign.equals("O")) {
+            else if (wins.equals("O") && playerInfo.mySign.equals("O")) {
                 System.out.println("you won");
                 makeFinishGameObj();
                 ShowWinDialog();
+                playerInfo.updateScore();
             } else {
                 System.out.println("you lost");
                 ShowLoseDialog();
@@ -388,15 +393,15 @@ public class GameBoardController {
         }
 
     }
-public void makeFinishGameObj()
-{
-    JsonObject gameFinish = new JsonObject();
-    gameFinish.addProperty("type","finish_game");
-    gameFinish.addProperty("winner",serverConnector.playerInfo.id);
-    gameFinish.addProperty("looser",serverConnector.playerInfo.opponentId);
-    gameFinish.addProperty("game_id",serverConnector.playerInfo.gameId);
-    serverConnector.sendFinishingObj(gameFinish);
-}
+    public void makeFinishGameObj()
+    {
+        JsonObject gameFinish = new JsonObject();
+        gameFinish.addProperty("type","finish_game");
+        gameFinish.addProperty("winner",playerInfo.id);
+        gameFinish.addProperty("looser",playerInfo.opponentId);
+        gameFinish.addProperty("game_id",playerInfo.gameId);
+        serverConnector.sendFinishingObj(gameFinish);
+    }
     public EventHandler<ActionEvent> resetGame() {
         return event -> {
             gameEnded = false;
@@ -449,19 +454,19 @@ public void makeFinishGameObj()
         alert.initOwner(primaryStage);
         alert.show();
     }
-     /*  
-     mfe4 GIF monasb no7to lsa bndwr 
-     
-     
+     /*
+     mfe4 GIF monasb no7to lsa bndwr
+
+
      public void ShowTieDialog(){
         MediaPlayer player = new MediaPlayer( new Media(getClass().getResource("/Controllers/../ui_modules/Resources/------").toExternalForm()));
         MediaView mediaView = new MediaView(player);
-        
+
         Alert alert = new Alert(AlertType.INFORMATION, "Content here", ButtonType.OK);
         alert.getDialogPane().setMinHeight(210);
         alert.getDialogPane().setMinWidth(210);
         alert.setTitle("You lose!!");
-                
+
         VBox content = new VBox(mediaView);
         content.setAlignment(Pos.CENTER);
         alert.getDialogPane().setContent(content);

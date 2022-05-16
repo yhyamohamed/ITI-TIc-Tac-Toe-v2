@@ -12,7 +12,7 @@ public class PlayerInfo {
      public boolean playerTurn;
      public boolean allowFire;
      public String mySign;
-     public int gameId;
+     public Integer gameId;
      public int opponentScore;
      public String opponentUsername;
 
@@ -22,8 +22,11 @@ public class PlayerInfo {
     }
     public static PlayerInfo getPlayerInfo()
     {
-        if(playerInfo== null) return new PlayerInfo();
-        else return playerInfo;
+        if(PlayerInfo.playerInfo== null) {
+            PlayerInfo.playerInfo=new PlayerInfo();
+            return PlayerInfo.playerInfo;
+        }
+        else return PlayerInfo.playerInfo;
     }
      public String getOpponentUsername()
     {
@@ -55,5 +58,9 @@ public class PlayerInfo {
 
     public  String getWins() {
         return wins;
+    }
+    public void updateScore()
+    {
+        score+=50;
     }
 }
